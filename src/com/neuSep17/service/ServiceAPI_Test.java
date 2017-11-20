@@ -1,5 +1,4 @@
-Dealer.javapackage com.neuSep17.service;
-
+package com.neuSep17.service;
 
 import java.io.BufferedReader;
 import java.io.File;
