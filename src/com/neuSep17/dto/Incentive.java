@@ -1,8 +1,6 @@
 package com.neuSep17.dto;
 
 import java.util.ArrayList;                                                                                                                 //~VIN,category,........................................,price~  this is the criterion part     
-
-
 // Note: Incentive.java class should be made following the format of "incentives.txt" file: incentiveId~webId~title~discount~startDate~endDate~VIN(or all, or no),category,year,make,model,trim,type,price~description
 public class Incentive {
 
