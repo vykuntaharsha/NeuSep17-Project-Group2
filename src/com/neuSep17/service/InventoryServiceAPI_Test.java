@@ -43,7 +43,7 @@ public class InventoryServiceAPI_Test {
 	}
 
 
-	public void saveToFile() {
+	public void saveInventoryToFile() {
 		try {
 			PrintWriter writer = new PrintWriter(new FileWriter(new File(fileName)));
 			writer.println("id~webId~category~year~make~model~trim~type~price~photo");
