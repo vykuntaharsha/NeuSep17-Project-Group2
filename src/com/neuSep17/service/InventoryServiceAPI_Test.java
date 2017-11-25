@@ -22,7 +22,16 @@ public class InventoryServiceAPI_Test {
 
 	private LinkedHashMap<String, Vehicle> vehiclesMap;
 	private String fileName;
-
+	
+	public InventoryServiceAPI_Test(String file) {
+		this.fileName = file;
+		try {
+			vehiclesMap = getVehiclesMap(file);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 
 	public ArrayList<Vehicle> getVehicles() {
 		return new ArrayList<Vehicle>(vehiclesMap.values());
@@ -31,16 +40,6 @@ public class InventoryServiceAPI_Test {
 
 	public String getFileName() {
 		return fileName;
-	}
-
-
-	public InventoryServiceAPI_Test(String file) {
-		this.fileName = file;
-		try {
-			vehiclesMap = getVehiclesMap(file);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 
