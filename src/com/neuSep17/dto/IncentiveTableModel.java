@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import com.neuSep17.service.IncentiveServiceAPI_Test;
+
 class IncentiveTableModel implements TableModel {
 	
 	private IncentiveServiceAPI_Test incentiveAPI;	
