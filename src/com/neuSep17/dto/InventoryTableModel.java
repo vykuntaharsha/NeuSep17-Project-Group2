@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import com.neuSep17.service.IncentiveServiceAPI_Test;
+import com.neuSep17.service.InventoryServiceAPI_Test;
+
 class InventoryTableModel implements TableModel {
 	private InventoryServiceAPI_Test inventoryAPI;
 	private IncentiveServiceAPI_Test incentiveAPI;
