@@ -1,2 +1,16 @@
 
 /.idea/
+/bin/
+
+#Eclipse configure file
+.classpath
+.project
+*.externalToolBuilders
+
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+#Vscode
+.vscode
