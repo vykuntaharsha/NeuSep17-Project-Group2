@@ -18,11 +18,20 @@ import javax.swing.table.TableRowSorter;
 import com.neuSep17.dto.Vehicle;
 
 
-public class ServiceAPI_Test {
+public class InventoryServiceAPI_Test {
 
 	private LinkedHashMap<String, Vehicle> vehiclesMap;
 	private String fileName;
-
+	
+	public InventoryServiceAPI_Test(String file) {
+		this.fileName = file;
+		try {
+			vehiclesMap = getVehiclesMap(file);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 
 	public ArrayList<Vehicle> getVehicles() {
 		return new ArrayList<Vehicle>(vehiclesMap.values());
@@ -34,17 +43,7 @@ public class ServiceAPI_Test {
 	}
 
 
-	public ServiceAPI_Test(String file) {
-		this.fileName = file;
-		try {
-			vehiclesMap = getVehiclesMap(file);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-
-	public void saveToFile() {
+	public void saveInventoryToFile() {
 		try {
 			PrintWriter writer = new PrintWriter(new FileWriter(new File(fileName)));
 			writer.println("id~webId~category~year~make~model~trim~type~price~photo");
