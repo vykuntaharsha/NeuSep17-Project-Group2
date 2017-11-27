@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
+
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -115,7 +117,7 @@ public class InventoryServiceAPI_Test {
 	}
 	
 	
-  public void cancelSearch(TableRowSorter<TableModel> sorter) {
+    public void cancelSearch(TableRowSorter<TableModel> sorter) {
 		sorter.setRowFilter(null);
 	}
 	
@@ -144,6 +146,20 @@ public class InventoryServiceAPI_Test {
 	}
 	
 
+	/**
+	 * Pass in a list of vehicles and different fields to filter and return the filtered result. The 
+	 * category filter should seperate different categories with a space, e.g. "new certified". The price 
+	 * should be a range and the lower limit (inclusive) and upper limit (exclusive) should be connected 
+	 * with a "~". If the field is null, then the filter of that field is not applied.
+	 * @param vehicles list to be sorted
+	 * @param category desired category of the vehicles
+	 * @param year desired year of the vehicles
+	 * @param make desired make of the vehicles
+	 * @param price desired price range of the vehicles
+	 * @param type desired type of the vehicles
+	 * @param search search keywords for the vehicles
+	 * @return the filtered list of vehicles.
+	 */
 	public static List<Vehicle> vehiclesSearchAndFilter(List<Vehicle> vehicles,  String category, String year, String make, String price,
 	String type, String search){
 		List<Vehicle> filteredVehicles = new ArrayList<Vehicle>();
@@ -211,30 +227,46 @@ public class InventoryServiceAPI_Test {
 	private static boolean searchFilter(Vehicle vehicle, String search) {
 		if (search == null)
 			return true;
-		return vehicle.toString().contains(search);
+		search = search.toLowerCase();
+		String vehicleString = vehicle.toString().toLowerCase();
+		String [] arr = search.split("\\s+");
+		for (String word : arr) {
+			if(!vehicleString.contains(word))
+				return false;
+		}
+		return true;
 	}
 
+	/**
+	 * Take in a list of vehicles and return a map. The keys of the map are "year", "make", "price" and 
+	 * "type". The corresponding values are the values contained by the passed in list of vehicles.
+	 * @param vehicles list of vehicles passed in
+	 * @return the result map
+	 */
 	public static Map<String, List<String>> getComboBoxItemsMap(List<Vehicle> vehicles) {
 		List<String> yearList = new ArrayList<String>();
 		List<String> makeList = new ArrayList<String>();
 		List<String> priceList = new ArrayList<String>();
 		List<String> typeList = new ArrayList<String>();
+		TreeSet<String> yearSet = new TreeSet<>();
+		TreeSet<String> makeSet = new TreeSet<>();
+		TreeSet<String> priceSet = new TreeSet<>();
+		TreeSet<String> typeSet = new TreeSet<>();
 		for (Vehicle vehicle : vehicles) {
 			String year = vehicle.getYear().toString();
 			String make = vehicle.getMake();
 			String type = vehicle.getBodyType();
 			String price = priceToString(vehicle.getPrice());
-			if (!yearList.contains(year))
-				yearList.add(year);
-			if (!makeList.contains(make))
-				makeList.add(make);
-			if (!priceList.contains(price))
-				priceList.add(price);
-			if (!typeList.contains(type))
-				typeList.add(type);
+			yearSet.add(year);
+			makeSet.add(make);
+			priceSet.add(price);
+			typeSet.add(type);
 		}
-
 		Map<String, List<String>> map = new HashMap<>();
+		yearList.addAll(yearSet);
+		makeList.addAll(makeSet);
+		priceList.addAll(priceSet);
+		typeList.addAll(typeSet);
 		map.put("year", yearList);
 		map.put("make", makeList);
 		map.put("price", priceList);
@@ -253,6 +285,14 @@ public class InventoryServiceAPI_Test {
 		return "100000~";
 	}
 
+	/**
+	 * Take in a list of vehicles and sort it according to the sortType.
+	 * @param vehicles list of vehicles passed in
+	 * @param sortType the field according to which the list should be sorted
+	 * @param isAscending true if the list is to be sorted ascendingly and false if it is to be sorted 
+	 * descendingly
+	 * @return the sorted list
+	 */
 	public static List<Vehicle> sortVehicles(List<Vehicle> vehicles, String sortType, boolean isAscending) {
 		switch (sortType) {
 		case "price":
@@ -293,4 +333,5 @@ public class InventoryServiceAPI_Test {
 			Collections.reverse(vehicles);
 		return vehicles;
 	}
+	
 }
