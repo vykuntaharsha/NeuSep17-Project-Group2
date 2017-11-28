@@ -43,7 +43,6 @@ public class DealerScreen extends JFrame {
         }
         dealerComboBox = new JComboBox(dealerNameList.toArray());
         dealerComboBox.setSelectedItem(null);
-        dealerComboBox.setEditable(true);
 
         mngInvButton = new JButton("Manage Inventory");
         mngIncButton = new JButton("Manage Incentive");
@@ -83,7 +82,7 @@ public class DealerScreen extends JFrame {
         public void actionPerformed(ActionEvent e){
             if(dealerComboBox.getSelectedItem() != null){
                 //new ManageInventoryScreen();
-                System.out.println("Close Dealer Screen -> Open Dealer Inventory Screen");
+                System.out.println("You have choosed " + dealerComboBox.getSelectedItem() + ", Close Dealer Screen -> Open Dealer Inventory Screen");
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Please Select a Dealer", "Error", JOptionPane.ERROR_MESSAGE);
@@ -97,7 +96,7 @@ public class DealerScreen extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(dealerComboBox.getSelectedItem() != null){
                 //new ManageIncentiveScreen();
-                System.out.println("Close Dealer Screen -> Open Dealer Incentive Screen");
+                System.out.println("You have choosed " + dealerComboBox.getSelectedItem() + ", Close Dealer Screen -> Open Dealer Incentive Screen");
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Please Select a Dealer", "Error", JOptionPane.ERROR_MESSAGE);
@@ -108,5 +107,6 @@ public class DealerScreen extends JFrame {
     private void makeVisible() {
         setSize(500,500);
         setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }

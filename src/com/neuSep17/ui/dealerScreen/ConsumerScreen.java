@@ -37,11 +37,13 @@ public class ConsumerScreen extends JFrame{
         first.setFont(f1);
         second = new JLabel("Select Dealer", JLabel.CENTER);
         second.setFont(f2);
-        combobox=new JComboBox();
 
         for (Dealer d: dealerList){
             dealerNameList.add(d.getId());
         }
+
+        combobox=new JComboBox(dealerNameList.toArray());
+        combobox.setSelectedItem(null);
 
     }
 
@@ -71,7 +73,7 @@ public class ConsumerScreen extends JFrame{
         public void actionPerformed(ActionEvent e){
             if(combobox.getSelectedItem() != null){
                 //new DealerInventoryScreen();
-                System.out.println("Close Dealer Screen -> Open Dealer Inventory Screen");
+                System.out.println("You have choosed " + combobox.getSelectedItem() + ", Close Dealer Screen -> Open Dealer Inventory Screen");
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Please Select a Dealer", "Error", JOptionPane.ERROR_MESSAGE);

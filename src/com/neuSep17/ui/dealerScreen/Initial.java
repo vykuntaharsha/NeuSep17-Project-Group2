@@ -40,6 +40,8 @@ public class Initial extends JFrame{
     private void addListener() {
         GoToDealerScreen gtds = new GoToDealerScreen();
         dealer.addActionListener(gtds);
+        GoToConsumerScreen gtcs = new GoToConsumerScreen();
+        consumer.addActionListener(gtcs);
     }
 
     class GoToDealerScreen implements ActionListener{
@@ -52,9 +54,20 @@ public class Initial extends JFrame{
         }
     }
 
+    class GoToConsumerScreen implements ActionListener{
+        @Override
+        public void actionPerformed (ActionEvent e){
+            if(e.getSource() == consumer) {
+                new ConsumerScreen();
+                dispose();
+            }
+        }
+    }
+
     private void makeVisible() {
         setSize(500,500);
         setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public static void main(String[] args) {
