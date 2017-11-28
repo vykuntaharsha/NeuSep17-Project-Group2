@@ -44,9 +44,7 @@ class vehicleCell extends JPanel{
         
         this.add(image);
         this.add(specPane);
-        this.setBorder(new MatteBorder(1, 1, 0, 0, Color.BLACK));
-        //this.setDividerLocation(150);
-        //this.setEnabled(false);
+        this.setBorder(new MatteBorder(1, 0, 1, 0, Color.BLACK));
         
     }
 }
