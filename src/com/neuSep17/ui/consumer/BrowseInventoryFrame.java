@@ -27,23 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
+import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -70,6 +54,13 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private String[] data = { "all", "test1", "test2", "test3" };// Simulation
                                                                  // data
     // filter end
+
+    //**search start***
+    private JLabel sortBy;
+    private JButton search;
+    private JTextField searchText;
+    private JComboBox sortItem;
+    //**search end***
 
     public BrowseInventoryFrame() // (Dealer dealer)
     {
@@ -112,8 +103,17 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void createSearchPanelComponents()
     {
-        // TODO Auto-generated method stub
+        search = new JButton("Search");
+        sortBy = new JLabel("Sort by : ");
 
+        searchText = new JTextField(10);
+
+        sortItem = new JComboBox();
+        sortItem.addItem("Select Sort By");
+        sortItem.addItem("Price: High To Low");
+        sortItem.addItem("Price: Low To High");
+        sortItem.addItem("Year: High To Low");
+        sortItem.addItem("Year: Low To High");
     }
 
     private void createFilterPanelComponents()
@@ -177,6 +177,15 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private void addSearchPanelComponents(JPanel searchPanel)
     {
         searchPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        BoxLayout boxlayout = new BoxLayout(searchPanel, BoxLayout.X_AXIS);
+        searchPanel.setLayout(boxlayout);
+        searchPanel.add(Box.createHorizontalStrut(5));
+        searchPanel.add(Box.createHorizontalGlue());
+        searchPanel.add(searchText);
+        searchPanel.add(search);
+        searchPanel.add(Box.createHorizontalStrut(50));
+        searchPanel.add(sortBy);
+        searchPanel.add(sortItem);
     }
 
     private void addFilterPanelComponents(JPanel filterPanel)
