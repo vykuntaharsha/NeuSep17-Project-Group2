@@ -16,6 +16,8 @@ import javax.swing.SortOrder;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.neuSep17.dto.Incentive;
+import com.neuSep17.dto.Vehicle;
 
 public class IncentiveServiceAPI_Test {
 
