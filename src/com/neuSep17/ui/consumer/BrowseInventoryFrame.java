@@ -44,8 +44,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private HashMap<Vehicle, Image> cache;
     private ArrayList<Vehicle> toDisplay;
     private JScrollPane listScrollPane;
-    private JPanel listPanel;
-    private int page, perpage;
+    private JPanel carList, listPanel;
+    private static int page, perpage;
 
     // filter start
     private JCheckBox[] categories;
@@ -171,7 +171,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // list panel
 
         addListPanelComponents();
-        con.add(listScrollPane, BorderLayout.CENTER);
+        con.add(listPanel, BorderLayout.CENTER);
     }
 
     private void addSearchPanelComponents(JPanel searchPanel)
@@ -263,25 +263,30 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void createListPanelComponents()
     {
-        listPanel = new JPanel();
+        listPanel=new JPanel();
         listPanel.setSize(new Dimension(this.getWidth() - 300, this.getHeight() - 200));  // TODO total width-filer, total height-search
+        carList = new JPanel();
+        carList.setSize(new Dimension(this.getWidth() - 300, this.getHeight() - 300));  // TODO total width-filer, total height-search
         
         listScrollPane = new JScrollPane(); 
     }
 
     private void addListPanelComponents()
     {
-        listPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
+        carList.setBorder(BorderFactory.createLineBorder(Color.black));
+        carList.setLayout(new BoxLayout(carList, BoxLayout.Y_AXIS));
         
         Vehicle v;
         for (int i=0;i<perpage;++i) {
             v=toDisplay.get(i);
-            listPanel.add(new vehicleCell(v, createTestImageIcon(cache.get(v), "test")));  //TODO use normal icon generator
+            carList.add(new vehicleCell(v, createTestImageIcon(cache.get(v), "test")));  //TODO use normal icon generator
             
         }
+        listScrollPane.setViewportView(carList);
+        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
+        listPanel.add(listScrollPane);        
         listPanel.add(new pagePane(page, toDisplay.size()/perpage));
-        listScrollPane.setViewportView(listPanel);
+        
         
     }
 
@@ -294,16 +299,37 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         
         pagePane(int curPage, int maxPage){
             super();
+            JButton first=new JButton("First");
             JButton pre=new JButton("Previous");
             JLabel cur=new JLabel("Page: "+(curPage+1));
             JButton next=new JButton("Next");
+            JButton last=new JButton("Last");
+            this.add(first);
             this.add(pre);
             this.add(cur);
             this.add(next);
-            this.setBorder(new MatteBorder(3, 0, 0, 0, Color.BLACK));
+            this.add(last);
+            this.setBorder(new MatteBorder(0, 2, 0, 0, Color.BLACK));
             
-            if (curPage==0) pre.setEnabled(false);
-            if (curPage==maxPage) next.setEnabled(false);
+            if (curPage==0) {
+                pre.setEnabled(false);
+                first.setEnabled(false);
+            }
+            if (curPage==maxPage) {
+                next.setEnabled(false);
+                last.setEnabled(false);
+            }
+            
+            first.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    System.out.println("to first page: 1");                    
+                        page=0;
+                }
+            });
+            
             pre.addActionListener(new ActionListener()
             {
                 @Override
@@ -324,6 +350,17 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
                     ++page;
                 }
             });
+            
+            last.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    System.out.println("to last page: "+(maxPage+1));                    
+                        page=maxPage;
+                }
+            });
+            
         }
     }
     
