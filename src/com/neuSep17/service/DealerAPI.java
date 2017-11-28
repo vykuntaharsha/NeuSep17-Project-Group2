@@ -35,8 +35,10 @@ public class DealerAPI {
 		
 		while((line=reader.readLine())!=null) {
 			String[] dealerArray = line.split("\t");
-			Dealer dealer =new Dealer(dealerArray[0],dealerArray[0], dealerArray[2]);
-			DealerMap.put(dealer.getId(), dealer);
+			//should be "Dealer dealer =new Dealer(dealerArray[0],dealerArray[1], dealerArray[2])"?
+			Dealer dealer =new Dealer(dealerArray[0],dealerArray[1], dealerArray[2]);
+			//should be dealerObjMap?
+			dealerObjMap.put(dealer.getId(), dealer);
 		}
 		reader.close();
 		return dealerObjMap;
