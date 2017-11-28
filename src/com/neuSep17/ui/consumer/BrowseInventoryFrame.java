@@ -41,11 +41,14 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 {
 
     private String dealerID;
-    private HashMap<Vehicle, Image> cache;
     private ArrayList<Vehicle> toDisplay;
+    
+    // list
+    private HashMap<Vehicle, Image> cache;    
     private JScrollPane listScrollPane;
     private JPanel carList, listPanel;
     private static int page, perpage;
+    // list end
 
     // filter start
     private JCheckBox[] categories;
@@ -69,7 +72,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // dealerID= dealer.getID();
         page=0;
         perpage=15;
-        
 
         this.cache = new HashMap<Vehicle, Image>();
         this.toDisplay=new ArrayList<Vehicle>();
@@ -274,20 +276,31 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private void addListPanelComponents()
     {
         carList.setBorder(BorderFactory.createLineBorder(Color.black));
-        carList.setLayout(new BoxLayout(carList, BoxLayout.Y_AXIS));
-        
-        Vehicle v;
-        for (int i=0;i<perpage;++i) {
-            v=toDisplay.get(i);
-            carList.add(new vehicleCell(v, createTestImageIcon(cache.get(v), "test")));  //TODO use normal icon generator
-            
-        }
+        carList.setLayout(new BoxLayout(carList, BoxLayout.Y_AXIS));        
         listScrollPane.setViewportView(carList);
         listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
         listPanel.add(listScrollPane);        
-        listPanel.add(new pagePane(page, toDisplay.size()/perpage));
+        listPanel.add(new pagePane(toDisplay.size()/perpage));        
+        displaytoList();
+    }
+
+    private void displaytoList() {          //TODO put the car in toDisplay after searching/filtering/sorting/, set page=0, then invoke this method
         
+        carList.removeAll();
+        carList.revalidate();
+        listScrollPane.getVerticalScrollBar().setValue(0);
+        Vehicle v;
+        int n;
+        for (int i=0;i<perpage;++i) {
+            n=page*perpage+i;
+            if (n>=toDisplay.size()) break;
+            v=toDisplay.get(n);
+            carList.add(new vehicleCell(v, createTestImageIcon(cache.get(v), "test")));  //TODO use normal icon generator            
+        }
         
+        listPanel.remove(1);
+        listPanel.revalidate();        
+        listPanel.add(new pagePane(toDisplay.size()/perpage));
     }
 
     private void addListPanelListeners()
@@ -297,13 +310,13 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     
     class pagePane extends JPanel{
         
-        pagePane(int curPage, int maxPage){
+        pagePane(int maxPage){
             super();
-            JButton first=new JButton("First");
-            JButton pre=new JButton("Previous");
-            JLabel cur=new JLabel("Page: "+(curPage+1));
-            JButton next=new JButton("Next");
-            JButton last=new JButton("Last");
+            JButton first=new JButton("<<");
+            JButton pre=new JButton("<");
+            JLabel cur=new JLabel("Page: "+(page+1));
+            JButton next=new JButton(">");
+            JButton last=new JButton(">>");
             this.add(first);
             this.add(pre);
             this.add(cur);
@@ -311,11 +324,11 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             this.add(last);
             this.setBorder(new MatteBorder(0, 2, 0, 0, Color.BLACK));
             
-            if (curPage==0) {
+            if (page==0) {
                 pre.setEnabled(false);
                 first.setEnabled(false);
             }
-            if (curPage==maxPage) {
+            if (page==maxPage) {
                 next.setEnabled(false);
                 last.setEnabled(false);
             }
@@ -326,7 +339,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
                 public void actionPerformed(ActionEvent e)
                 {
                     System.out.println("to first page: 1");                    
-                        page=0;
+                    page=0;                    
+                    displaytoList();
                 }
             });
             
@@ -336,7 +350,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
                 public void actionPerformed(ActionEvent e)
                 {
                     System.out.println("to previous page: "+page);                    
-                        --page;
+                    --page;
+                    displaytoList();
                 }
             });
             
@@ -345,9 +360,9 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    System.out.println("to next page: "+(page+2));
-                    
+                    System.out.println("to next page: "+(page+2));                    
                     ++page;
+                    displaytoList();
                 }
             });
             
@@ -357,7 +372,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
                 public void actionPerformed(ActionEvent e)
                 {
                     System.out.println("to last page: "+(maxPage+1));                    
-                        page=maxPage;
+                    page=maxPage;
+                    displaytoList();
                 }
             });
             
