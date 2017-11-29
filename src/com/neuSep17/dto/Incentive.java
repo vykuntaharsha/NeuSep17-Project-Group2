@@ -14,7 +14,7 @@ public class Incentive {
     private String description;
     
     
-    Incentive(String[] arr) {
+    public Incentive(String[] arr) {
         this.id = arr[0];
         this.webId = arr[1];
         this.title = arr[2];
