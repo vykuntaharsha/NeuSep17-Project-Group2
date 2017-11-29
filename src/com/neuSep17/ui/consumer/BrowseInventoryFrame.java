@@ -557,7 +557,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void updateSearch() {
         String searchInfo = searchText.getText();
-        System.out.println(searchInfo);
+        //System.out.println(searchInfo);
         doSearch(searchInfo);
     }
 
