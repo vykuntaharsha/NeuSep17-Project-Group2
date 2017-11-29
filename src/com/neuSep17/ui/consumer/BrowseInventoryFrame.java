@@ -412,28 +412,13 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     }
 
     private void updateVehicle() throws IOException
-    {
-
-        File file = new File("data/gmps-bresee");
-        ArrayList<Vehicle> cars = new ArrayList<>();
-        FileReader fr = new FileReader(file);
-        BufferedReader br = new BufferedReader(fr);
-        String line = br.readLine();
-        while (true)
-        {
-            line = br.readLine();
-            if (line == null)
-                break;
-            Vehicle cur = new Vehicle(line.split("~"));
-            cars.add(cur);
-        }
-        br.close();
-        fr.close();
+    {       
+        
         URL imgURL = new URL("http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/24174x90.jpg");
         Image temp = ImageIO.read(imgURL);
-        for (Vehicle v : cars)
+        for (Vehicle v : invsAPI.getVehicles())
         {
-            // cache.put(v, ImageIO.read(v.getPhotoUrl()) );
+            
             cache.put(v, temp);
             toDisplay.add(v);
         }
