@@ -574,7 +574,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         StringBuilder sortType = new StringBuilder();
         boolean isAscending = true;
         isAscending = updateSortType(sortMethod, sortType);
-        System.out.println(sortMethod + " + " + sortType.toString() + " + " + isAscending);
+        //System.out.println(sortMethod + " + " + sortType.toString() + " + " + isAscending);
         searchedVehicles = invsAPI.sortVehicles(searchedVehicles, sortType.toString(), isAscending);
         toDisplay = (ArrayList<Vehicle>) searchedVehicles;
         displaytoList();
