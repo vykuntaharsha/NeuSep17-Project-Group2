@@ -228,7 +228,7 @@ public class InventoryServiceAPI_Test {
 		if (search == null)
 			return true;
 		search = search.toLowerCase();
-		String vehicleString = vehicle.toString().toLowerCase();
+		String vehicleString = vehicle.toString().split("~http://.+$")[0].toLowerCase();
 		String [] arr = search.split("\\s+");
 		for (String word : arr) {
 			if(!vehicleString.contains(word))
@@ -239,7 +239,7 @@ public class InventoryServiceAPI_Test {
 
 	/**
 	 * Take in a list of vehicles and return a map. The keys of the map are "year", "make", "price" and 
-	 * "type". The corresponding values are the values contained by the passed in list of vehicles.
+	 * "type". The corresponding values are sorted values contained by the passed in list of vehicles.
 	 * @param vehicles list of vehicles passed in
 	 * @return the result map
 	 */
