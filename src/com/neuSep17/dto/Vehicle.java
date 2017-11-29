@@ -100,5 +100,46 @@ public class Vehicle
     {
         return photoUrl;
     }
+    
+    public void setId(String id) {
+		this.id = id;
+	}
 
+	public void setWebId(String webId) {
+		this.webId = webId;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public void setMake(String make) {
+		this.make = make;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public void setTrim(String trim) {
+		this.trim = trim;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public void setBodyType(String bodyType) {
+		this.bodyType = bodyType;
+	}
+
+	public void setPrice(Float price) {
+		this.price = price;
+	}
+
+	public void setPhotoUrl(URL photoUrl) {
+		this.photoUrl = photoUrl;
+	}
+    
+    
 }
