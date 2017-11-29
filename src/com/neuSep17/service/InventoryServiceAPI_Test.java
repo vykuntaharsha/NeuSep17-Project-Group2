@@ -14,6 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
@@ -22,6 +24,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.neuSep17.dto.Vehicle;
+import com.neuSep17.dto.Category;
 
 
 public class InventoryServiceAPI_Test {
