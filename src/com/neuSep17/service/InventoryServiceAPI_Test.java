@@ -92,6 +92,21 @@ public class InventoryServiceAPI_Test {
 		Vehicle vehicle = new Vehicle(vehicleData);
 		return vehicle;
 	}
+	
+	
+	public void editVehicle(String vin, int vehicleDataIndex, String vehicleDataEditText) throws MalformedURLException {
+		switch(vehicleDataIndex) {
+			case 2: vehiclesMap.get(vin).setCategory(Category.getCategory(vehicleDataEditText.trim().toLowerCase()));break;
+			case 3: vehiclesMap.get(vin).setYear(Integer.parseInt(vehicleDataEditText.trim()));break;
+			case 4: vehiclesMap.get(vin).setMake(vehicleDataEditText.trim());break;
+			case 5: vehiclesMap.get(vin).setModel(vehicleDataEditText.trim());break;
+			case 6: vehiclesMap.get(vin).setTrim(vehicleDataEditText.trim());break;
+			case 7: vehiclesMap.get(vin).setBodyType(vehicleDataEditText.trim());break;
+			case 8: vehiclesMap.get(vin).setPrice(Float.parseFloat(vehicleDataEditText.trim()));break;
+			case 9: vehiclesMap.get(vin).setPhotoUrl(new URL(vehicleDataEditText.trim()));break;
+			default: System.out.println("Please input valid vehicleDataIndex");break;
+		}
+	}
 
 	
 	public void addVehicle(Vehicle vehicle) {
@@ -228,7 +243,7 @@ public class InventoryServiceAPI_Test {
 		if (search == null)
 			return true;
 		search = search.toLowerCase();
-		String vehicleString = vehicle.toString().toLowerCase();
+		String vehicleString = vehicle.toString().split("~http://.+$")[0].toLowerCase();
 		String [] arr = search.split("\\s+");
 		for (String word : arr) {
 			if(!vehicleString.contains(word))
@@ -239,7 +254,7 @@ public class InventoryServiceAPI_Test {
 
 	/**
 	 * Take in a list of vehicles and return a map. The keys of the map are "year", "make", "price" and 
-	 * "type". The corresponding values are the values contained by the passed in list of vehicles.
+	 * "type". The corresponding values are sorted values contained by the passed in list of vehicles.
 	 * @param vehicles list of vehicles passed in
 	 * @return the result map
 	 */
