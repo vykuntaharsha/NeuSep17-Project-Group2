@@ -538,12 +538,14 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         toDisplay = (ArrayList<Vehicle>) searchedVehicles;
         comboBoxItemsMap = InventoryServiceAPI_Test.getComboBoxItemsMap(toDisplay);
         updateFilterComboboxItems();
+        displaytoList();
     }
 
     private void doFilter(String category, String year, String make, String price, String type)
     {
         toDisplay = (ArrayList<Vehicle>) InventoryServiceAPI_Test.vehiclesSearchAndFilter(searchedVehicles, category, year, make, price,
                 type, null);
+        displaytoList();
     }
 
     class BrowseWindowListener implements WindowListener
