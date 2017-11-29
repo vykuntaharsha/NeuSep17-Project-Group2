@@ -59,7 +59,14 @@ public class DetailShow extends JPanel {
 		setValue(curTable, discountContent, discount);
 		setValue(specTable, detailType, details);
 		curTable.setRowHeight(30);
+		curTable.setDefaultEditor(Object.class, null);
+		curTable.setFocusable(false);
+		curTable.setRowSelectionAllowed(false);
 		specTable.setRowHeight(30);
+		specTable.setDefaultEditor(Object.class, null);
+		specTable.setFocusable(false);
+		specTable.setRowSelectionAllowed(false);
+		
 		// MSRP.setFont(new Font("Menu.font", Font.PLAIN, 15));
 		// MSRP.setHorizontalAlignment(JLabel.RIGHT);
 		SalePrice.setFont(new Font("Menu.font", Font.PLAIN, 20));
