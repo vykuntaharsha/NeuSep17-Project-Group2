@@ -458,7 +458,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         protected Void doInBackground() throws Exception
         {
             Image img;
-            for (Vehicle v : getInventoryofDealer())
+            for (Vehicle v : invsAPI.getVehicles())
             {
                 try
                 {
@@ -473,25 +473,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             return null;
         }
 
-        private ArrayList<Vehicle> getInventoryofDealer() throws IOException
-        {
-            File file = new File("data/gmps-jimmy"); // TODO test version
-            ArrayList<Vehicle> cars = new ArrayList<>();
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            String line = br.readLine();
-            while (true)
-            {
-                line = br.readLine();
-                if (line == null)
-                    break;
-                Vehicle cur = new Vehicle(line.split("~"));
-                cars.add(cur);
-            }
-            br.close();
-            fr.close();
-            return cars;
-        }
     }
 
     private void makeThisVisible()
