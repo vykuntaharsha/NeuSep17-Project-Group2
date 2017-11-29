@@ -32,7 +32,7 @@ public class DetailShow extends JPanel {
 	private void createComponents(Vehicle vehicle, IncentiveServiceAPI_Test incentiveServiceAPI_Test) {
 		// MSRP=new JLabel("MSRP: "+vehicle.getPrice());
 		SalePrice = new JLabel();
-		float salePrice = 500.0f; //TODO vehicle.getPrice() - incentiveServiceAPI_Test.getAllDiscount(vehicle);
+		float salePrice = vehicle.getPrice()-500.0f; //TODO vehicle.getPrice() - incentiveServiceAPI_Test.getAllDiscount(vehicle);
 		SalePrice.setText("Sale Price:   " + salePrice);
 
 		currentOffers = new JLabel("CurrentOffers");
@@ -52,7 +52,7 @@ public class DetailShow extends JPanel {
 		String[] details = { vehicle.getId(), vehicle.getWebId(), vehicle.getCategory().toString(),
 				vehicle.getYear().toString(), vehicle.getMake(), vehicle.getModel(), vehicle.getTrim(),
 				vehicle.getBodyType(), vehicle.getPrice().toString() };
-		float salePrice = 600.0f; //TODO vehicle.getPrice() - incentiveServiceAPI_Test.getAllDiscount(vehicle);
+		float salePrice = vehicle.getPrice()-500.0f; //TODO vehicle.getPrice() - incentiveServiceAPI_Test.getAllDiscount(vehicle);
 		String[] discount = { vehicle.getPrice().toString(), "" + salePrice, "TBD", "TBD",
 				"500" }; //TODO + incentiveServiceAPI_Test.getAllDiscount(vehicle) };
 
