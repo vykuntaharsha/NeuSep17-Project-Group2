@@ -92,6 +92,21 @@ public class InventoryServiceAPI_Test {
 		Vehicle vehicle = new Vehicle(vehicleData);
 		return vehicle;
 	}
+	
+	
+	public void editVehicle(String vin, int vehicleDataIndex, String vehicleDataEditText) throws MalformedURLException {
+		switch(vehicleDataIndex) {
+			case 2: vehiclesMap.get(vin).setCategory(Category.getCategory(vehicleDataEditText.trim().toLowerCase()));break;
+			case 3: vehiclesMap.get(vin).setYear(Integer.parseInt(vehicleDataEditText.trim()));break;
+			case 4: vehiclesMap.get(vin).setMake(vehicleDataEditText.trim());break;
+			case 5: vehiclesMap.get(vin).setModel(vehicleDataEditText.trim());break;
+			case 6: vehiclesMap.get(vin).setTrim(vehicleDataEditText.trim());break;
+			case 7: vehiclesMap.get(vin).setBodyType(vehicleDataEditText.trim());break;
+			case 8: vehiclesMap.get(vin).setPrice(Float.parseFloat(vehicleDataEditText.trim()));break;
+			case 9: vehiclesMap.get(vin).setPhotoUrl(new URL(vehicleDataEditText.trim()));break;
+			default: System.out.println("Please input valid vehicleDataIndex");break;
+		}
+	}
 
 	
 	public void addVehicle(Vehicle vehicle) {
