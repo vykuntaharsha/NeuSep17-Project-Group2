@@ -122,17 +122,20 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void createSearchPanelComponents()
     {
+        //search
         search = new JButton("Search");
-        sortBy = new JLabel("Sort by : ");
-
         searchText = new JTextField(10);
 
-        sortItem = new JComboBox<String>();
+        //sort
+        sortBy = new JLabel("Sort by : ");
+        sortItem = new JComboBox();
         sortItem.addItem("Select Sort By");
         sortItem.addItem("Price: High To Low");
         sortItem.addItem("Price: Low To High");
         sortItem.addItem("Year: High To Low");
         sortItem.addItem("Year: Low To High");
+        sortItem.addItem("Make: A - Z");
+        sortItem.addItem("Make: Z - A");
     }
 
     private void createFilterPanelComponents()
@@ -178,7 +181,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         con.add(listPanel, BorderLayout.CENTER);
     }
 
-    private void addSearchPanelComponents(JPanel searchPanel)
+    private void addSearchPanelComponents(JPanel searchPanel) //search and sort
     {
         searchPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         BoxLayout boxlayout = new BoxLayout(searchPanel, BoxLayout.X_AXIS);
@@ -235,6 +238,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     {
         // search panel
         addSearchPanelListeners();
+        addSortPanelListeners();
         // filter panel
         addFilterPanelListeners();
         // list panel
@@ -247,8 +251,13 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void addSearchPanelListeners()
     {
-        // TODO Auto-generated method stub
-
+        SearchListener searchlistener = new SearchListener();
+        search.addActionListener(searchlistener);
+    }
+    private void addSortPanelListeners()
+    {
+        SortListener sortlistener = new SortListener();
+        sortItem.addActionListener(sortlistener);
     }
 
     private void addFilterPanelListeners()
@@ -532,8 +541,87 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         }
     }
 
+    class SearchListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            updateSearch();
+        }
+    }
+
+    class SortListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            updateSort();
+        }
+    }
+
+    private void updateSearch() {
+        String searchInfo = searchText.getText();
+        System.out.println(searchInfo);
+        doSearch(searchInfo);
+    }
+
+    private void updateSort() {
+        String sortMethod = sortItem.getSelectedIndex() == 0 ? null : (String)sortItem.getSelectedItem();
+        //System.out.println(sortMethod);
+        doSort(sortMethod);
+    }
+
+    private void doSort(String sortMethod) {
+        if (sortMethod == null) {
+            return;
+        }
+        StringBuilder sortType = new StringBuilder();
+        boolean isAscending = true;
+        isAscending = updateSortType(sortMethod, sortType);
+        System.out.println(sortMethod + " + " + sortType.toString() + " + " + isAscending);
+        searchedVehicles = invsAPI.sortVehicles(searchedVehicles, sortType.toString(), isAscending);
+        toDisplay = (ArrayList<Vehicle>) searchedVehicles;
+        displaytoList();
+    }
+
+    private boolean updateSortType(String sortMethod, StringBuilder sortType) {
+        if (sortMethod.toLowerCase().contains("year")) {
+            sortType.delete(0, sortMethod.length());
+            sortType.append("year");
+            if (sortMethod.toLowerCase().contains("low to high")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (sortMethod.toLowerCase().contains("price")) {
+            sortType.delete(0, sortMethod.length());
+            sortType.append("price");
+            if (sortMethod.toLowerCase().contains("low to high")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (sortMethod.toLowerCase().contains("make")) {
+            sortType.delete(0, sortMethod.length());
+            sortType.append("make");
+            if (sortMethod.toLowerCase().contains("a - z")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
     private void doSearch(String search)
     {
+        //search many times, get data from the whole data instead of filtered data
+        try
+        {
+            updateVehicle();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        searchedVehicles = toDisplay;
         searchedVehicles = InventoryServiceAPI_Test.vehiclesSearchAndFilter(searchedVehicles, null, null, null, null, null, search);
         toDisplay = (ArrayList<Vehicle>) searchedVehicles;
         comboBoxItemsMap = InventoryServiceAPI_Test.getComboBoxItemsMap(toDisplay);
