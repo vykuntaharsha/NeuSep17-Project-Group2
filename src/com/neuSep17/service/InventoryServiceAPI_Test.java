@@ -243,7 +243,7 @@ public class InventoryServiceAPI_Test {
 		if (search == null)
 			return true;
 		search = search.toLowerCase();
-		String vehicleString = vehicle.toString().split("~http://.+$")[0].toLowerCase();
+		String vehicleString = vehicle.toSearchContent().toLowerCase();
 		String [] arr = search.split("\\s+");
 		for (String word : arr) {
 			if(!vehicleString.contains(word))

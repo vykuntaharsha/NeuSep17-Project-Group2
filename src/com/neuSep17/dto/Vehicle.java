@@ -46,6 +46,11 @@ public class Vehicle
         return str;
     }
 
+    public String toSearchContent(){
+        return this.webId + "~" + this.category + "~" + this.year + "~" + this.make + "~"
+        + this.model + "~" + this.trim + "~" + this.bodyType + "~" + this.price;
+    }
+
     public String getId()
     {
         return id;
