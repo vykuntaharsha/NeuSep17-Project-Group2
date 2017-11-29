@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 class LinkLabel extends JLabel{
    
@@ -27,7 +29,8 @@ class LinkLabel extends JLabel{
             
             public void mouseClicked(MouseEvent e) {
                 System.out.println(link);
-                
+                BrowseInventoryFrame c=(BrowseInventoryFrame) SwingUtilities.getAncestorOfClass(BrowseInventoryFrame.class,LinkLabel.this);
+                new VehicleDetailDialog(c, link, c.incsAPI,c.invsAPI);
             }
             
         });

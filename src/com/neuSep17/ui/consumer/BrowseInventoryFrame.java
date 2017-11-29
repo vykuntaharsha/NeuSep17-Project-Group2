@@ -47,8 +47,8 @@ import com.neuSep17.service.InventoryServiceAPI_Test;
 public class BrowseInventoryFrame extends JFrame implements Runnable
 {
     // service API start
-    private InventoryServiceAPI_Test invsAPI;
-    private IncentiveServiceAPI_Test incsAPI;
+    InventoryServiceAPI_Test invsAPI;
+    IncentiveServiceAPI_Test incsAPI;
     // service API end
 
     private String dealerID;
@@ -66,7 +66,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private Map<String, List<String>> comboBoxItemsMap;
     private JCheckBox[] categories;
     private JLabel[] filterLabels;
-    private JComboBox[] filters;
+    private JComboBox<String>[] filters;
     private String[] filterKeys = { "year", "make", "price", "type" };
     // filter end
 
@@ -74,7 +74,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private JLabel sortBy;
     private JButton search;
     private JTextField searchText;
-    private JComboBox sortItem;
+    private JComboBox<String> sortItem;
     // **search end***
 
     public BrowseInventoryFrame() // (Dealer dealer)
@@ -83,7 +83,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         setTitle("Browse Inventory of xx dealer");
 
         // replaced by your folder
-        String file = "/Users/zhangyujia/Documents/INFO5100/finalProject/NeuSep17-Project-Group2/data/gmps-bresee";
+        String file = "data/gmps-bresee";
         invsAPI = new InventoryServiceAPI_Test(file);
         // incsAPI = new IncentiveServiceAPI_Test();
         // dealerID= dealer.getID();
@@ -97,8 +97,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             updateVehicle();
         }
         catch (IOException e)
-        {
-            // TODO Auto-generated catch block
+        {            
             e.printStackTrace();
         }
 
@@ -128,7 +127,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
         searchText = new JTextField(10);
 
-        sortItem = new JComboBox();
+        sortItem = new JComboBox<String>();
         sortItem.addItem("Select Sort By");
         sortItem.addItem("Price: High To Low");
         sortItem.addItem("Price: Low To High");
@@ -491,7 +490,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
         private ArrayList<Vehicle> getInventoryofDealer() throws IOException
         {
-            File file = new File("assignment8/q3.txt"); // TODO test version
+            File file = new File("data/gmps-jimmy"); // TODO test version
             ArrayList<Vehicle> cars = new ArrayList<>();
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
@@ -569,15 +568,15 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void doSearch(String search)
     {
-        searchedVehicles = invsAPI.vehiclesSearchAndFilter(searchedVehicles, null, null, null, null, null, search);
+        searchedVehicles = InventoryServiceAPI_Test.vehiclesSearchAndFilter(searchedVehicles, null, null, null, null, null, search);
         toDisplay = (ArrayList<Vehicle>) searchedVehicles;
-        comboBoxItemsMap = invsAPI.getComboBoxItemsMap(toDisplay);
+        comboBoxItemsMap = InventoryServiceAPI_Test.getComboBoxItemsMap(toDisplay);
         updateFilterComboboxItems();
     }
 
     private void doFilter(String category, String year, String make, String price, String type)
     {
-        toDisplay = (ArrayList<Vehicle>) invsAPI.vehiclesSearchAndFilter(searchedVehicles, category, year, make, price,
+        toDisplay = (ArrayList<Vehicle>) InventoryServiceAPI_Test.vehiclesSearchAndFilter(searchedVehicles, category, year, make, price,
                 type, null);
     }
 

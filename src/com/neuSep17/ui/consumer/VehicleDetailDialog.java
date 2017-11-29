@@ -27,7 +27,7 @@ public class VehicleDetailDialog extends JDialog {
 	private void addComponents(String id, IncentiveServiceAPI_Test incentiveServiceAPI_Test,
 			InventoryServiceAPI_Test inventoryServiceAPI_Test) {
 		Vehicle vehicle = inventoryServiceAPI_Test.getVehicleDetails(id);
-		String[] urls = { vehicle.getPhotoUrl().toString() };
+		String[] urls = { vehicle.getPhotoUrl().toString() };              //TODO  NullPointer may happen when read from another dealer, don't know why
 		ImageSlideShow imageSlideShow = new ImageSlideShow(vehicle, urls);
 		DetailShow detailShow = new DetailShow(vehicle, incentiveServiceAPI_Test);
 		this.setLayout(gbl);
@@ -55,6 +55,7 @@ public class VehicleDetailDialog extends JDialog {
 		gbs.gridy = 0;
 		gbl.setConstraints(detailShow, gbs);
 		setVisible(true);
-	}
+	}	
+	
 
 }
