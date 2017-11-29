@@ -104,9 +104,12 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 		}
 
 		for (String spec : imageUrls) {
-			if (isImage(spec)) {
-
-			} else {
+//			if (isImage(spec)) {
+//
+//			} else {
+//				spec = null;
+//			}
+			if(!isImage(spec)){
 				spec = null;
 			}
 			try {
@@ -127,7 +130,8 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 		ImageIcon icon;
 		BufferedImage img = null;
 		if (url != null) {
-			icon = new ImageIcon(urls.get(currentImage));
+//			icon = new ImageIcon(urls.get(currentImage));
+			icon = new ImageIcon(url);
 		} else {
 
 			try {
@@ -169,12 +173,27 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 	}
 
 	private boolean isImage(String image_path) {
-		Image image = new ImageIcon(image_path).getImage();
-		if (image.getWidth(null) == -1) {
-			return false;
-		} else {
-			return true;
+//		Image image = new ImageIcon(image_path).getImage();
+//		if (image== null) {
+//			return false;
+//		} else {
+//			return true;
+//		}
+//	}
+		Image image=null;
+		try {
+			image = ImageIO.read(new URL(image_path));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(image != null){
+		    return true;
+		}else{
+		    return false;
 		}
 	}
-
 }
