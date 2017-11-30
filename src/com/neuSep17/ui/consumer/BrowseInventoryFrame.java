@@ -37,7 +37,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
 import com.neuSep17.dto.Vehicle;
@@ -90,7 +89,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         invsAPI = new InventoryServiceAPI_Test(file);
         incsAPI = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
         // dealerID= dealer.getID();
-        page = 0;
+        setPage(0);
         perpage = 15;
 
         this.cache = new HashMap<Vehicle, ImageIcon>();
@@ -359,11 +358,11 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         listScrollPane.setViewportView(carList);
         listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
         listPanel.add(listScrollPane);
-        listPanel.add(new pagePane(toDisplay.size() / perpage));
+        listPanel.add(new PagePane(BrowseInventoryFrame.this, toDisplay.size() / perpage));
         displaytoList();
     }
 
-    private void displaytoList()
+    void displaytoList()
     { // put the car in toDisplay after searching/filtering/sorting/, set
       // page=0, then invoke this method
 
@@ -374,7 +373,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         int n;
         for (int i = 0; i < perpage; ++i)
         {
-            n = page * perpage + i;
+            n = getPage() * perpage + i;
             if (n >= toDisplay.size())
                 break;
             v = toDisplay.get(n);
@@ -383,7 +382,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
         listPanel.remove(1);
         listPanel.revalidate();
-        listPanel.add(new pagePane(toDisplay.size() / perpage));
+        listPanel.add(new PagePane(BrowseInventoryFrame.this, toDisplay.size() / perpage));
     }
 
     private void addListPanelListeners()
@@ -391,82 +390,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // updateFinishedListener updateFinished=new updateFinishedListener();
     }
 
-    class pagePane extends JPanel
-    {
-
-        pagePane(int maxPage)
-        {
-            super();
-            JButton first = new JButton("<<");
-            JButton pre = new JButton("<");
-            JLabel cur = new JLabel("Page: " + (page + 1));
-            JButton next = new JButton(">");
-            JButton last = new JButton(">>");
-            this.add(first);
-            this.add(pre);
-            this.add(cur);
-            this.add(next);
-            this.add(last);
-            this.setBorder(new MatteBorder(0, 2, 0, 0, Color.BLACK));
-
-            if (page == 0)
-            {
-                pre.setEnabled(false);
-                first.setEnabled(false);
-            }
-            if (page == maxPage)
-            {
-                next.setEnabled(false);
-                last.setEnabled(false);
-            }
-
-            first.addActionListener(new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    System.out.println("to first page: 1");
-                    page = 0;
-                    displaytoList();
-                }
-            });
-
-            pre.addActionListener(new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    System.out.println("to previous page: " + page);
-                    --page;
-                    displaytoList();
-                }
-            });
-
-            next.addActionListener(new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    System.out.println("to next page: " + (page + 2));
-                    ++page;
-                    displaytoList();
-                }
-            });
-
-            last.addActionListener(new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    System.out.println("to last page: " + (maxPage + 1));
-                    page = maxPage;
-                    displaytoList();
-                }
-            });
-
-        }
-    }
-
+    
     class updateFinishedListener implements PropertyChangeListener
     {
         @Override
@@ -486,6 +410,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         Image temp = ImageIO.read(imgURL);
         for (Vehicle v : invsAPI.getVehicles())
         {
+            //int i=(int) Math.round(3*Math.random());
+            //Image temp=invsAPI.getImage_Test(v.getBodyType())[i];
             cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
@@ -503,9 +429,11 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         @Override
         protected Void doInBackground() throws Exception
         {
+          
             Image img;
             for (Vehicle v : invsAPI.getVehicles())
             {
+              //Image img=invsAPI.getImage(v)[0];
                 try
                 {
                     img = ImageIO.read(v.getPhotoUrl());
@@ -699,7 +627,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
                 null, null, search);
         toDisplay = (ArrayList<Vehicle>) searchedVehicles;
         comboBoxItemsMap = InventoryServiceAPI_Test.getComboBoxItemsMap(toDisplay);
-        page = 0;
+        setPage(0);
         resetFilterCheckBox();
         updateFilterComboboxItems();
         displaytoList();
@@ -709,7 +637,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     {
         toDisplay = (ArrayList<Vehicle>) InventoryServiceAPI_Test.vehiclesSearchAndFilter(searchedVehicles, category,
                 year, make, price, type, null);
-        page = 0;
+        setPage(0);
         displaytoList();
     }
 
@@ -770,5 +698,13 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     public void run()
     {
         makeThisVisible();
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
     }
 }
