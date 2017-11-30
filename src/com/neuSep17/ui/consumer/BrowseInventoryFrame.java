@@ -70,7 +70,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private String[] filterKeys = { "year", "make", "price", "type" };
     private FilterCheckBoxListener fchbl = new FilterCheckBoxListener();
     private FilterComboBoxListener fcobl = new FilterComboBoxListener();
-    private FilterResetListener frl = new FilterResetListener();
     private JButton resetFilter;
     // filter end
 
@@ -379,7 +378,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             if (n >= toDisplay.size())
                 break;
             v = toDisplay.get(n);
-            carList.add(new vehicleCell(v, cache.get(v))); 
+            carList.add(new vehicleCell(v, cache.get(v)));
         }
 
         listPanel.remove(1);
@@ -480,11 +479,14 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private void updateVehicle() throws IOException
     {
 
-        URL imgURL = new URL("http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/24174x90.jpg");  //TODO use swingworker thread
+        URL imgURL = new URL("http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/24174x90.jpg"); // TODO
+                                                                                                   // use
+                                                                                                   // swingworker
+                                                                                                   // thread
         Image temp = ImageIO.read(imgURL);
         for (Vehicle v : invsAPI.getVehicles())
         {
-            cache.put(v, new ImageIcon(temp, "icon for vehicle " +v.getId()));
+            cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
         return;
@@ -494,7 +496,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
          * // this waits until update finish
          */
     }
-   
 
     class updateThread extends SwingWorker<Void, Void>
     {
@@ -513,7 +514,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
                 {
                     img = ImageIO.read(new File("src/com/neuSep17/ui/consumer/imagenotfound.jpg"));
                 }
-                cache.put(v, new ImageIcon(img, "icon for vehicle " +v.getId()));
+                cache.put(v, new ImageIcon(img, "icon for vehicle " + v.getId()));
             }
             return null;
         }
@@ -644,7 +645,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // System.out.println(sortMethod + " + " + sortType.toString() + " + " +
         // isAscending);
         searchedVehicles = invsAPI.sortVehicles(searchedVehicles, sortType.toString(), isAscending);
-        toDisplay = (ArrayList<Vehicle>) searchedVehicles;
+        updateFilter();
         displaytoList();
     }
 
@@ -731,7 +732,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         public void windowClosing(WindowEvent e)
         {
             System.out.println("BrowseInventory closing, back to consumer window.");
-            //TODO get to the dealer selection window
+            // TODO get to the dealer selection window
         }
 
         @Override
