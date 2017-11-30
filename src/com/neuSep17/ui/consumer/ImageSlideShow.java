@@ -31,7 +31,7 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 	private List<URL> urls = new ArrayList<>();
 	private String[] buttonNames = { "first", "pre", "next", "last" };
 	private int currentImage = 0;
-	private int width = 400, height = 400;
+	private int width = 600, height = 550;
 	private JPanel buttonPanel = new JPanel();
 	private JPanel titlePanel = new JPanel();
 	private JPanel imagePanel = new JPanel();
@@ -53,7 +53,9 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 
 	private void addComponents() {
 		this.setLayout(gbl);
-		titlePanel.add(title);
+		title.setHorizontalAlignment(JLabel.LEFT);
+		this.add(title);
+//		titlePanel.add(title);
 		imagePanel.add(imageLabel);
 		this.add(titlePanel);
 		this.add(imagePanel);
@@ -65,17 +67,17 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 		gbs.fill = GridBagConstraints.BOTH;
 		gbs.gridwidth = 1;
 		gbs.gridheight = 1;
-		gbs.insets = new Insets(0, 0, 0, 0);
+		gbs.insets = new Insets(0, 30, 10, 0);
 		gbs.weightx = 1;
 		gbs.weighty = 1;
 		gbs.gridx = 0;
 		gbs.gridy = 0;
-		gbl.setConstraints(titlePanel, gbs);
+		gbl.setConstraints(title, gbs);
 
 		gbs.fill = GridBagConstraints.BOTH;
 		gbs.gridwidth = 1;
 		gbs.gridheight = 1;
-		gbs.insets = new Insets(0, 0, 0, 0);
+		gbs.insets = new Insets(10, 0, 0, 0);
 		gbs.weightx = 1;
 		gbs.weighty = 1;
 		gbs.gridx = 0;

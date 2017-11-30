@@ -50,17 +50,29 @@ public class IncentiveServiceAPI_Test {
 	
 	public float getAllDiscount(Vehicle vehicle) {
 		float allDiscount = 0;
+		ArrayList<Incentive> incentiveList = getAllIncentiveList(vehicle);
+		for(Incentive incentive : incentiveList) {
+			allDiscount+=incentive.getDiscount();
+		}
+		return allDiscount;
+	}
+	
+	public ArrayList<Incentive> getAllIncentiveList(Vehicle vehicle) {
+		//float allDiscount = 0;
+		ArrayList<Incentive> incentiveList = new ArrayList<Incentive>();
 		incentive:
 		for(Incentive incentive : this.incentivesMap.values()) {
 			if(!isExpired(incentive)) {
 				ArrayList<String> criterion = incentive.getCriterion();
 	
 				if(criterion.get(0).equalsIgnoreCase("all")) {
-					allDiscount+=incentive.getDiscount();
+					//allDiscount+=incentive.getDiscount();
+					incentiveList.add(incentive);
 					continue incentive;
 				}
 				else if(criterion.get(0).equalsIgnoreCase(vehicle.getId())) {
-					allDiscount+=incentive.getDiscount();
+					//allDiscount+=incentive.getDiscount();
+					incentiveList.add(incentive);
 					continue incentive;
 				}
 				else if(criterion.get(0).equals("no")) {				
@@ -96,7 +108,8 @@ public class IncentiveServiceAPI_Test {
 									break;
 						}
 						if (i==criterion.size()-1) {
-							allDiscount+=incentive.getDiscount();
+							//allDiscount+=incentive.getDiscount();
+							incentiveList.add(incentive);
 						}
 					}	
 				}
@@ -109,8 +122,11 @@ public class IncentiveServiceAPI_Test {
 				continue incentive;
 			}
 		}	
-		return allDiscount;
+		return incentiveList;
 	}
+	
+	
+	
 	
 
 	public String getFileName() {

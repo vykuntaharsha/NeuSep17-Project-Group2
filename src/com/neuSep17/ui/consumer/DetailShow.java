@@ -101,7 +101,7 @@ public class DetailShow extends JPanel
         gbs.fill = GridBagConstraints.BOTH;
         gbs.gridwidth = 1;
         gbs.gridheight = 1;
-        gbs.insets = new Insets(30, 0, 0, 0);
+        gbs.insets = new Insets(0, 0, 0, 0);
         gbs.weightx = 1;
         gbs.weighty = 1;
         gbs.gridx = 0;
