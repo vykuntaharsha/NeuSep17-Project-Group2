@@ -32,6 +32,7 @@ import com.neuSep17.dto.Category;
 public class InventoryServiceAPI_Test {
 
 	private LinkedHashMap<String, Vehicle> vehiclesMap;
+	private LinkedHashMap<String, ArrayList<Image>> vehicleImagesMap;
 	private String fileName;
 	
 	public InventoryServiceAPI_Test(String file) {
@@ -41,6 +42,13 @@ public class InventoryServiceAPI_Test {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		
+		try {
+			vehicleImagesMap = getVehicleImagesMap();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 
