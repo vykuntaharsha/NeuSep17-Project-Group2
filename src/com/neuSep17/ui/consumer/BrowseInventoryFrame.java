@@ -16,6 +16,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,9 +57,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     // list
     private HashMap<Vehicle, ImageIcon> cache;
-    private JScrollPane listScrollPane;
-    private JPanel carList, listPanel;
-    private int page, perpage;
+    private ListPanel listpanel;
+    private int perpage, page;
     // list end
 
     // filter start
@@ -94,14 +94,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
         this.cache = new HashMap<Vehicle, ImageIcon>();
         this.toDisplay = new ArrayList<Vehicle>();
-        try
-        {
-            updateVehicle();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        updateVehicle();
 
         this.setSize(1200, 700);
         searchedVehicles = toDisplay;
@@ -119,7 +112,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // filter panel
         createFilterPanelComponents();
         // list panel
-        createListPanelComponents();
+        listpanel = new ListPanel(this);
     }
 
     private void createSearchPanelComponents()
@@ -182,8 +175,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         con.add(filterPanel, BorderLayout.WEST);
         // list panel
 
-        addListPanelComponents();
-        con.add(listPanel, BorderLayout.CENTER);
+        con.add(listpanel, BorderLayout.CENTER);
     }
 
     private void addSearchPanelComponents(JPanel searchPanel) // search and sort
@@ -250,7 +242,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         addFilterCheckBoxListeners();
         addResetFilterListeners();
         // list panel
-        addListPanelListeners();
+        listpanel.addListeners();
 
         BrowseWindowListener m = new BrowseWindowListener();
         this.addWindowListener(m);
@@ -332,64 +324,34 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             filters[i].addItemListener(fcobl);
         }
     }
-
-    private void createListPanelComponents()
-    {
-        listPanel = new JPanel();
-        listPanel.setSize(new Dimension(this.getWidth() - 300, this.getHeight() - 200)); // TODO
-                                                                                         // total
-                                                                                         // width-filer,
-                                                                                         // total
-                                                                                         // height-search
-        carList = new JPanel();
-        carList.setSize(new Dimension(this.getWidth() - 300, this.getHeight() - 300)); // TODO
-                                                                                       // total
-                                                                                       // width-filer,
-                                                                                       // total
-                                                                                       // height-search
-
-        listScrollPane = new JScrollPane();
+    
+    public int getPage() {
+        return page;
     }
 
-    private void addListPanelComponents()
-    {
-        carList.setBorder(BorderFactory.createLineBorder(Color.black));
-        carList.setLayout(new BoxLayout(carList, BoxLayout.Y_AXIS));
-        listScrollPane.setViewportView(carList);
-        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
-        listPanel.add(listScrollPane);
-        listPanel.add(new PagePane(BrowseInventoryFrame.this, toDisplay.size() / perpage));
-        displaytoList();
+    void setPage(int page) {
+        this.page = page;
     }
 
-    void displaytoList()
-    { // put the car in toDisplay after searching/filtering/sorting/, set
-      // page=0, then invoke this method
-
-        carList.removeAll();
-        carList.revalidate();
-        listScrollPane.getVerticalScrollBar().setValue(0);
-        Vehicle v;
-        int n;
-        for (int i = 0; i < perpage; ++i)
-        {
-            n = getPage() * perpage + i;
-            if (n >= toDisplay.size())
-                break;
-            v = toDisplay.get(n);
-            carList.add(new vehicleCell(v, cache.get(v)));
-        }
-
-        listPanel.remove(1);
-        listPanel.revalidate();
-        listPanel.add(new PagePane(BrowseInventoryFrame.this, toDisplay.size() / perpage));
+    void displaytoList() {
+        listpanel.displaytoList(toDisplay);        
     }
-
-    private void addListPanelListeners()
-    {
-        // updateFinishedListener updateFinished=new updateFinishedListener();
+    
+    int getMaxPage() {
+        return toDisplay.size() / perpage;
     }
-
+    
+    ImageIcon getIcon(Vehicle v) {
+        return cache.get(v);
+    }
+    
+    int getPerPage() {
+        return perpage;
+    }
+    
+    ArrayList<Vehicle> getVehiclestoDisplay(){
+        return toDisplay;
+    }
     
     class updateFinishedListener implements PropertyChangeListener
     {
@@ -400,25 +362,30 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         }
     }
 
-    private void updateVehicle() throws IOException
+    private void updateVehicle() 
     {
+        URL imgURL;
+        Image temp = null;
+        try {
+            imgURL = new URL("http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/24174x90.jpg");
+            temp = ImageIO.read(imgURL);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+          // TODO
+          // use
+          // swingworker
+          // thread
 
-        URL imgURL = new URL("http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/24174x90.jpg"); // TODO
-                                                                                                   // use
-                                                                                                   // swingworker
-                                                                                                   // thread
-        Image temp = ImageIO.read(imgURL);
-        for (Vehicle v : invsAPI.getVehicles())
-        {
-            //int i=(int) Math.round(3*Math.random());
-            //Image temp=invsAPI.getImage_Test(v.getBodyType())[i];
+        for (Vehicle v : invsAPI.getVehicles()) {
+            // int i=(int) Math.round(3*Math.random());
+            // Image temp=invsAPI.getImage_Test(v.getBodyType())[i];
             cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
         return;
 
-        /*
-         * updateThread t=new updateThread(); t.execute(); while(t.isDone()) {}
+        /* updateThread t=new updateThread(); t.execute(); while(t.isDone()) {} 
          * // this waits until update finish
          */
     }
@@ -700,11 +667,5 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         makeThisVisible();
     }
 
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
+    
 }
