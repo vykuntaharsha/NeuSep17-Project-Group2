@@ -181,8 +181,27 @@ public class IncentiveServiceAPI_Test {
 		Incentive incentive = new Incentive(incentiveData);
 		return incentive;
 	}
-
 	
+	
+	public void editIncentive(String incentiveID, int incentiveDataIndex, String incentiveDataEditText) {
+		switch(incentiveDataIndex) {
+			case 2: incentivesMap.get(incentiveID).setTitle(incentiveDataEditText.trim());break;
+			case 3: incentivesMap.get(incentiveID).setDiscount(Float.parseFloat(incentiveDataEditText.trim()));break;
+			case 4: incentivesMap.get(incentiveID).setStartDate(incentiveDataEditText.trim());break;
+			case 5: incentivesMap.get(incentiveID).setEndDate(incentiveDataEditText.trim());break;
+			case 6: ArrayList<String> criterion = new ArrayList<String>();
+					String[] criterionArr = incentiveDataEditText.split(",");
+					for(String str : criterionArr) {
+						criterion.add(str.trim());
+					}
+					incentivesMap.get(incentiveID).setCriterion(criterion);
+					break;
+			case 7: incentivesMap.get(incentiveID).setDescription(incentiveDataEditText.trim());break;
+			default: System.out.println("Please input valid incentiveDataIndex");break;
+		}
+	}
+	
+
 	public void addIncentive(Incentive incentive) {
 		incentivesMap.put(incentive.getId(), incentive);
 
