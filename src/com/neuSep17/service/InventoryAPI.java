@@ -1,4 +1,4 @@
-package com.neuSep17.dto;
+package com.neuSep17.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 import com.neuSep17.service.DealerAPI;
-import com.neuSep17.service.ServiceAPI_Test;
+import com.neuSep17.service.InventoryServiceAPI_Test;
 
 public class InventoryAPI extends DealerAPI{
 	
