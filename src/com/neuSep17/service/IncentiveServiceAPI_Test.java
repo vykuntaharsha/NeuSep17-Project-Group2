@@ -75,7 +75,7 @@ public class IncentiveServiceAPI_Test {
 					incentiveList.add(incentive);
 					continue incentive;
 				}
-				else if(criterion.get(0).equals("no")) {				
+				else if(criterion.get(0).equalsIgnoreCase("no")) {				
 					criterion:
 					for(int i=1; i<criterion.size();i++) {
 						switch(i) {
