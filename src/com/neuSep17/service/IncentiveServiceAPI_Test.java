@@ -79,33 +79,13 @@ public class IncentiveServiceAPI_Test {
 					criterion:
 					for(int i=1; i<criterion.size();i++) {
 						switch(i) {
-							case 1: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getCategory().toString())) {
-									break criterion;}
-									break;
-								
-							case 2: if(!criterion.get(i).equalsIgnoreCase("no") && Integer.parseInt(criterion.get(i))!=vehicle.getYear()) {
-									break criterion;}
-									break;
-									
-							case 3: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getMake())) {
-									break criterion;}
-									break;
-									
-							case 4: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getModel())) {
-									break criterion;}
-									break;
-									
-							case 5: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getTrim())) {
-									break criterion;}
-									break;
-									
-							case 6: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getBodyType())) {
-									break criterion;}
-									break;
-									
-							case 7: if(!criterion.get(i).equalsIgnoreCase("no") && Float.parseFloat(criterion.get(i))>vehicle.getPrice()) {
-									break criterion;}
-									break;
+							case 1: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getCategory().toString())) {break criterion;}break;	
+							case 2: if(!criterion.get(i).equalsIgnoreCase("no") && Integer.parseInt(criterion.get(i))!=vehicle.getYear()) {break criterion;}break;		
+							case 3: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getMake())) {break criterion;}break;		
+							case 4: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getModel())) {break criterion;}break;		
+							case 5: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getTrim())) {break criterion;}break;		
+							case 6: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getBodyType())) {break criterion;}break;		
+							case 7: if(!criterion.get(i).equalsIgnoreCase("no") && Float.parseFloat(criterion.get(i))>vehicle.getPrice()) {break criterion;}break;
 						}
 						if (i==criterion.size()-1) {
 							//allDiscount+=incentive.getDiscount();
