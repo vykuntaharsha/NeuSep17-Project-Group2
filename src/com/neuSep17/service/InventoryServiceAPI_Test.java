@@ -16,7 +16,9 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -122,6 +124,55 @@ public class InventoryServiceAPI_Test {
 		vehiclesMap.remove(vin);	
 		
 	}
+	
+	public ArrayList<Image> getVehicleImage(String bodyType){
+		if(bodyType.equalsIgnoreCase("truck")) {
+			return vehicleImagesMap.get("truck");
+		}
+		else if(bodyType.equalsIgnoreCase("suv")) {
+			return vehicleImagesMap.get("suv");
+		}
+		else {
+			return vehicleImagesMap.get("car");
+		}
+		
+	}
+	
+	
+	public static LinkedHashMap<String, ArrayList<Image>> getVehicleImagesMap() throws IOException {
+		LinkedHashMap<String, ArrayList<Image>> vehicleImagesMap = new LinkedHashMap<String, ArrayList<Image>>();
+		ArrayList<Image> truckImageList = new ArrayList<Image>();
+		ArrayList<Image> suvImageList = new ArrayList<Image>();
+		ArrayList<Image> carImageList = new ArrayList<Image>();
+		File dir = new File("data/images/");
+		File[] files=dir.listFiles();
+		for(File file : files) {
+			if(file.isFile() && file.getName().endsWith(".jpg") && file.getName().startsWith("truck")) {
+				BufferedImage truckImage = ImageIO.read(file);
+				truckImageList.add(truckImage);	
+			}
+			else if(file.isFile() && file.getName().endsWith(".jpg") && file.getName().startsWith("suv")) {
+				BufferedImage suvImage = ImageIO.read(file);
+				suvImageList.add(suvImage);	
+			}
+			else if(file.isFile() && file.getName().endsWith(".jpg") && file.getName().startsWith("car")) {
+				BufferedImage carImage = ImageIO.read(file);
+				carImageList.add(carImage);	
+			}
+			else {
+				continue;
+			}
+		}
+		vehicleImagesMap.put("truck", truckImageList);
+		vehicleImagesMap.put("suv", suvImageList);
+		vehicleImagesMap.put("car", carImageList);
+		
+		return vehicleImagesMap;
+		
+		
+	}
+	
+	
 	
 	
 	public void search(String text, TableRowSorter<TableModel> sorter) { 
