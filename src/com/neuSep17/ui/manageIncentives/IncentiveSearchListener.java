@@ -1,4 +1,4 @@
-package com.neuSep17.dto;
+package com.neuSep17.ui.manageIncentives;
 
 import java.util.EventListener;
 

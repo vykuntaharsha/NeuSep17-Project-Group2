@@ -1,4 +1,4 @@
-package com.neuSep17.dto;
+package com.neuSep17.ui.manageIncentives;
 
 import javax.swing.*;
 import javax.swing.border.Border;

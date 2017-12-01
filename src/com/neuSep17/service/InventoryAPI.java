@@ -1,4 +1,4 @@
-package com.neuSep17.dto;
+package com.neuSep17.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,8 +6,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
+import com.neuSep17.dto.Inventory;
+import com.neuSep17.dto.Vehicle;
 import com.neuSep17.service.DealerAPI;
-import com.neuSep17.service.ServiceAPI_Test;
+import com.neuSep17.service.InventoryServiceAPI_Test;
 
 public class InventoryAPI extends DealerAPI{
 	
@@ -25,7 +27,7 @@ public class InventoryAPI extends DealerAPI{
 		LinkedHashMap<String, Inventory> dealerInventory = new LinkedHashMap<>();
 		for (String dealerId : dealerIds) {
 			Inventory inventory = new Inventory();
-			LinkedHashMap<String, Vehicle> dealerVehicles = ServiceAPI_Test.getVehiclesMap(dataFolderPath+dealerId);
+			LinkedHashMap<String, Vehicle> dealerVehicles = InventoryServiceAPI_Test.getVehiclesMap(dataFolderPath+dealerId);
 			inventory.setDealerId(dealerId);
 			inventory.setVehicles(dealerVehicles.values());
 			dealerInventory.put(dealerId, inventory);

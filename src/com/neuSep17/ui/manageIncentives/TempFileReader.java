@@ -1,4 +1,6 @@
-package com.neuSep17.dto;
+package com.neuSep17.ui.manageIncentives;
+
+import com.neuSep17.dto.Incentive;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,7 +11,7 @@ public class TempFileReader {
 
     public ArrayList<Incentive> read() throws IOException {
         ArrayList<Incentive> data = new ArrayList<>();
-        String filename = "IncentiveSample.txt";
+        String filename = "data/IncentiveSample.txt";
         FileReader reader = new FileReader(filename);
         BufferedReader in = new BufferedReader(reader);
         String line;
