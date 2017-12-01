@@ -6,12 +6,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -249,8 +244,13 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void addSearchPanelListeners()
     {
+        //search button listener
         SearchListener searchlistener = new SearchListener();
         search.addActionListener(searchlistener);
+
+        //press enter listener
+        SearchKeyListener searchKeyListener = new SearchKeyListener();
+        searchText.addKeyListener(searchKeyListener);
     }
 
     private void addSortPanelListeners()
@@ -495,6 +495,26 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     }
     private void resetSortItem() {
         sortItem.setSelectedIndex(0);
+    }
+
+    class SearchKeyListener implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode()== e.VK_ENTER) {
+                updateSearch();
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
     }
 
     class SearchListener implements ActionListener
