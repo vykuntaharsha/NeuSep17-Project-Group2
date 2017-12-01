@@ -1,5 +1,6 @@
 package com.neuSep17.ui.consumer;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -25,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.neuSep17.dto.Category;
 import com.neuSep17.dto.Vehicle;
 
 public class ImageSlideShow extends JPanel implements ActionListener {
@@ -33,8 +35,7 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 	private int currentImage = 0;
 	private int width = 600, height = 550;
 	private JPanel buttonPanel = new JPanel();
-	private JPanel titlePanel = new JPanel();
-	private JPanel imagePanel = new JPanel();
+	
 
 	private GridBagLayout gbl = new GridBagLayout();
 	private GridBagConstraints gbs = new GridBagConstraints();
@@ -55,10 +56,7 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 		this.setLayout(gbl);
 		title.setHorizontalAlignment(JLabel.LEFT);
 		this.add(title);
-//		titlePanel.add(title);
-		imagePanel.add(imageLabel);
-		this.add(titlePanel);
-		this.add(imagePanel);
+		this.add(imageLabel);
 		for (JButton jButton : buttons.keySet()) {
 			buttonPanel.add(jButton);
 		}
@@ -67,7 +65,7 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 		gbs.fill = GridBagConstraints.BOTH;
 		gbs.gridwidth = 1;
 		gbs.gridheight = 1;
-		gbs.insets = new Insets(0, 30, 10, 0);
+		gbs.insets = new Insets(0, 30, 0, 0);
 		gbs.weightx = 1;
 		gbs.weighty = 1;
 		gbs.gridx = 0;
@@ -77,12 +75,12 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 		gbs.fill = GridBagConstraints.BOTH;
 		gbs.gridwidth = 1;
 		gbs.gridheight = 1;
-		gbs.insets = new Insets(10, 0, 0, 0);
+		gbs.insets = new Insets(0, 30, 0, 0);
 		gbs.weightx = 1;
 		gbs.weighty = 1;
 		gbs.gridx = 0;
 		gbs.gridy = 1;
-		gbl.setConstraints(imagePanel, gbs);
+		gbl.setConstraints(imageLabel, gbs);
 
 		gbs.fill = GridBagConstraints.BOTH;
 		gbs.gridwidth = 1;
@@ -122,9 +120,17 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 		}
 
 		loadImage();
-		title.setText(vehicle.getCategory() + " " + vehicle.getYear() + " " + vehicle.getMake() + " "
-				+ vehicle.getModel() + " " + vehicle.getTrim());
+        title.setText(vehicle.getCategory().toString());
+        title.setForeground(Color.RED);
+//		title.setText(vehicle.getCategory() + " " + vehicle.getYear() + " " + vehicle.getMake() + " "
+//				+ vehicle.getModel() + " " + vehicle.getTrim());
+		String s=" " + vehicle.getYear() + " " + vehicle.getMake() + " "
+				+ vehicle.getModel() + " " + vehicle.getTrim();
+		title.setText(String.format("<html>%s<font color='black'>%s</font></html>", 
+		        title.getText(),s));
 		title.setFont(new Font("Menu.font", Font.PLAIN, 20));
+		
+		
 	}
 
 	private void loadImage() {
@@ -175,22 +181,15 @@ public class ImageSlideShow extends JPanel implements ActionListener {
 	}
 
 	private boolean isImage(String image_path) {
-//		Image image = new ImageIcon(image_path).getImage();
-//		if (image== null) {
-//			return false;
-//		} else {
-//			return true;
-//		}
-//	}
 		Image image=null;
 		try {
 			image = ImageIO.read(new URL(image_path));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		if(image != null){
 		    return true;
