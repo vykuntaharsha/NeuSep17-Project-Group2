@@ -77,6 +77,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private JButton search;
     private JTextField searchText;
     private JComboBox<String> sortItem;
+    private String[] sortKeys = {"Select Sort By", "Price: High To Low", "Price: Low To High",
+                                    "Year: High To Low", "Year: Low To High", "Make: A - Z", "Make: Z - A"};
     // **search end***
 
     public BrowseInventoryFrame() // (Dealer dealer)
@@ -124,13 +126,9 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // sort
         sortBy = new JLabel("Sort by : ");
         sortItem = new JComboBox();
-        sortItem.addItem("Select Sort By");
-        sortItem.addItem("Price: High To Low");
-        sortItem.addItem("Price: Low To High");
-        sortItem.addItem("Year: High To Low");
-        sortItem.addItem("Year: Low To High");
-        sortItem.addItem("Make: A - Z");
-        sortItem.addItem("Make: Z - A");
+        for (int i = 0; i < sortKeys.length; i++) {
+            sortItem.addItem(sortKeys[i]);
+        }
     }
 
     private void createFilterPanelComponents()
@@ -495,6 +493,9 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         }
         addFilterComboBoxListeners();
     }
+    private void resetSortItem() {
+        sortItem.setSelectedIndex(0);
+    }
 
     class SearchListener implements ActionListener
     {
@@ -598,6 +599,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         resetFilterCheckBox();
         updateFilterComboboxItems();
         displaytoList();
+
+        resetSortItem();
     }
 
     private void doFilter(String category, String year, String make, String price, String type)
