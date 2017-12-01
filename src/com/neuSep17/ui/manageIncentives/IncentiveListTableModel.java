@@ -1,4 +1,6 @@
-package com.neuSep17.dto;
+package com.neuSep17.ui.manageIncentives;
+
+import com.neuSep17.dto.Incentive;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
