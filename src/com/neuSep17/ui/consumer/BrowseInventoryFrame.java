@@ -2,30 +2,22 @@ package com.neuSep17.ui.consumer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -36,66 +28,76 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import com.neuSep17.dto.Vehicle;
-
-import java.awt.FlowLayout;
+import com.neuSep17.service.IncentiveServiceAPI_Test;
+import com.neuSep17.service.InventoryServiceAPI_Test;
 
 public class BrowseInventoryFrame extends JFrame implements Runnable
 {
+    // service API start
+    InventoryServiceAPI_Test invsAPI;
+    IncentiveServiceAPI_Test incsAPI;
+    // service API end
 
     private String dealerID;
-    private HashMap<Vehicle, Image> cache;
     private ArrayList<Vehicle> toDisplay;
-    private JScrollPane listScrollPane;
-    private JPanel listPanel;
-    private int page, perpage;
+    private List<Vehicle> searchedVehicles;
+
+    // list
+    private HashMap<Vehicle, ImageIcon> cache;
+    private ListPanel listpanel;
+    private int perpage, page;
+    // list end
 
     // filter start
+    private Map<String, List<String>> comboBoxItemsMap;
     private JCheckBox[] categories;
     private JLabel[] filterLabels;
-    private JComboBox[] filters;
-    private String[] data = { "all", "test1", "test2", "test3" };// Simulation
-                                                                 // data
+    private JComboBox<String>[] filters;
+    private String[] filterKeys = { "year", "make", "price", "type" };
+    private FilterCheckBoxListener fchbl = new FilterCheckBoxListener();
+    private FilterComboBoxListener fcobl = new FilterComboBoxListener();
+    private JButton resetFilter;
     // filter end
+
+    // **search start***
+    private JLabel sortBy;
+    private JButton search;
+    private JTextField searchText;
+    private JComboBox<String> sortItem;
+    private String[] sortKeys = {"Select Sort By", "Price: High To Low", "Price: Low To High",
+                                    "Year: High To Low", "Year: Low To High", "Make: A - Z", "Make: Z - A"};
+    // **search end***
 
     public BrowseInventoryFrame() // (Dealer dealer)
     {
         super();
         setTitle("Browse Inventory of xx dealer");
-        // dealerID= dealer.getID();
-        page=0;
-        perpage=15;
-        
 
-        this.cache = new HashMap<Vehicle, Image>();
-        this.toDisplay=new ArrayList<Vehicle>();
-        try
-        {
-            updateVehicle();
-        }
-        catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // replaced by your folder
+        String file = "data/gmps-bresee";
+        invsAPI = new InventoryServiceAPI_Test(file);
+        incsAPI = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
+        // dealerID= dealer.getID();
+        setPage(0);
+        perpage = 15;
+
+        this.cache = new HashMap<Vehicle, ImageIcon>();
+        this.toDisplay = new ArrayList<Vehicle>();
+        updateVehicle();
 
         this.setSize(1200, 700);
-
+        searchedVehicles = toDisplay;
         createComponents();
         addComponents();
+        doSearch(null);
         addListeners();
 
     }
@@ -107,13 +109,21 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // filter panel
         createFilterPanelComponents();
         // list panel
-        createListPanelComponents();
+        listpanel = new ListPanel(this);
     }
 
     private void createSearchPanelComponents()
     {
-        // TODO Auto-generated method stub
+        // search
+        search = new JButton("Search");
+        searchText = new JTextField(10);
 
+        // sort
+        sortBy = new JLabel("Sort by : ");
+        sortItem = new JComboBox();
+        for (int i = 0; i < sortKeys.length; i++) {
+            sortItem.addItem(sortKeys[i]);
+        }
     }
 
     private void createFilterPanelComponents()
@@ -130,28 +140,16 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         categories[2].setName("certified");
 
         filterLabels = new JLabel[4];
-        filterLabels[0] = new JLabel("Year");
-        filterLabels[1] = new JLabel("Make");
-        filterLabels[2] = new JLabel("Price");
-        filterLabels[3] = new JLabel("Type");
         filters = new JComboBox[4];
-        filters[0] = new JComboBox<String>();
-        filters[0].setName("year");
-        filters[1] = new JComboBox<String>();
-        filters[1].setName("make");
-        filters[2] = new JComboBox<String>();
-        filters[2].setName("price");
-        filters[3] = new JComboBox<String>();
-        filters[3].setName("type");
-
-        // Simulation data
-        for (int i = 0; i < data.length; i++)
+        for (int i = 0; i < filterLabels.length; i++)
         {
-            filters[0].addItem("0" + data[i]);
-            filters[1].addItem("1" + data[i]);
-            filters[2].addItem("2" + data[i]);
-            filters[3].addItem("3" + data[i]);
+            filterLabels[i] = new JLabel(filterKeys[i].toUpperCase());
+            filterLabels[i].setPreferredSize(new Dimension(40, 25));
+            filters[i] = new JComboBox<String>();
+            filters[i].setPreferredSize(new Dimension(100, 25));
+            filters[i].setName(filterKeys[i]);
         }
+        resetFilter = new JButton("Reset");
     }
 
     private void addComponents()
@@ -170,13 +168,21 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         con.add(filterPanel, BorderLayout.WEST);
         // list panel
 
-        addListPanelComponents();
-        con.add(listScrollPane, BorderLayout.CENTER);
+        con.add(listpanel, BorderLayout.CENTER);
     }
 
-    private void addSearchPanelComponents(JPanel searchPanel)
+    private void addSearchPanelComponents(JPanel searchPanel) // search and sort
     {
         searchPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        BoxLayout boxlayout = new BoxLayout(searchPanel, BoxLayout.X_AXIS);
+        searchPanel.setLayout(boxlayout);
+        searchPanel.add(Box.createHorizontalStrut(5));
+        searchPanel.add(Box.createHorizontalGlue());
+        searchPanel.add(searchText);
+        searchPanel.add(search);
+        searchPanel.add(Box.createHorizontalStrut(50));
+        searchPanel.add(sortBy);
+        searchPanel.add(sortItem);
     }
 
     private void addFilterPanelComponents(JPanel filterPanel)
@@ -198,7 +204,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
         filterPanel.add(Box.createVerticalStrut(10));
         filterPanel.add(checkBoxPanel);
-        filterPanel.add(Box.createVerticalStrut(30));
         filterPanel.add(Box.createVerticalGlue());
 
         JPanel comboBoxPanel = new JPanel();
@@ -212,7 +217,10 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             filterLabels[i].setLabelFor(filters[i]);
             comboBoxPanel.add(linePanel);
         }
-
+        comboBoxPanel.add(Box.createVerticalStrut(20));
+        JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        linePanel.add(resetFilter);
+        comboBoxPanel.add(linePanel);
         filterPanel.add(comboBoxPanel);
         filterPanel.add(Box.createVerticalGlue());
         filterPanel.add(Box.createVerticalStrut(50));
@@ -222,10 +230,12 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     {
         // search panel
         addSearchPanelListeners();
+        addSortPanelListeners();
         // filter panel
-        addFilterPanelListeners();
+        addFilterCheckBoxListeners();
+        addResetFilterListeners();
         // list panel
-        addListPanelListeners();
+        listpanel.addListeners();
 
         BrowseWindowListener m = new BrowseWindowListener();
         this.addWindowListener(m);
@@ -234,88 +244,111 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void addSearchPanelListeners()
     {
-        // TODO Auto-generated method stub
+        //search button listener
+        SearchListener searchlistener = new SearchListener();
+        search.addActionListener(searchlistener);
 
+        //press enter listener
+        SearchKeyListener searchKeyListener = new SearchKeyListener();
+        searchText.addKeyListener(searchKeyListener);
     }
 
-    private void addFilterPanelListeners()
+    private void addSortPanelListeners()
     {
-        FilterListener fl = new FilterListener();
+        SortListener sortlistener = new SortListener();
+        sortItem.addActionListener(sortlistener);
+    }
+
+    private void resetFilter()
+    {
+        removeFilterCheckBoxListeners();
+        removeFilterComboBoxListeners();
+        resetFilterCheckBox();
+        resetFilterComboBox();
+        addFilterCheckBoxListeners();
+        addFilterComboBoxListeners();
+        updateFilter();
+    }
+
+    private void addResetFilterListeners()
+    {
+        resetFilter.addActionListener(new FilterResetListener());
+    }
+
+    private void resetFilterCheckBox()
+    {
         for (int i = 0; i < categories.length; i++)
         {
-            categories[i].addActionListener(fl);
+            categories[i].setSelected(false);
         }
+    }
 
+    private void resetFilterComboBox()
+    {
         for (int i = 0; i < filterLabels.length; i++)
         {
-            filters[i].addActionListener(fl);
+            filters[i].setSelectedIndex(0);
         }
     }
 
-    private void createListPanelComponents()
+    private void removeFilterCheckBoxListeners()
     {
-        listPanel = new JPanel();
-        listPanel.setSize(new Dimension(this.getWidth() - 300, this.getHeight() - 200));  // TODO total width-filer, total height-search
-        
-        listScrollPane = new JScrollPane(); 
-    }
-
-    private void addListPanelComponents()
-    {
-        listPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
-        
-        Vehicle v;
-        for (int i=0;i<perpage;++i) {
-            v=toDisplay.get(i);
-            listPanel.add(new vehicleCell(v, createTestImageIcon(cache.get(v), "test")));  //TODO use normal icon generator
-            
+        for (int i = 0; i < categories.length; i++)
+        {
+            categories[i].removeActionListener(fchbl);
         }
-        listPanel.add(new pagePane(page, toDisplay.size()/perpage));
-        listScrollPane.setViewportView(listPanel);
-        
     }
 
-    private void addListPanelListeners()
+    private void addFilterCheckBoxListeners()
     {
-        // updateFinishedListener updateFinished=new updateFinishedListener();        
+        for (int i = 0; i < categories.length; i++)
+        {
+            categories[i].addActionListener(fchbl);
+        }
+    }
+
+    private void removeFilterComboBoxListeners()
+    {
+        for (int i = 0; i < filterLabels.length; i++)
+        {
+            filters[i].removeItemListener(fcobl);
+        }
+    }
+
+    private void addFilterComboBoxListeners()
+    {
+        for (int i = 0; i < filterLabels.length; i++)
+        {
+            filters[i].addItemListener(fcobl);
+        }
     }
     
-    class pagePane extends JPanel{
-        
-        pagePane(int curPage, int maxPage){
-            super();
-            JButton pre=new JButton("Previous");
-            JLabel cur=new JLabel("Page: "+(curPage+1));
-            JButton next=new JButton("Next");
-            this.add(pre);
-            this.add(cur);
-            this.add(next);
-            this.setBorder(new MatteBorder(3, 0, 0, 0, Color.BLACK));
-            
-            if (curPage==0) pre.setEnabled(false);
-            if (curPage==maxPage) next.setEnabled(false);
-            pre.addActionListener(new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    System.out.println("to previous page: "+page);                    
-                        --page;
-                }
-            });
-            
-            next.addActionListener(new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    System.out.println("to next page: "+(page+2));
-                    
-                    ++page;
-                }
-            });
-        }
+    public int getPage() {
+        return page;
+    }
+
+    void setPage(int page) {
+        this.page = page;
+    }
+
+    void displaytoList() {
+        listpanel.displaytoList(toDisplay);        
+    }
+    
+    int getMaxPage() {
+        return toDisplay.size() / perpage;
+    }
+    
+    ImageIcon getIcon(Vehicle v) {
+        return cache.get(v);
+    }
+    
+    int getPerPage() {
+        return perpage;
+    }
+    
+    ArrayList<Vehicle> getVehiclestoDisplay(){
+        return toDisplay;
     }
     
     class updateFinishedListener implements PropertyChangeListener
@@ -327,57 +360,32 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         }
     }
 
-    private void updateVehicle() throws IOException
+    private void updateVehicle() 
     {
+        URL imgURL;
+        Image temp = null;
+        try {
+            imgURL = new URL("http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/24174x90.jpg");
+            temp = ImageIO.read(imgURL);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+          // TODO
+          // use
+          // swingworker
+          // thread
 
-        File file = new File("data/gmps-bresee");
-        ArrayList<Vehicle> cars = new ArrayList<>();
-        FileReader fr = new FileReader(file);
-        BufferedReader br = new BufferedReader(fr);
-        String line = br.readLine();
-        while (true)
-        {
-            line = br.readLine();
-            if (line == null)
-                break;
-            Vehicle cur = new Vehicle(line.split("~"));
-            cars.add(cur);
-        }
-        br.close();
-        fr.close();
-        URL imgURL = new URL("http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/24174x90.jpg");
-        Image temp = ImageIO.read(imgURL);
-        for (Vehicle v : cars)
-        {
-            // cache.put(v, ImageIO.read(v.getPhotoUrl()) );
-            cache.put(v, temp);
+        for (Vehicle v : invsAPI.getVehicles()) {
+            // int i=(int) Math.round(3*Math.random());
+            // Image temp=invsAPI.getImage_Test(v.getBodyType())[i];
+            cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
         return;
 
-        /*
-         * updateThread t=new updateThread(); t.execute(); while(t.isDone()) {}
+        /* updateThread t=new updateThread(); t.execute(); while(t.isDone()) {} 
          * // this waits until update finish
          */
-    }
-
-    protected ImageIcon createTestImageIcon(Image img, String description)
-    {
-        return new ImageIcon(img, description);
-    }
-
-    protected ImageIcon createImageIcon(URL imgURL, String description) throws IOException
-    {
-        Image img;
-        
-        try {
-            img = ImageIO.read(imgURL);
-        }
-        catch (Exception e) {
-            img = ImageIO.read(new File("src/com/neuSep17/ui/consumer/imagenotfound.jpg"));
-        }
-        
-        return new ImageIcon(img, description);
     }
 
     class updateThread extends SwingWorker<Void, Void>
@@ -385,40 +393,25 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
         @Override
         protected Void doInBackground() throws Exception
-        {            
-            Image img; 
-            for (Vehicle v : getInventoryofDealer())
+        {
+          
+            Image img;
+            for (Vehicle v : invsAPI.getVehicles())
             {
-                try {
+              //Image img=invsAPI.getImage(v)[0];
+                try
+                {
                     img = ImageIO.read(v.getPhotoUrl());
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     img = ImageIO.read(new File("src/com/neuSep17/ui/consumer/imagenotfound.jpg"));
                 }
-                cache.put(v, img); 
+                cache.put(v, new ImageIcon(img, "icon for vehicle " + v.getId()));
             }
             return null;
         }
 
-        private ArrayList<Vehicle> getInventoryofDealer() throws IOException
-        {
-            File file = new File("assignment8/q3.txt");              //TODO test version
-            ArrayList<Vehicle> cars = new ArrayList<>();
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            String line = br.readLine();
-            while (true)
-            {
-                line = br.readLine();
-                if (line == null)
-                    break;
-                Vehicle cur = new Vehicle(line.split("~"));
-                cars.add(cur);
-            }
-            br.close();
-            fr.close();
-            return cars;
-        }
     }
 
     private void makeThisVisible()
@@ -426,7 +419,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         this.setVisible(true);
     }
 
-    class FilterListener implements ActionListener
+    class FilterCheckBoxListener implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent e)
@@ -435,41 +428,207 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         }
     }
 
+    class FilterResetListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            resetFilter();
+        }
+    }
+
+    class FilterComboBoxListener implements ItemListener
+    {
+        @Override
+        public void itemStateChanged(ItemEvent e)
+        {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+            {
+                updateFilter();
+            }
+        }
+    }
+
     private void updateFilter()
     {
-        StringBuilder sb = new StringBuilder();
+        String categoriesFilter = "";
         int count = 0;
-        sb.append("categories:");
         for (int i = 0; i < categories.length; i++)
         {
             if (categories[i].isSelected())
             {
-                sb.append(categories[i].getName()).append(",");
+                categoriesFilter += categories[i].getName() + " ";
                 count++;
             }
         }
         if (count == 0 || count == categories.length)
         {
-            sb.setLength(0);
+            categoriesFilter = null;
         }
         else
         {
-            sb.deleteCharAt(sb.length() - 1);
-            sb.append(";");
+            categoriesFilter = categoriesFilter.trim();
         }
 
+        String yearFilter = filters[0].getSelectedIndex() == 0 ? null : (String) filters[0].getSelectedItem();
+        String makeFilter = filters[1].getSelectedIndex() == 0 ? null : (String) filters[1].getSelectedItem();
+        String priceFilter = filters[2].getSelectedIndex() == 0 ? null : (String) filters[2].getSelectedItem();
+        String typeFilter = filters[3].getSelectedIndex() == 0 ? null : (String) filters[3].getSelectedItem();
+
+        doFilter(categoriesFilter, yearFilter, makeFilter, priceFilter, typeFilter);
+    }
+
+    private void updateFilterComboboxItems()
+    {
+        removeFilterComboBoxListeners();
         for (int i = 0; i < filters.length; i++)
         {
-            if (filters[i].getSelectedIndex() == 0)
+            filters[i].removeAllItems();
+            filters[i].addItem("All");
+            List<String> comboBoxItems = comboBoxItemsMap.get(filters[i].getName());
+            for (String item : comboBoxItems)
             {
-                continue;
+                filters[i].addItem(item);
+            }
+        }
+        addFilterComboBoxListeners();
+    }
+    private void resetSortItem() {
+        sortItem.setSelectedIndex(0);
+    }
+
+    class SearchKeyListener implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode()== e.VK_ENTER) {
+                updateSearch();
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
+    }
+
+    class SearchListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            updateSearch();
+        }
+    }
+
+    class SortListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            updateSort();
+        }
+    }
+
+    private void updateSearch()
+    {
+        String searchInfo = searchText.getText();
+        // System.out.println(searchInfo);
+        doSearch(searchInfo);
+    }
+
+    private void updateSort()
+    {
+        String sortMethod = sortItem.getSelectedIndex() == 0 ? null : (String) sortItem.getSelectedItem();
+        // System.out.println(sortMethod);
+        doSort(sortMethod);
+    }
+
+    private void doSort(String sortMethod)
+    {
+        if (sortMethod == null)
+        {
+            return;
+        }
+        StringBuilder sortType = new StringBuilder();
+        boolean isAscending = true;
+        isAscending = updateSortType(sortMethod, sortType);
+        // System.out.println(sortMethod + " + " + sortType.toString() + " + " +
+        // isAscending);
+        searchedVehicles = invsAPI.sortVehicles(searchedVehicles, sortType.toString(), isAscending);
+        updateFilter();
+        displaytoList();
+    }
+
+    private boolean updateSortType(String sortMethod, StringBuilder sortType)
+    {
+        if (sortMethod.toLowerCase().contains("year"))
+        {
+            sortType.delete(0, sortMethod.length());
+            sortType.append("year");
+            if (sortMethod.toLowerCase().contains("low to high"))
+            {
+                return true;
             }
             else
             {
-                sb.append(filters[i].getName()).append(":").append(filters[i].getSelectedItem()).append(";");
+                return false;
             }
         }
-        System.out.println(sb.toString());
+        if (sortMethod.toLowerCase().contains("price"))
+        {
+            sortType.delete(0, sortMethod.length());
+            sortType.append("price");
+            if (sortMethod.toLowerCase().contains("low to high"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        if (sortMethod.toLowerCase().contains("make"))
+        {
+            sortType.delete(0, sortMethod.length());
+            sortType.append("make");
+            if (sortMethod.toLowerCase().contains("a - z"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void doSearch(String search)
+    {
+        searchedVehicles = InventoryServiceAPI_Test.vehiclesSearchAndFilter(invsAPI.getVehicles(), null, null, null,
+                null, null, search);
+        toDisplay = (ArrayList<Vehicle>) searchedVehicles;
+        comboBoxItemsMap = InventoryServiceAPI_Test.getComboBoxItemsMap(toDisplay);
+        setPage(0);
+        resetFilterCheckBox();
+        updateFilterComboboxItems();
+        displaytoList();
+
+        resetSortItem();
+    }
+
+    private void doFilter(String category, String year, String make, String price, String type)
+    {
+        toDisplay = (ArrayList<Vehicle>) InventoryServiceAPI_Test.vehiclesSearchAndFilter(searchedVehicles, category,
+                year, make, price, type, null);
+        setPage(0);
+        displaytoList();
     }
 
     class BrowseWindowListener implements WindowListener
@@ -491,6 +650,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         public void windowClosing(WindowEvent e)
         {
             System.out.println("BrowseInventory closing, back to consumer window.");
+            // TODO get to the dealer selection window
         }
 
         @Override
@@ -529,4 +689,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     {
         makeThisVisible();
     }
+
+    
 }

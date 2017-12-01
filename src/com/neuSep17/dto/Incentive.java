@@ -14,7 +14,7 @@ public class Incentive {
     private String description;
     
     
-    Incentive(String[] arr) {
+    public Incentive(String[] arr) {
         this.id = arr[0];
         this.webId = arr[1];
         this.title = arr[2];
@@ -68,6 +68,38 @@ public class Incentive {
 
 	public String getDescription() {
 		return description;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setWebId(String webId) {
+		this.webId = webId;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setDiscount(Float discount) {
+		this.discount = discount;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public void setCriterion(ArrayList<String> criterion) {
+		this.criterion = criterion;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
  

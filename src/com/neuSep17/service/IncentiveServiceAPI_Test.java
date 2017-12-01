@@ -16,6 +16,8 @@ import javax.swing.SortOrder;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.neuSep17.dto.Incentive;
+import com.neuSep17.dto.Vehicle;
 
 public class IncentiveServiceAPI_Test {
 
@@ -48,53 +50,46 @@ public class IncentiveServiceAPI_Test {
 	
 	public float getAllDiscount(Vehicle vehicle) {
 		float allDiscount = 0;
+		ArrayList<Incentive> incentiveList = getAllIncentiveList(vehicle);
+		for(Incentive incentive : incentiveList) {
+			allDiscount+=incentive.getDiscount();
+		}
+		return allDiscount;
+	}
+	
+	public ArrayList<Incentive> getAllIncentiveList(Vehicle vehicle) {
+		//float allDiscount = 0;
+		ArrayList<Incentive> incentiveList = new ArrayList<Incentive>();
 		incentive:
 		for(Incentive incentive : this.incentivesMap.values()) {
 			if(!isExpired(incentive)) {
 				ArrayList<String> criterion = incentive.getCriterion();
 	
 				if(criterion.get(0).equalsIgnoreCase("all")) {
-					allDiscount+=incentive.getDiscount();
+					//allDiscount+=incentive.getDiscount();
+					incentiveList.add(incentive);
 					continue incentive;
 				}
 				else if(criterion.get(0).equalsIgnoreCase(vehicle.getId())) {
-					allDiscount+=incentive.getDiscount();
+					//allDiscount+=incentive.getDiscount();
+					incentiveList.add(incentive);
 					continue incentive;
 				}
-				else if(criterion.get(0).equals("no")) {				
+				else if(criterion.get(0).equalsIgnoreCase("no")) {				
 					criterion:
 					for(int i=1; i<criterion.size();i++) {
 						switch(i) {
-							case 1: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getCategory().toString())) {
-									break criterion;}
-									break;
-								
-							case 2: if(!criterion.get(i).equalsIgnoreCase("no") && Integer.parseInt(criterion.get(i))!=vehicle.getYear()) {
-									break criterion;}
-									break;
-									
-							case 3: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getMake())) {
-									break criterion;}
-									break;
-									
-							case 4: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getModel())) {
-									break criterion;}
-									break;
-									
-							case 5: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getTrim())) {
-									break criterion;}
-									break;
-									
-							case 6: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getBodyType())) {
-									break criterion;}
-									break;
-									
-							case 7: if(!criterion.get(i).equalsIgnoreCase("no") && Float.parseFloat(criterion.get(i))>vehicle.getPrice()) {
-									break criterion;}
-									break;
+							case 1: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getCategory().toString())) {break criterion;}break;	
+							case 2: if(!criterion.get(i).equalsIgnoreCase("no") && Integer.parseInt(criterion.get(i))!=vehicle.getYear()) {break criterion;}break;		
+							case 3: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getMake())) {break criterion;}break;		
+							case 4: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getModel())) {break criterion;}break;		
+							case 5: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getTrim())) {break criterion;}break;		
+							case 6: if(!criterion.get(i).equalsIgnoreCase("no") && !criterion.get(i).equalsIgnoreCase(vehicle.getBodyType())) {break criterion;}break;		
+							case 7: if(!criterion.get(i).equalsIgnoreCase("no") && Float.parseFloat(criterion.get(i))>vehicle.getPrice()) {break criterion;}break;
 						}
 						if (i==criterion.size()-1) {
-							allDiscount+=incentive.getDiscount();
+							//allDiscount+=incentive.getDiscount();
+							incentiveList.add(incentive);
 						}
 					}	
 				}
@@ -107,8 +102,11 @@ public class IncentiveServiceAPI_Test {
 				continue incentive;
 			}
 		}	
-		return allDiscount;
+		return incentiveList;
 	}
+	
+	
+	
 	
 
 	public String getFileName() {
@@ -163,8 +161,27 @@ public class IncentiveServiceAPI_Test {
 		Incentive incentive = new Incentive(incentiveData);
 		return incentive;
 	}
-
 	
+	
+	public void editIncentive(String incentiveID, int incentiveDataIndex, String incentiveDataEditText) {
+		switch(incentiveDataIndex) {
+			case 2: incentivesMap.get(incentiveID).setTitle(incentiveDataEditText.trim());break;
+			case 3: incentivesMap.get(incentiveID).setDiscount(Float.parseFloat(incentiveDataEditText.trim()));break;
+			case 4: incentivesMap.get(incentiveID).setStartDate(incentiveDataEditText.trim());break;
+			case 5: incentivesMap.get(incentiveID).setEndDate(incentiveDataEditText.trim());break;
+			case 6: ArrayList<String> criterion = new ArrayList<String>();
+					String[] criterionArr = incentiveDataEditText.split(",");
+					for(String str : criterionArr) {
+						criterion.add(str.trim());
+					}
+					incentivesMap.get(incentiveID).setCriterion(criterion);
+					break;
+			case 7: incentivesMap.get(incentiveID).setDescription(incentiveDataEditText.trim());break;
+			default: System.out.println("Please input valid incentiveDataIndex");break;
+		}
+	}
+	
+
 	public void addIncentive(Incentive incentive) {
 		incentivesMap.put(incentive.getId(), incentive);
 

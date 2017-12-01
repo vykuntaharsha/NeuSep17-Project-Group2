@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-class IncentiveTableModel implements TableModel {
+import com.neuSep17.service.IncentiveServiceAPI_Test;
+
+public class IncentiveTableModel implements TableModel {
 	
 	private IncentiveServiceAPI_Test incentiveAPI;	
   private String[] columnTitles = {"ID", "Title", "Discount", "Start Date", "End Date", "Criterion", "Description"};
