@@ -1,0 +1,7 @@
+incentiveId~webId~title~discount~startDate~endDate~id,category,year,make,model,trim,type,price~description
+000006~gmps-camino~All Sale~500.0~2010-01-01~2100-12-31~all,no,no,no,no,no,no,no~All the vehicle apply
+000002~gmps-camino~Used Vehicle Sale~3000.0~2017-11-01~2017-11-30~no,used,no,no,no,no,no,no~Only used vehicle apply
+000003~gmps-camino~Honda Accord Sale~1000.0~2014-02-05~2017-02-05~no,no,Accord Sedan,Honda,no,no,no,no~Only Honda Accord apply
+000004~gmps-camino~Chevrolet Sale~2000.0~2016-12-01~2017-12-31~no,no,no,Chevrolet,no,no,no,no~All Chevrolet apply
+000001~gmps-camino~High End Vehicle Sale~500.0~2010-01-01~2100-12-31~no,no,no,no,no,no,no,80000~Valid if price of vehicle >= 80000
+000005~gmps-camino~Dodge discount~2000.0~2010-01-01~2100-12-31~2950629603,no,no,no,no,no,no,no~A special vehicle sale

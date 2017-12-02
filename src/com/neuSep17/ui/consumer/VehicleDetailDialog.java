@@ -22,13 +22,15 @@ public class VehicleDetailDialog extends JDialog {
 		addComponents(id, incentiveServiceAPI_Test, inventoryServiceAPI_Test);
 		this.setSize(1000, 1000);
 		this.setVisible(true);
+		
 	}
 
 	private void addComponents(String id, IncentiveServiceAPI_Test incentiveServiceAPI_Test,
 			InventoryServiceAPI_Test inventoryServiceAPI_Test) {
 		Vehicle vehicle = inventoryServiceAPI_Test.getVehicleDetails(id);
-		String[] urls = { vehicle.getPhotoUrl().toString() };  //TODO  NullPointer may happen when read from another dealer, don't know why
-//		String[] urls={"http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/24174x90.jpg","http://inventory-dmg.assets-cdk.com/RTT/Chevrolet/2016/3077853/default/ext_GAZ_deg01x90.jpg","http://inventory-dmg.assets-cdk.com/0/3/1/14276438130x90.jpg"};
+
+//		String[] urls = { vehicle.getPhotoUrl().toString() };  //TODO  NullPointer may happen when read from another dealer, don't know why
+    	String[] urls={"http://inventory-cf.assets-cdk.com/0/6/0/15889666060x640.jpg","http://inventory-cf.assets-cdk.com/1/6/1/15889666161x640.jpg","http://inventory-cf.assets-cdk.com/5/8/2/15889666285x640.jpg"};
 		ImageSlideShow imageSlideShow = new ImageSlideShow(vehicle, urls);
 		DetailShow detailShow = new DetailShow(vehicle, incentiveServiceAPI_Test);
 		this.setLayout(gbl);
@@ -39,7 +41,7 @@ public class VehicleDetailDialog extends JDialog {
 		gbs.fill = GridBagConstraints.BOTH;
 		gbs.gridwidth = 1;
 		gbs.gridheight = 1;
-		gbs.insets = new Insets(50, 10, 0, 0);
+		gbs.insets = new Insets(30, 20, 0, 0);
 		gbs.weightx = 1;
 		gbs.weighty = 1;
 		gbs.gridx = 0;
@@ -49,7 +51,7 @@ public class VehicleDetailDialog extends JDialog {
 		gbs.fill = GridBagConstraints.BOTH;
 		gbs.gridwidth = 3;
 		gbs.gridheight = 1;
-		gbs.insets = new Insets(50, 0, 80, 100);
+		gbs.insets = new Insets(50, 10, 105, 50);
 		gbs.weightx = 2;
 		gbs.weighty = 1;
 		gbs.gridx = 1;
