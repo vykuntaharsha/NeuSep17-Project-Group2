@@ -1,6 +1,9 @@
 package com.neuSep17.ui.manageIncentives;
 
+import com.neuSep17.dto.Category;
 import com.neuSep17.dto.Incentive;
+import com.neuSep17.service.IncentiveServiceAPI_Test;
+import com.neuSep17.service.InventoryServiceAPI_Test;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,9 +12,19 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.List;
+import java.util.Map;
 
 public class IncentiveAddEditDialog extends JDialog {
 
+    //service
+    private IncentiveServiceAPI_Test incentiveAPI;
+    private InventoryServiceAPI_Test inventoryAPI;
+
+    //current dearler
+    private String dealerId;
+
+    //label
     private Incentive incentive;
     private JLabel labelTitle, labelDiscount,labelStart,labelEnd,labelCriterion,labelDescription;
 
@@ -20,34 +33,42 @@ public class IncentiveAddEditDialog extends JDialog {
     private JTextArea description;
     private JScrollPane scrollPane;
 
-    private JComboBox comboBoxRange, comboBoxCategory,comboBoxYear,comboBoxMake,comboBoxPrice;
+    //comboBoxes for criterion
+    private JComboBox[] criterions;
+    private Map<String, List<String>> criterionMap;
+    private String[] criterionKey = {"range","category","year","make","price"};
+
     private JButton buttonSave;
     private JButton buttonCancel;
     private JOptionPane alert;
 
+    //incentive file
+    String file = "data/IncentiveSample.txt";
+
     public IncentiveAddEditDialog(String dealerId){
-        initComponents();
-        addComponents();
-        makeListeners();
-        display();
         setTitle("add incentive");
+        init(dealerId);
     }
 
     //edit constructor
     public IncentiveAddEditDialog(String dealerId, Incentive incentive){
         this.incentive = incentive;
+        init(dealerId);
+        setTitle("edit incentive");
+    }
 
+    private void init(String dealerId){
+        //replace by current dealerId
+        dealerId = "gmps-bresee";//"gmps-camino";
+        incentiveAPI = new IncentiveServiceAPI_Test(file);
+        inventoryAPI = new InventoryServiceAPI_Test("data/"+dealerId);
         initComponents();
         addComponents();
         makeListeners();
         display();
-        setTitle("edit incentive");
     }
 
-    //jing
     private void initComponents() {
-//       fieldDiscount.
-
         labelTitle = new JLabel("Title: ");
         labelDiscount = new JLabel("Discount: ");
         labelStart = new JLabel("Start Date: ");
@@ -66,57 +87,140 @@ public class IncentiveAddEditDialog extends JDialog {
         description.setWrapStyleWord(true);
         scrollPane = new JScrollPane(description);
 
-        comboBoxRange = new JComboBox(new String[]{"All"});
-//        comboBoxCategory = new JComboBox(Category.values());
-        comboBoxCategory = new JComboBox(new String[] {"NEW", "USED", "CERTIFIED"});
-        comboBoxYear = new JComboBox(new String[] {"2010","2011","2012","2013"});
-        comboBoxMake = new JComboBox(new String[] {"Cadillac","Chevrolet","Cadillac","Toyota"});
-        comboBoxPrice = new JComboBox(new String[] {"500","1000","1500","2000"});
-        createComboBox(comboBoxRange,"range");
-        createComboBox(comboBoxCategory,"category");
-        createComboBox(comboBoxYear,"year");
-        createComboBox(comboBoxMake,"make");
-        createComboBox(comboBoxPrice,"price");
+        createCriterionComponents();
 
         if(incentive != null){
-            //criterion data,get data from vehicle
-            ArrayList<String> criterion = incentive.getCriterion();
-            String[] crit = new String[5];
-            int i = 0;
-            while (i < 4){
-                crit[i] = criterion.get(i);
-                i++;
-            }
-            crit[4] = criterion.get(criterion.size() - 1);
-
-            if(crit[0].equals("all")){
-                comboBoxRange.setSelectedItem(comboBoxRange.getItemAt(1));
-                comboBoxCategory.setEnabled(false);
-                comboBoxMake.setEnabled(false);
-                comboBoxPrice.setEnabled(false);
-                comboBoxYear.setEnabled(false);
-            }else {
-                //set the selected item
-                comboBoxCategory.setSelectedItem(crit[1].equals("no") ? comboBoxCategory.getItemAt(0) : crit[1]);
-                comboBoxYear.setSelectedItem(crit[2].equals("no") ? comboBoxYear.getItemAt(0) : crit[2]);
-                comboBoxMake.setSelectedItem(crit[3].equals("no") ? comboBoxMake.getItemAt(0) : crit[3]);
-                comboBoxPrice.setSelectedItem(crit[4].equals("no") ? comboBoxPrice.getItemAt(0) : crit[4]);
-            }
+            initCriterion(incentive);
         }
-
-        //logical of the range of criterion
 
         buttonSave = new JButton("Save");
         buttonCancel = new JButton("Cancel");
     }
 
-    //lulu
+    private void createCriterionComponents(){
+        criterions = new JComboBox[criterionKey.length];
+        criterionMap = inventoryAPI.getComboBoxItemsMap(inventoryAPI.getVehicles());
+        for(int i = 0;i < criterions.length;i++){
+            criterions[i] = new JComboBox();
+            criterions[i].addItem("Choose "+criterionKey[i]+"...");
+            criterions[i].setPreferredSize(new Dimension(200,30));
+            criterions[i].setName(criterionKey[i]);
+            if(i > 1){
+                for(String item : criterionMap.get(criterionKey[i])){
+                    if(criterionKey[i].equals("price")){
+                        item = item.substring(item.indexOf("~")+1);
+                    }
+                    criterions[i].addItem(item);
+                }
+            }
+        }
+        criterions[0].addItem("all");
+        for(Category s : Category.values()){
+            criterions[1].addItem(s);
+        }
+    }
+
+
+
+    private void initCriterion(Incentive incentive) {
+        //criterion data,get data from vehicle
+        ArrayList<String> criterion = incentive.getCriterion();
+        String[] crit = new String[5];
+        int i = 0;
+        while (i < 4){
+            crit[i] = criterion.get(i);
+            i++;
+        }
+        crit[4] = criterion.get(criterion.size() - 1);
+
+        if(crit[0].equals("all")){
+            criterions[0].setSelectedItem(crit[0]);
+            for(i = 1; i < criterions.length;i++){
+                criterions[i].setEnabled(false);
+            }
+        }else{
+            for(i = 1; i < criterions.length;i++){
+                criterions[i].setSelectedItem(crit[i].equals("no") ? criterions[i].getItemAt(0) : crit[i]);
+            }
+        }
+    }
+
+    private void addComponents() {
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridy = 0;
+        constraints.insets = new Insets(5,5,5,5);
+        constraints.anchor = GridBagConstraints.WEST;
+
+        addLine(constraints,labelTitle,fieldTitle);
+        addLine(constraints,labelDiscount,fieldDiscount);
+        addLine(constraints,labelStart,fieldStart);
+        addLine(constraints,labelEnd,fieldEnd);
+        addCriterion(constraints);
+//        constraints.ipady = 40;
+        addLine(constraints,labelDescription,scrollPane);
+
+        addButton(constraints);
+    }
+
+    private void addLine(GridBagConstraints c, JComponent label, JComponent text){
+        c.gridx = 0;
+        add(label,c);
+        c.gridx = 1;
+        add(text,c);
+        c.gridy++;
+    }
+
+    private void addCriterion(GridBagConstraints c){
+        c.gridx = 0;
+        add(labelCriterion,c);
+        c.gridheight = 1;
+        c.gridx = 1;
+        for(int i = 0; i < criterions.length;i++){
+            add(criterions[i],c);
+            c.gridy++;
+        }
+    }
+
+    private void addButton(GridBagConstraints constraints){
+        JPanel panelButtons = new JPanel();
+        panelButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelButtons.add(buttonSave);
+        panelButtons.add(buttonCancel);
+
+        constraints.gridy++;
+        constraints.gridx = 0;
+        constraints.gridwidth = 2;
+        constraints.anchor = GridBagConstraints.CENTER;
+        add(panelButtons,constraints);
+    }
+
     private void makeListeners() {
         CriterionActionListener cl = new CriterionActionListener();
-        comboBoxRange.addActionListener(cl);
+        criterions[0].addActionListener(cl);
 
         ValidationActionListener vl = new ValidationActionListener();
         buttonSave.addActionListener(vl);
+    }
+
+    class CriterionActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            updateCreterion();
+        }
+    }
+
+    private void updateCreterion(){
+        if(criterions[0].getSelectedIndex() != 0){
+            for(int i = 1; i < criterions.length;i++){
+                criterions[i].setSelectedItem(criterions[i].getItemAt(0));
+                criterions[i].setEnabled(false);
+            }
+        }else{
+            for(int i = 1; i < criterions.length;i++){
+                criterions[i].setEnabled(true);
+            }
+        }
     }
 
     class ValidationActionListener implements ActionListener{
@@ -170,104 +274,13 @@ public class IncentiveAddEditDialog extends JDialog {
 
     }
 
-    class CriterionActionListener implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(comboBoxRange.getSelectedIndex() != 0){
-                comboBoxCategory.setSelectedItem(comboBoxCategory.getItemAt(0));
-                comboBoxYear.setSelectedItem(comboBoxYear.getItemAt(0));
-                comboBoxMake.setSelectedItem(comboBoxMake.getItemAt(0));
-                comboBoxPrice.setSelectedItem(comboBoxPrice.getItemAt(0));
-                comboBoxCategory.setEnabled(false);
-                comboBoxYear.setEnabled(false);
-                comboBoxMake.setEnabled(false);
-                comboBoxPrice.setEnabled(false);
-            }else{
-                comboBoxCategory.setEnabled(true);
-                comboBoxYear.setEnabled(true);
-                comboBoxMake.setEnabled(true);
-                comboBoxPrice.setEnabled(true);
-            }
-        }
-    }
-
-    //jing
-    private void validateForm(){
-
-    }
-
-    //jing
     private void saveIncentive(){
-//        incentive.
     }
 
-    private void createComboBox(JComboBox comboBox, String name){
-        comboBox.insertItemAt("Choose "+name+"...",0);
-        comboBox.setSelectedItem(comboBox.getItemAt(0));
-    }
 
     private void display() {
         setSize(500, 800);
         setVisible(true);
     }
 
-    private void addComponents() {
-        setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridy = 0;
-        constraints.insets = new Insets(5,5,5,5);
-        constraints.anchor = GridBagConstraints.WEST;
-
-        addLine(constraints,labelTitle,fieldTitle);
-        addLine(constraints,labelDiscount,fieldDiscount);
-        addLine(constraints,labelStart,fieldStart);
-        addLine(constraints,labelEnd,fieldEnd);
-        addCriterion(constraints);
-//        constraints.ipady = 40;
-        addLine(constraints,labelDescription,scrollPane);
-
-
-//        constraints.ipady = 0;
-        JPanel panelButtons = new JPanel();
-        panelButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-        panelButtons.add(buttonSave);
-        panelButtons.add(buttonCancel);
-
-        constraints.gridy++;
-        constraints.gridx = 0;
-        constraints.gridwidth = 2;
-        constraints.anchor = GridBagConstraints.CENTER;
-        add(panelButtons,constraints);
-    }
-
-    private void addLine(GridBagConstraints c, JComponent label, JComponent text){
-        c.gridx = 0;
-        add(label,c);
-        c.gridx = 1;
-        add(text,c);
-        c.gridy++;
-    }
-
-    private void addCriterion(GridBagConstraints c){
-
-        c.gridx = 0;
-        add(labelCriterion,c);
-        c.gridheight = 1;
-        c.gridx = 1;
-        add(comboBoxRange,c);
-        c.gridy++;
-        add(comboBoxCategory,c);
-        c.gridy++;
-        add(comboBoxMake,c);
-        c.gridy++;
-        add(comboBoxYear,c);
-        c.gridy++;
-        add(comboBoxPrice,c);
-        c.gridy++;
-    }
-
-    public static void main(String[] args) {
-        IncentiveAddEditDialog dialog = new IncentiveAddEditDialog("");
-    }
 }
