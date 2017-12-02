@@ -257,14 +257,20 @@ public class FilterCheckBoxPanel extends JPanel
                 buttonShow.setVisible(false);
                 buttonHide.setVisible(true);
 
-                if (isButtonMore && checkBoxes.size() > 4)
+                if (isButtonMore)
                 {
-                    buttonMore.setVisible(true);
+                    if (checkBoxes.size() > 4)
+                    {
+                        buttonMore.setVisible(true);
+                    }
                     index = DEFAULT_CHECKBOXES_NUMBER;
                 }
                 else if (!isButtonMore && checkBoxes.size() > 4)
                 {
-                    buttonLess.setVisible(true);
+                    if (checkBoxes.size() > 4)
+                    {
+                        buttonLess.setVisible(true);
+                    }
                     index = checkBoxes.size();
                 }
             }
