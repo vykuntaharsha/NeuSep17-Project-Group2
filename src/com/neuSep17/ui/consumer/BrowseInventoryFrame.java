@@ -34,7 +34,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
@@ -42,7 +41,6 @@ import javax.swing.border.TitledBorder;
 import com.neuSep17.dto.Vehicle;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 import com.neuSep17.service.InventoryServiceAPI_Test;
-import java.awt.Component;
 
 public class BrowseInventoryFrame extends JFrame implements Runnable
 {
@@ -66,7 +64,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private Map<String, List<String>> checkBoxPanelsMap;
     private FilterCheckBoxPanel[] checkBoxPanels;
     private String[] filterKeys = { "category", "year", "make", "price", "type" };
-    private FilterComboBoxListener fcobl = new FilterComboBoxListener();
+    private JPanel filterPanel;
     private JButton resetFilter;
     // filter end
 
@@ -133,6 +131,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void createFilterPanelComponents()
     {
+        filterPanel = new JPanel();
         filterScrollPane = new JScrollPane();
         checkBoxPanels = new FilterCheckBoxPanel[filterKeys.length];
         for (int i = 0; i < checkBoxPanels.length; i++)
@@ -153,9 +152,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         con.add(searchPanel, BorderLayout.NORTH);
 
         // filter panel
-        JPanel filterPanel = new JPanel();
         filterScrollPane.setViewportView(filterPanel);
-        addFilterPanelComponents(filterPanel);
+        addFilterPanelComponents();
         con.add(filterScrollPane, BorderLayout.WEST);
         // list panel
 
@@ -176,7 +174,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         searchPanel.add(sortItem);
     }
 
-    private void addFilterPanelComponents(JPanel filterPanel)
+    private void addFilterPanelComponents()
     {
         BoxLayout boxLayout = new BoxLayout(filterPanel, BoxLayout.Y_AXIS);
         filterPanel.setLayout(boxLayout);
@@ -189,7 +187,29 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         {
             filterPanel.add(checkBoxPanels[i]);
         }
-        filterPanel.add(Box.createVerticalGlue());
+        filterPanel.add(Box.createVerticalStrut(0));
+    }
+
+    public void resizeFilterPanel()
+    {
+        int height = 40;
+        for (FilterCheckBoxPanel checkBoxPanel : checkBoxPanels)
+        {
+            if (checkBoxPanel.isButtonHide())
+            {
+                height += 40;
+            }
+            else
+            {
+                height += checkBoxPanel.getSize().height;
+            }
+        }
+
+        if (height < 650)
+        {
+            filterPanel.remove(filterPanel.getComponentCount() - 1);
+            filterPanel.add(Box.createVerticalStrut(650 - height));
+        }
     }
 
     private void addListeners()
@@ -357,18 +377,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         public void actionPerformed(ActionEvent e)
         {
             resetFilter();
-        }
-    }
-
-    class FilterComboBoxListener implements ItemListener
-    {
-        @Override
-        public void itemStateChanged(ItemEvent e)
-        {
-            if (e.getStateChange() == ItemEvent.SELECTED)
-            {
-                updateFilterConditions();
-            }
         }
     }
 

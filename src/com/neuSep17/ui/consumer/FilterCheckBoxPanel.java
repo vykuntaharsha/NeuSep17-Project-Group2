@@ -21,6 +21,7 @@ public class FilterCheckBoxPanel extends JPanel
     private String title;
     private JButton buttonHide;
     private JButton buttonShow;
+    private boolean isButtonHide = true;
     private JButton buttonMore;
     private JButton buttonLess;
     private JPanel checkBoxesPanel;
@@ -87,6 +88,7 @@ public class FilterCheckBoxPanel extends JPanel
 
     private void resetButtons()
     {
+        isButtonHide = true;
         buttonHide.setVisible(true);
         buttonShow.setVisible(false);
         isButtonMore = true;
@@ -243,6 +245,7 @@ public class FilterCheckBoxPanel extends JPanel
             int index = 0;
             if (e.getSource() == buttonHide)
             {
+                isButtonHide = false;
                 buttonHide.setVisible(false);
                 buttonShow.setVisible(true);
                 buttonMore.setVisible(false);
@@ -250,6 +253,7 @@ public class FilterCheckBoxPanel extends JPanel
             }
             else if (e.getSource() == buttonShow)
             {
+                isButtonHide = true;
                 buttonShow.setVisible(false);
                 buttonHide.setVisible(true);
 
@@ -281,7 +285,13 @@ public class FilterCheckBoxPanel extends JPanel
             }
 
             hideCheckBoxesFrom(index);
+            bif.resizeFilterPanel();
         }
+    }
+
+    public boolean isButtonHide()
+    {
+        return isButtonHide;
     }
 
     class FilterCheckBoxListener implements ActionListener
