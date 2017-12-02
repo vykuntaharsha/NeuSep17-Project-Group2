@@ -224,16 +224,17 @@ public class InventoryServiceAPI_Test {
 	
 
 	/**
-	 * Pass in a list of vehicles and different fields to filter and return the filtered result. The 
-	 * category filter should seperate different categories with a space, e.g. "new certified". The price 
-	 * should be a range and the lower limit (inclusive) and upper limit (exclusive) should be connected 
-	 * with a "~". If the field is null, then the filter of that field is not applied.
+	 * Pass in a list of vehicles and different fields to filter and return the filtered result. Filter 
+	 * fields of category, year, make, price and type can accept multiple values and should seperate their 
+	 * values by ";", e.g. "new;used". The price values should be a range and the lower limit (inclusive) 
+	 * and upper limit (exclusive) should be connected with a "~". If the field is null, then the filter 
+	 * of that field is not applied.
 	 * @param vehicles list to be sorted
 	 * @param category desired category of the vehicles
-	 * @param year desired year of the vehicles
-	 * @param make desired make of the vehicles
+	 * @param year desired years of the vehicles
+	 * @param make desired makes of the vehicles
 	 * @param price desired price range of the vehicles
-	 * @param type desired type of the vehicles
+	 * @param type desired types of the vehicles
 	 * @param search search keywords for the vehicles
 	 * @return the filtered list of vehicles.
 	 */
@@ -255,50 +256,57 @@ public class InventoryServiceAPI_Test {
 	private static boolean categoryFilter(Vehicle vehicle, String category) {
 		if (category == null)
 			return true;
-		if (category.contains("new")) {
-			if (vehicle.getCategory().toString().equals("NEW"))
-				return true;
-		}
-		if (category.contains("used")) {
-			if (vehicle.getCategory().toString().equals("USED"))
-				return true;
-		}
-		if (category.contains("certified")) {
-			if (vehicle.getCategory().toString().equals("CERTIFIED"))
-				return true;
-		}
-		return false;
+		return category.contains(vehicle.getCategory().toString().toLowerCase());
 	}
 
 	private static boolean yearFilter(Vehicle vehicle, String year) {
 		if (year == null)
 			return true;
-		return vehicle.getYear() == Integer.parseInt(year);
+		return year.contains(vehicle.getYear().toString());
 	}
 
 	private static boolean makeFilter(Vehicle vehicle, String make) {
 		if (make == null)
 			return true;
-		return vehicle.getMake().equals(make);
+		String target = vehicle.getMake();
+		String[] makes = make.split(";");
+		for (String s : makes) {
+			if (s.equals(target))
+				return true;
+		}
+		return false;
 	}
 
 	private static boolean priceFilter(Vehicle vehicle, String price) {
 		if (price == null)
 			return true;
 		float vehiclePrice = vehicle.getPrice();
-		String[] limits = price.split("~");
-		float low = Float.parseFloat(limits[0]);
-		if (limits.length == 1) {
-			return vehiclePrice >= low;
+		String[] priceRanges = price.split(";");
+		for (String priceRange : priceRanges) {
+			String[] limits = priceRange.split("~");
+			float low = Float.parseFloat(limits[0]);
+			if (limits.length == 1) {
+				if (vehiclePrice >= low)
+					return true;
+			} else {
+				float high = Float.parseFloat(limits[1]);
+				if (vehiclePrice >= low && vehiclePrice < high)
+					return true;
+			}
 		}
-		float high = Float.parseFloat(limits[1]);
-		return vehiclePrice >= low && vehiclePrice < high;
+		return false;
 	}
 
 	private static boolean typeFilter(Vehicle vehicle, String type) {
 		if (type == null)
 			return true;
-		return vehicle.getBodyType().equals(type);
+		String target = vehicle.getBodyType();
+		String [] types = type.split(";");
+		for (String s : types) {
+			if(s.equals(target))
+				return true;
+		}
+		return false;
 	}
 
 	private static boolean searchFilter(Vehicle vehicle, String search) {
@@ -315,35 +323,42 @@ public class InventoryServiceAPI_Test {
 	}
 
 	/**
-	 * Take in a list of vehicles and return a map. The keys of the map are "year", "make", "price" and 
-	 * "type". The corresponding values are sorted values contained by the passed in list of vehicles.
+	 * Take in a list of vehicles and return a map. The keys of the map are "category", "year", "make",
+	 * "price" and "type". The corresponding values are sorted values contained by the passed in list
+	 *  of vehicles.
 	 * @param vehicles list of vehicles passed in
 	 * @return the result map
 	 */
 	public static Map<String, List<String>> getComboBoxItemsMap(List<Vehicle> vehicles) {
+		List<String> categoryList = new ArrayList<String>();
 		List<String> yearList = new ArrayList<String>();
 		List<String> makeList = new ArrayList<String>();
 		List<String> priceList = new ArrayList<String>();
 		List<String> typeList = new ArrayList<String>();
+		TreeSet<String> categorySet = new TreeSet<>();
 		TreeSet<String> yearSet = new TreeSet<>();
 		TreeSet<String> makeSet = new TreeSet<>();
 		TreeSet<String> priceSet = new TreeSet<>();
 		TreeSet<String> typeSet = new TreeSet<>();
 		for (Vehicle vehicle : vehicles) {
+			String category = vehicle.getCategory().toString().toLowerCase();
 			String year = vehicle.getYear().toString();
 			String make = vehicle.getMake();
 			String type = vehicle.getBodyType();
 			String price = priceToString(vehicle.getPrice());
+			categorySet.add(category);
 			yearSet.add(year);
 			makeSet.add(make);
 			priceSet.add(price);
 			typeSet.add(type);
 		}
 		Map<String, List<String>> map = new HashMap<>();
+		categoryList.addAll(categorySet);
 		yearList.addAll(yearSet);
 		makeList.addAll(makeSet);
 		priceList.addAll(priceSet);
 		typeList.addAll(typeSet);
+		map.put("category", categoryList);
 		map.put("year", yearList);
 		map.put("make", makeList);
 		map.put("price", priceList);
@@ -373,35 +388,13 @@ public class InventoryServiceAPI_Test {
 	public static List<Vehicle> sortVehicles(List<Vehicle> vehicles, String sortType, boolean isAscending) {
 		switch (sortType) {
 		case "price":
-			vehicles.sort(new Comparator<Vehicle>() {
-				@Override
-				public int compare(Vehicle v1, Vehicle v2) {
-					float diff = v1.getPrice() - v2.getPrice();
-					if (diff > 0) {
-						return 1;
-					} else if (diff == 0) {
-						return 0;
-					} else {
-						return -1;
-					}
-				}
-			});
+			sortByPrice(vehicles);
 			break;
 		case "year":
-			vehicles.sort(new Comparator<Vehicle>() {
-				@Override
-				public int compare(Vehicle v1, Vehicle v2) {
-					return v1.getYear() - v2.getYear();
-				}
-			});
+			sortByYear(vehicles);
 			break;
 		case "make":
-			vehicles.sort(new Comparator<Vehicle>() {
-				@Override
-				public int compare(Vehicle v1, Vehicle v2) {
-					return v1.getMake().compareTo(v2.getMake());
-				}
-			});
+			sortByMake(vehicles);
 			break;
 		default:
 			break;
@@ -410,5 +403,39 @@ public class InventoryServiceAPI_Test {
 			Collections.reverse(vehicles);
 		return vehicles;
 	}
-	
+
+	private static void sortByPrice(List<Vehicle> vehicles){
+		vehicles.sort(new Comparator<Vehicle>() {
+			@Override
+			public int compare(Vehicle v1, Vehicle v2) {
+				float diff = v1.getPrice() - v2.getPrice();
+				if (diff > 0) {
+					return 1;
+				} else if (diff == 0) {
+					return 0;
+				} else {
+					return -1;
+				}
+			}
+		});
+	}
+
+	private static void sortByYear(List<Vehicle> vehicles){
+		vehicles.sort(new Comparator<Vehicle>() {
+			@Override
+			public int compare(Vehicle v1, Vehicle v2) {
+				return v1.getYear() - v2.getYear();
+			}
+		});
+	}
+
+	private static void sortByMake(List<Vehicle> vehicles){
+		vehicles.sort(new Comparator<Vehicle>() {
+			@Override
+			public int compare(Vehicle v1, Vehicle v2) {
+				return v1.getYear() - v2.getYear();
+			}
+		});
+	}
+
 }
