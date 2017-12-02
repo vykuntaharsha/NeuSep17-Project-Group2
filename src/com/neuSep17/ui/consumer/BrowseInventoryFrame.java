@@ -7,8 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -195,7 +193,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         int height = 40;
         for (FilterCheckBoxPanel checkBoxPanel : checkBoxPanels)
         {
-            if (checkBoxPanel.isButtonHide())
+            if (!checkBoxPanel.isButtonHide())
             {
                 height += 40;
             }
@@ -205,10 +203,15 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             }
         }
 
-        if (height < 650)
+        if (height < 615)
         {
             filterPanel.remove(filterPanel.getComponentCount() - 1);
-            filterPanel.add(Box.createVerticalStrut(650 - height));
+            filterPanel.add(Box.createVerticalStrut(615 - height));
+        }
+        else
+        {
+            filterPanel.remove(filterPanel.getComponentCount() - 1);
+            filterPanel.add(Box.createVerticalStrut(0));
         }
     }
 
