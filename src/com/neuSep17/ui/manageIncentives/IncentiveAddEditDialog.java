@@ -223,55 +223,64 @@ public class IncentiveAddEditDialog extends JDialog {
         }
     }
 
-    class ValidationActionListener implements ActionListener{
+    //Jing
+    /*when click "Save" button,check textFields and comboBox */
+    class ValidationActionListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
 
-            String s= "^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$";
-            if(fieldTitle.getText() == null || fieldTitle.getText().trim().equals("")){
-                qq(labelTitle.getText()+" is not supposed to be NULL.");
-            }else if(fieldDiscount.getText().trim().matches(s)){
-                qq(" Price is must be digits.");
-            }else if(description.getText() == null || description.getText().trim().equals("")){
-                qq(labelDescription.getText()+" is not supposed to be NULL.");
+            if (!isVaildText(fieldTitle.getText())) {
+                AlertDialog(labelTitle.getText(),"");
+            } else if (!isVaildText(fieldDiscount.getText()) || !isValidNum(fieldDiscount.getText())) {
+                if(!isVaildText(fieldDiscount.getText()) ){
+                    AlertDialog(labelDiscount.getText(),"");
+                }else{
+                    AlertDialog(labelDiscount.getText(),"price");
+                }
+            } else if (!isVaildText(description.getText())) {
+                AlertDialog(labelDescription.getText(),"");
+            } else {
+                for (int i = 0; i+1 < criterions.length; i++) {
+                    //category equals to "all",skip check
+                    if(criterions[0].getSelectedItem().equals(criterions[0].getItemAt(1))){
+                        break;
+                    }
+                    if (criterions[i+1].getSelectedItem().equals(criterions[i+1].getItemAt(0))){
+                        AlertDialog(criterions[i+1].getName(),"");
+                    }
+                }
             }
-//            InputValidation(fieldTitle,fieldTitle.getText(),labelTitle.getText());
-//            //validate discount
-//            InputValidation(fieldDiscount,fieldDiscount.getText(),labelDiscount.getText());
-//            //validate description
-//            InputValidation(description,description.getText(),labelDescription.getText());
-
         }
-
     }
-    private void qq(String content){
+
+    private boolean isVaildText(String text){
+        if (text == null || text.trim().equals("")){
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isValidNum(String text){
+        //string.trim().matches(s)
+        Pattern p = Pattern.compile("^\\d+(.\\d+)?$");//not negative number- float/double
+        Matcher m = p.matcher(fieldDiscount.getText());
+        if (m.matches()){
+            return true;
+        }
+        return false;
+    }
+
+    private void AlertDialog(String content,String flag){
+        String messge = "";
+        if ( flag.equals("price") ){
+            messge = " Price must be digits.";
+        }else{
+            messge = content+" is not supposed to be NULL.";
+        }
         alert.showMessageDialog(new JFrame(),
-                content,
+                messge,
                 "Input Invalid",
                 JOptionPane.WARNING_MESSAGE);
-    }
-    //jing
-    private void InputValidation(JComponent comp,String text,String content) {
-        alert = new JOptionPane();
-        if (text.equals(null) || text.trim().equals("")){
-            alert.showMessageDialog(new JFrame(),
-                    content+" is not supposed to be NULL.",
-                    "Input Invalid",
-                    JOptionPane.WARNING_MESSAGE);
-        }
-        if (comp.equals(fieldDiscount)){
-            Pattern p = Pattern.compile("^\\+?[1-9][0-9]*$");//验证非零的正整数
-            Matcher m = p.matcher(fieldDiscount.getText());
-            if (m.matches()){
-                return;
-            }else {
-                alert.showMessageDialog(new JFrame(),
-                        " Price is must be digits.",
-                        "Input Invalid",
-                        JOptionPane.WARNING_MESSAGE);
-            }
-        }
-
     }
 
     private void saveIncentive(){
@@ -283,4 +292,7 @@ public class IncentiveAddEditDialog extends JDialog {
         setVisible(true);
     }
 
+    public static void main(String[] args) {
+        IncentiveAddEditDialog dialog = new IncentiveAddEditDialog("");
+    }
 }
