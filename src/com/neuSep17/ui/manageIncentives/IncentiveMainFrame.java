@@ -47,6 +47,7 @@ public class IncentiveMainFrame extends JFrame {
             }
         });
 
+        /*
         listSortPanel.getSortPanel().setSortListener(new IncentiveSortListener(){
             @Override
             public void sortEventOccurred(IncentiveSortEvent ise) {
@@ -54,5 +55,6 @@ public class IncentiveMainFrame extends JFrame {
                 listSortPanel.getListPanel().sortTable(selectedIndex);
             }
         });
+         */
     }
 }

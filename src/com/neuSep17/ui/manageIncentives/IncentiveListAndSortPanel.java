@@ -46,33 +46,7 @@ public class IncentiveListAndSortPanel extends JPanel {
 }
 
 class IncentiveSortPanel extends JPanel{
-    private JComboBox sortCombo;
-    private IncentiveSortListener incentiveSortListener;
 
-    public IncentiveSortPanel(){
-        String[] sort_name = {"Sort","Discount high to low","Discount low to high"};
-        sortCombo = new JComboBox(sort_name);
-        sortCombo.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        add(sortCombo);
-        setLayout(new FlowLayout(FlowLayout.RIGHT));
-        setBackground(new Color(206, 206, 206));
-        setPreferredSize(new Dimension(1000,30));
-
-        sortCombo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedIndex = sortCombo.getSelectedIndex();
-                IncentiveSortEvent ise = new IncentiveSortEvent(e, selectedIndex);
-                if (incentiveSortListener != null){
-                    incentiveSortListener.sortEventOccurred(ise);
-                }
-            }
-        });
-    }
-
-    public void setSortListener(IncentiveSortListener incentiveSortListener){
-        this.incentiveSortListener = incentiveSortListener;
-    }
 }
 
 class IncentiveListPanel extends JPanel{
