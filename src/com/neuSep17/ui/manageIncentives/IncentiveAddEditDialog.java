@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class IncentiveAddEditDialog extends JDialog {
 
@@ -21,6 +23,7 @@ public class IncentiveAddEditDialog extends JDialog {
     private JComboBox comboBoxRange, comboBoxCategory,comboBoxYear,comboBoxMake,comboBoxPrice;
     private JButton buttonSave;
     private JButton buttonCancel;
+    private JOptionPane alert;
 
     public IncentiveAddEditDialog(String dealerId){
         initComponents();
@@ -111,6 +114,60 @@ public class IncentiveAddEditDialog extends JDialog {
     private void makeListeners() {
         CriterionActionListener cl = new CriterionActionListener();
         comboBoxRange.addActionListener(cl);
+
+        ValidationActionListener vl = new ValidationActionListener();
+        buttonSave.addActionListener(vl);
+    }
+
+    class ValidationActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+
+            String s= "^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$";
+            if(fieldTitle.getText() == null || fieldTitle.getText().trim().equals("")){
+                qq(labelTitle.getText()+" is not supposed to be NULL.");
+            }else if(fieldDiscount.getText().trim().matches(s)){
+                qq(" Price is must be digits.");
+            }else if(description.getText() == null || description.getText().trim().equals("")){
+                qq(labelDescription.getText()+" is not supposed to be NULL.");
+            }
+//            InputValidation(fieldTitle,fieldTitle.getText(),labelTitle.getText());
+//            //validate discount
+//            InputValidation(fieldDiscount,fieldDiscount.getText(),labelDiscount.getText());
+//            //validate description
+//            InputValidation(description,description.getText(),labelDescription.getText());
+
+        }
+
+    }
+    private void qq(String content){
+        alert.showMessageDialog(new JFrame(),
+                content,
+                "Input Invalid",
+                JOptionPane.WARNING_MESSAGE);
+    }
+    //jing
+    private void InputValidation(JComponent comp,String text,String content) {
+        alert = new JOptionPane();
+        if (text.equals(null) || text.trim().equals("")){
+            alert.showMessageDialog(new JFrame(),
+                    content+" is not supposed to be NULL.",
+                    "Input Invalid",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+        if (comp.equals(fieldDiscount)){
+            Pattern p = Pattern.compile("^\\+?[1-9][0-9]*$");//验证非零的正整数
+            Matcher m = p.matcher(fieldDiscount.getText());
+            if (m.matches()){
+                return;
+            }else {
+                alert.showMessageDialog(new JFrame(),
+                        " Price is must be digits.",
+                        "Input Invalid",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        }
+
     }
 
     class CriterionActionListener implements ActionListener{
@@ -208,5 +265,9 @@ public class IncentiveAddEditDialog extends JDialog {
         c.gridy++;
         add(comboBoxPrice,c);
         c.gridy++;
+    }
+
+    public static void main(String[] args) {
+        IncentiveAddEditDialog dialog = new IncentiveAddEditDialog("");
     }
 }
