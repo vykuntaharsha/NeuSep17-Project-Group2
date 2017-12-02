@@ -212,13 +212,13 @@ public class FilterCheckBoxPanel extends JPanel
 
     public String generateFilterCondition()
     {
-        String filter = "";
+        StringBuilder filter = new StringBuilder();
         int count = 0;
         for (JCheckBox checkBox : checkBoxes)
         {
             if (checkBox.isSelected())
             {
-                filter += checkBox.getName() + " ";
+                filter.append(checkBox.getName()).append(";");
                 count++;
             }
         }
@@ -229,10 +229,10 @@ public class FilterCheckBoxPanel extends JPanel
         }
         else
         {
-            filter = filter.trim();
+            filter.deleteCharAt(filter.length() - 1);
         }
 
-        return filter;
+        return filter == null ? null : filter.toString();
     }
 
     class DisplayButtonsListener implements ActionListener
