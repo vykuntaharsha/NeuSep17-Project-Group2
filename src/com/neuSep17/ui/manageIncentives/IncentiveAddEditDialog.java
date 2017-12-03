@@ -4,12 +4,16 @@ import com.neuSep17.dto.Category;
 import com.neuSep17.dto.Incentive;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 import com.neuSep17.service.InventoryServiceAPI_Test;
+import javafx.scene.control.DatePicker;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.List;
@@ -42,7 +46,7 @@ public class IncentiveAddEditDialog extends JDialog {
     private JButton buttonCancel;
     private JOptionPane alert;
 
-    //incentive file
+    //incentive file, should be replaced by dealer_Incentive.txt
     String file = "data/IncentiveSample.txt";
 
     public IncentiveAddEditDialog(String dealerId){
@@ -59,7 +63,8 @@ public class IncentiveAddEditDialog extends JDialog {
 
     private void init(String dealerId){
         //replace by current dealerId
-        dealerId = "gmps-bresee";//"gmps-camino";
+        dealerId = "gmps-bresee";
+        this.dealerId = dealerId;//"gmps-camino";
         incentiveAPI = new IncentiveServiceAPI_Test(file);
         inventoryAPI = new InventoryServiceAPI_Test("data/"+dealerId);
         initComponents();
@@ -201,6 +206,13 @@ public class IncentiveAddEditDialog extends JDialog {
 
         ValidationActionListener vl = new ValidationActionListener();
         buttonSave.addActionListener(vl);
+
+        buttonCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                close();
+            }
+        });
     }
 
     class CriterionActionListener implements ActionListener{
@@ -239,16 +251,8 @@ public class IncentiveAddEditDialog extends JDialog {
                 }
             } else if (!isVaildText(description.getText())) {
                 AlertDialog(labelDescription.getText(),"");
-            } else {
-                for (int i = 0; i+1 < criterions.length; i++) {
-                    //category equals to "all",skip check
-                    if(criterions[0].getSelectedItem().equals(criterions[0].getItemAt(1))){
-                        break;
-                    }
-                    if (criterions[i+1].getSelectedItem().equals(criterions[i+1].getItemAt(0))){
-                        AlertDialog(criterions[i+1].getName(),"");
-                    }
-                }
+            } else if(isValidCriterions()){
+                saveIncentive();
             }
         }
     }
@@ -270,6 +274,19 @@ public class IncentiveAddEditDialog extends JDialog {
         return false;
     }
 
+    private boolean isValidCriterions(){
+        if(criterions[0].getSelectedIndex() != 0){
+            return true;
+        }
+        for (int i = 1; i < criterions.length; i++) {
+            if (criterions[i].getSelectedIndex() == 0){
+                AlertDialog(criterions[i].getName(),"");
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void AlertDialog(String content,String flag){
         String messge = "";
         if ( flag.equals("price") ){
@@ -284,14 +301,65 @@ public class IncentiveAddEditDialog extends JDialog {
     }
 
     private void saveIncentive(){
+        String[] arr = new String[8];
+        arr[1] = dealerId;
+        arr[2] = fieldTitle.getText().trim();
+        arr[3] = fieldDiscount.getText();
+        arr[4] = fieldStart.getText();
+        arr[5] = fieldEnd.getText();
+        arr[6] = getCriterionValue();
+        arr[7] = description.getText();
+        if(incentive == null){
+            arr[0] = generateIncentiveID();
+        }else{
+            arr[0] = incentive.getId();
+        }
+        incentive = new Incentive(arr);
+        incentiveAPI.addIncentive(incentive);
+        incentiveAPI.saveIncentiveToFile();
+        close();
     }
 
+    private String generateIncentiveID(){
+        int max = 0;
+        for(Incentive incentive : incentiveAPI.getIncentives()){
+            int i = Integer.parseInt(incentive.getId());
+            if(i > max){
+                max = i;
+            }
+        }
+        max++;
+        DecimalFormat format = new DecimalFormat("000000");
+        return format.format(max);
+    }
+
+    private String getCriterionValue(){
+        //VIN(or all, or no),category,year,make,model,trim,type,price
+        if(criterions[0].getSelectedIndex() == 1){
+            return  "all,no,no,no,no,no,no,no";
+        }else{
+            StringBuilder sb = new StringBuilder();
+            sb.append("all,");
+            //category,year,make
+            for(int i = 1; i < 4; i++){
+                sb.append(criterions[i].getSelectedIndex() == 0 ? "no," : criterions[i].getSelectedItem());
+            }
+            //model,trim,type(we haven't decided to add all these fields, just add it here.)
+            sb.append("no,no,no,");
+            //price
+            sb.append(criterions[5].getSelectedIndex() == 0 ? "no" : criterions[5].getSelectedItem());
+            return sb.toString();
+        }
+    }
 
     private void display() {
         setSize(500, 800);
         setVisible(true);
     }
 
+    private void close(){
+        dispose();
+    }
     public static void main(String[] args) {
         IncentiveAddEditDialog dialog = new IncentiveAddEditDialog("");
     }
