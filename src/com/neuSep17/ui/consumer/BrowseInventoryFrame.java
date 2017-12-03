@@ -314,8 +314,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     {
         /*   
          *    load the first page 15 images and then let the swing worker do the rest
-         */
-        
+         */        
         for (int i=0;i<perpage;++i){
             Vehicle v=invsAPI.getVehicles().get(i);
             int random=(int) Math.round(2*Math.random());
@@ -324,8 +323,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
-        //updateThread t=new updateThread(); t.execute();  //TODO check this strange exception
-        
+        //updateThread t=new updateThread(); t.execute();  //TODO check this strange exception        
         return;        
     }
 
