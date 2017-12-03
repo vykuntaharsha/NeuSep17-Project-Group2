@@ -31,12 +31,10 @@ public class IncentiveToolPanel extends JPanel {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
                 //temp
                 IncentiveDeleteDialog deleteDialog = new IncentiveDeleteDialog(new Incentive(new String[1]));
-=======
-                IncentiveDeleteDialog deleteDialog = new IncentiveDeleteDialog(new Incentive(new String[]{}));
->>>>>>> 7120760a5a72c9c7bea650a40a3de9c3fff39b6f
+
+
             }
         });
 
