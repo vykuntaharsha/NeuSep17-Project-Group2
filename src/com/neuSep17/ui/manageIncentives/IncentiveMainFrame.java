@@ -9,6 +9,7 @@ public class IncentiveMainFrame extends JFrame {
     private IncentiveFilterPanel filterPanel;
     private IncentiveSearchPanel searchPanel;
     private IncentiveListAndSortPanel listSortPanel;
+    private IncentiveDisplay listpanel;
     private IncentiveToolPanel toolPanel;
 
     public IncentiveMainFrame() throws IOException {
@@ -21,14 +22,14 @@ public class IncentiveMainFrame extends JFrame {
         filterPanel = new IncentiveFilterPanel();
         searchPanel = new IncentiveSearchPanel();
         toolPanel = new IncentiveToolPanel();
-        listSortPanel = new IncentiveListAndSortPanel();
+        listpanel = new IncentiveDisplay();
 
         //set up layout
         setLayout(new BorderLayout());
         add(searchPanel, BorderLayout.NORTH);
         add(toolPanel, BorderLayout.SOUTH);
         add(filterPanel, BorderLayout.WEST);
-        add(listSortPanel, BorderLayout.EAST);
+        add(listpanel, BorderLayout.EAST);
 
 
         //set up listener

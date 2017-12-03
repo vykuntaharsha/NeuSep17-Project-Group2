@@ -4,6 +4,7 @@ import com.neuSep17.dto.IncentiveTableModel;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,7 +22,7 @@ public class IncentiveDisplay extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         incentive_list = new IncentiveList();
         sort_list = new SortList();
-        add(sort_list);
+        //add(sort_list);
         add(incentive_list);
 
     }
@@ -38,15 +39,29 @@ class IncentiveList extends JPanel {
         setPreferredSize(new Dimension(1000, 530));
         service = new IncentiveServiceAPI_Test("src/com/neuSep17/dto/IncentiveSample.txt");
         incentive_list = new JTable(new IncentiveTableModel(service));
+        //set table header size, color , font
+        JTableHeader T_header = incentive_list.getTableHeader();
+        T_header.setPreferredSize(new Dimension(1,25));
+        T_header.setBackground(new Color(0, 0, 0));
+        T_header.setForeground(new Color(61, 200, 247));
+        T_header.setFont(new Font("Menlo", Font.PLAIN, 16));
+
         for (int i = 0; i < 7; i++) {
             TableColumn firstColumn = incentive_list.getColumnModel().getColumn(i);
             firstColumn.setPreferredWidth(150);
         }
+
+        // set table attribute
+        incentive_list.setForeground(new Color(0, 0, 0));
+        incentive_list.setGridColor(new Color(0, 0, 0));
+        incentive_list.setBackground(new Color(61, 200, 247));
+        incentive_list.setFont(new Font("Menlo", Font.PLAIN, 12));
+        incentive_list.setAutoCreateRowSorter(true);
         incentive_list.setPreferredScrollableViewportSize(new Dimension(980, 530));
         incentive_list.setFillsViewportHeight(true);
         incentive_list.setAutoCreateColumnsFromModel(true);
         incentive_list.setRowHeight(100);
-        incentive_list.setBackground(new Color(206, 206, 206));
+
         JScrollPane scrollPane = new JScrollPane(incentive_list);
         add(scrollPane);
     }
