@@ -312,25 +312,21 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void updateVehicle()
     {
-       
-        // TODO
-        // use
-        // swingworker
-        // thread
+        /*   
+         *    load the first page 15 images and then let the swing worker do the rest
+         */
         
-        for (Vehicle v : invsAPI.getVehicles())
-        {
-            int i=(int) Math.round(2*Math.random());
-            Image temp=invsAPI.getVehicleImage(v.getBodyType()).get(i);
+        for (int i=0;i<perpage;++i){
+            Vehicle v=invsAPI.getVehicles().get(i);
+            int random=(int) Math.round(2*Math.random());
+            Image temp=invsAPI.getVehicleImage(v.getBodyType()).get(random);
+            temp=temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT); 
             cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
-        return;
-
-        /*
-         * updateThread t=new updateThread(); t.execute(); while(t.isDone()) {}
-         * // this waits until update finish
-         */
+        //updateThread t=new updateThread(); t.execute();  //TODO check this strange exception
+        
+        return;        
     }
 
     class updateThread extends SwingWorker<Void, Void>
@@ -340,20 +336,16 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         protected Void doInBackground() throws Exception
         {
 
-            Image img;
             for (Vehicle v : invsAPI.getVehicles())
             {
-                // Image img=invsAPI.getImage(v)[0];
-                try
-                {
-                    img = ImageIO.read(v.getPhotoUrl());
-                }
-                catch (Exception e)
-                {
-                    img = ImageIO.read(new File("src/com/neuSep17/ui/consumer/imagenotfound.jpg"));
-                }
-                cache.put(v, new ImageIcon(img, "icon for vehicle " + v.getId()));
-            }
+                if (!cache.containsKey(v)){
+                    int i=(int) Math.round(2*Math.random());
+                    Image temp=invsAPI.getVehicleImage(v.getBodyType()).get(i);
+                    temp=temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT); 
+                    cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
+                    toDisplay.add(v);
+                }                
+            }            
             return null;
         }
 
