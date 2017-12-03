@@ -57,7 +57,7 @@ public class ListPanel extends JPanel{
             if (n >= toDisplay.size())
                 break;
             v = toDisplay.get(n);
-            carList.add(new VehicleCell(v, parent.getIcon(v)));
+            carList.add(new VehicleCell(v, parent.getIcon(v),parent.incsAPI.getAllDiscount(v)));
         }
 
         this.remove(1);

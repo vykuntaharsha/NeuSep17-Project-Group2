@@ -1,47 +1,70 @@
-package com.neuSep17.ui.manageIncentives;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class IncentiveDeleteDialog extends JDialog {
     private JLabel explaination;
-    private JTextField textField;
-    private JButton submitButton;
+    private JButton yes, no;
 
-    public IncentiveDeleteDialog(){
-        setTitle("delete incentive");
-        setSize(300,300);
+    private IncentiveServiceAPI_Test incentiveAPI;
+    private Incentive incentive;
+
+    public IncentiveDeleteDialog(Incentive incentive){
+        this.incentive = incentive;
+        setTitle("Delete The Incentive");
+        setSize(600,250);
         setVisible(true);
 
-        explaination = new JLabel("Please put the incentive ID you want to delete");
-        textField = new JTextField();
-        textField.setPreferredSize(new Dimension(100, 35));
-        submitButton = new JButton("Submit");
+        create();
+        makeListeners();
         display();
+    }
+
+    public void create(){
+        explaination = new JLabel("Do you want to delete this incentive ?");
+        explaination.setFont(new Font("Menlo", Font.PLAIN, 18));
+        yes = new JButton("Yes");
+        no = new JButton("Cancel");
     }
 
     public void display(){
         setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
-        gc.gridy = 1;
+        gc.gridy = 0;
         gc.gridx = 0;
-        gc.weightx = 1;
-        gc.weighty = 0.1;
-        gc.fill = GridBagConstraints.NONE;
-        gc.insets = new Insets(5,5,5,5);
-
-        gc.gridy++;
-        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gc.gridwidth = 2;
+        gc.gridheight = 1;
+        gc.anchor = GridBagConstraints.NORTH;
         add(explaination, gc);
 
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.add(yes);
+        buttonPanel.add(no);
 
         gc.gridy++;
+        gc.gridx = 0;
+        gc.gridwidth = 2;
         gc.anchor = GridBagConstraints.CENTER;
-        add(textField, gc);
+        add(buttonPanel,gc);
+    }
 
-        gc.weighty = 1;
-        gc.gridy++;
-        gc.anchor = GridBagConstraints.CENTER;
-        add(submitButton, gc);
+    public void makeListeners(){
+        DeleteActionListener dal = new DeleteActionListener();
+        yes.addActionListener(dal);
+        no.addActionListener(dal);
+    }
+
+    class DeleteActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == yes){
+                incentiveAPI.deleteIncentive(incentive.getId());
+            }
+            if(e.getSource() == no){
+                setVisible(false);
+            }
+        }
     }
 }

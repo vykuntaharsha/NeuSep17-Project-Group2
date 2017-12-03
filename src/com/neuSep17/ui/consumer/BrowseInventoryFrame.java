@@ -603,7 +603,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     @Override
     public void run()
     {
-
         makeThisVisible();
     }
 
