@@ -56,6 +56,7 @@ class IncentiveList extends JPanel {
         incentive_list.setGridColor(new Color(0, 0, 0));
         incentive_list.setBackground(new Color(61, 200, 247));
         incentive_list.setFont(new Font("Menlo", Font.PLAIN, 12));
+        //sort function
         incentive_list.setAutoCreateRowSorter(true);
         incentive_list.setPreferredScrollableViewportSize(new Dimension(980, 530));
         incentive_list.setFillsViewportHeight(true);
