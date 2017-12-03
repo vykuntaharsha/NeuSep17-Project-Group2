@@ -5,12 +5,11 @@ import com.neuSep17.dto.IncentiveTableModel;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by starhaotian on 01/12/2017.
@@ -19,6 +18,7 @@ public class IncentiveDisplay extends JPanel {
     IncentiveList incentive_list;
     SortList sort_list;
 
+
     public IncentiveDisplay() {
         //set layout
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -26,14 +26,19 @@ public class IncentiveDisplay extends JPanel {
         sort_list = new SortList();
         //add(sort_list);
         add(incentive_list);
+    }
 
+    public IncentiveList getIncentive_list() {
+        return incentive_list;
     }
 }
 
 class IncentiveList extends JPanel {
     private IncentiveServiceAPI_Test service;
     private JTable incentive_list;
-    IncentiveTableModel incentive_model;
+    private IncentiveTableModel incentive_model;
+    private TableRowSorter<TableModel> sorter;
+    private RowFilter searchRowFilter;
 
     public IncentiveList() {
 
@@ -72,12 +77,40 @@ class IncentiveList extends JPanel {
     }
 
 
+    public void searchTable(String searchContent){
+        sorter = new TableRowSorter<>(incentive_list.getModel());
+        if (searchContent.length() == 0){
+            sorter.setRowFilter(null);
+        } else {
+            searchRowFilter = RowFilter.regexFilter("(?i)" + searchContent);
+            sorter.setRowFilter(searchRowFilter);
+        }
+        incentive_list.setRowSorter(sorter);
+    }
+
+    public void filterTable(ArrayList<String> filterList){
+        sorter = new TableRowSorter<>(incentive_list.getModel());
+
+        int filterNumber = 0;
+        for (String filter: filterList){
+            filterNumber++;
+        }
+        ArrayList<RowFilter<Object,Object>> filters = new ArrayList<>(filterNumber);
+        for (String filter: filterList){
+            if (filter != "Not All"){
+                filters.add(RowFilter.regexFilter(filter.toLowerCase(), 5));
+            }
+        }
+        filters.add(searchRowFilter);
+        sorter.setRowFilter(RowFilter.andFilter(filters));
+        incentive_list.setRowSorter(sorter);
+    }
+
 }
 
 class SortList extends JPanel {
 
     private JComboBox sortCombo;
-    private IncentiveSortListener incentiveSortListener;
 
     public SortList() {
         String[] sort_name = { "Discount high to low", "Discount low to high","Start date", "End date"};
@@ -87,21 +120,8 @@ class SortList extends JPanel {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         setBackground(new Color(206, 206, 206));
         setPreferredSize(new Dimension(1000, 30));
-
-        sortCombo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedIndex = sortCombo.getSelectedIndex();
-                IncentiveSortEvent ise = new IncentiveSortEvent(e, selectedIndex);
-                if (incentiveSortListener != null) {
-                    incentiveSortListener.sortEventOccurred(ise);
-                }
-            }
-        });
     }
 
-    public void setSortListener(IncentiveSortListener incentiveSortListener) {
-        this.incentiveSortListener = incentiveSortListener;
-    }
+
 
 }

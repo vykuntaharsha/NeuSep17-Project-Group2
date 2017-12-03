@@ -319,7 +319,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             Vehicle v=invsAPI.getVehicles().get(i);
             int random=(int) Math.round(2*Math.random());
             Image temp=invsAPI.getVehicleImage(v.getBodyType()).get(random);
-            temp=temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT); 
+            temp=temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT);
             cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }

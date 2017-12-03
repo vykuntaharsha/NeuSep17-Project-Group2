@@ -8,8 +8,7 @@ import java.util.ArrayList;
 public class IncentiveMainFrame extends JFrame {
     private IncentiveFilterPanel filterPanel;
     private IncentiveSearchPanel searchPanel;
-    private IncentiveListAndSortPanel listSortPanel;
-    private IncentiveDisplay listpanel;
+    private IncentiveDisplay listPanel;
     private IncentiveToolPanel toolPanel;
 
     public IncentiveMainFrame() throws IOException {
@@ -22,21 +21,21 @@ public class IncentiveMainFrame extends JFrame {
         filterPanel = new IncentiveFilterPanel();
         searchPanel = new IncentiveSearchPanel();
         toolPanel = new IncentiveToolPanel();
-        listpanel = new IncentiveDisplay();
+        listPanel = new IncentiveDisplay();
 
         //set up layout
         setLayout(new BorderLayout());
         add(searchPanel, BorderLayout.NORTH);
         add(toolPanel, BorderLayout.SOUTH);
         add(filterPanel, BorderLayout.WEST);
-        add(listpanel, BorderLayout.EAST);
+        add(listPanel, BorderLayout.EAST);
 
 
         //set up listener
         searchPanel.setSearchListener(new IncentiveSearchListener(){
             public void searchEventOccurred(IncentiveSearchEvent se){
                 String searchContent = se.getSearchContent();
-                listSortPanel.getListPanel().searchTable(searchContent);
+                listPanel.getIncentive_list().searchTable(searchContent);
             }
         });
 
@@ -44,18 +43,9 @@ public class IncentiveMainFrame extends JFrame {
             @Override
             public void filterEventOccurred(IncentiveFilterEvent fe) {
                 ArrayList<String> filterList = fe.getFilterList();
-                listSortPanel.getListPanel().filterTable(filterList);
+                listPanel.getIncentive_list().filterTable(filterList);
             }
         });
 
-        /*
-        listSortPanel.getSortPanel().setSortListener(new IncentiveSortListener(){
-            @Override
-            public void sortEventOccurred(IncentiveSortEvent ise) {
-                int selectedIndex = ise.getSelectedIndex();
-                listSortPanel.getListPanel().sortTable(selectedIndex);
-            }
-        });
-         */
     }
 }
