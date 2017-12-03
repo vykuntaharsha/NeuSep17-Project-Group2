@@ -312,26 +312,16 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void updateVehicle()
     {
-        URL imgURL;
-        Image temp = null;
-        try
-        {
-            imgURL = new URL("http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/24174x90.jpg");
-            temp = ImageIO.read(imgURL);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+       
         // TODO
         // use
         // swingworker
         // thread
-
+        
         for (Vehicle v : invsAPI.getVehicles())
         {
-            // int i=(int) Math.round(3*Math.random());
-            // Image temp=invsAPI.getImage_Test(v.getBodyType())[i];
+            int i=(int) Math.round(2*Math.random());
+            Image temp=invsAPI.getVehicleImage(v.getBodyType()).get(i);
             cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
