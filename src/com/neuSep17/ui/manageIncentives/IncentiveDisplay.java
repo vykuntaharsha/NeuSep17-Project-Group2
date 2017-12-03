@@ -1,9 +1,11 @@
 package com.neuSep17.ui.manageIncentives;
 
+import com.neuSep17.dto.Incentive;
 import com.neuSep17.dto.IncentiveTableModel;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import java.awt.*;
@@ -31,6 +33,7 @@ public class IncentiveDisplay extends JPanel {
 class IncentiveList extends JPanel {
     private IncentiveServiceAPI_Test service;
     private JTable incentive_list;
+    IncentiveTableModel incentive_model;
 
     public IncentiveList() {
 
@@ -38,7 +41,8 @@ class IncentiveList extends JPanel {
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(1000, 530));
         service = new IncentiveServiceAPI_Test("src/com/neuSep17/dto/IncentiveSample.txt");
-        incentive_list = new JTable(new IncentiveTableModel(service));
+        incentive_model = new IncentiveTableModel(service);
+        incentive_list = new JTable(incentive_model);
         //set table header size, color , font
         JTableHeader T_header = incentive_list.getTableHeader();
         T_header.setPreferredSize(new Dimension(1,25));
