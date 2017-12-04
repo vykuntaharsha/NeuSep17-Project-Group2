@@ -2,11 +2,15 @@ package com.neuSep17.ui.manageIncentives;
 
 import com.neuSep17.dto.Category;
 import com.neuSep17.dto.Incentive;
+import com.neuSep17.dto.IncentiveTableModel;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 import com.neuSep17.service.InventoryServiceAPI_Test;
 import javafx.scene.control.DatePicker;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +28,7 @@ public class IncentiveAddEditDialog extends JDialog {
     //service
     private IncentiveServiceAPI_Test incentiveAPI;
     private InventoryServiceAPI_Test inventoryAPI;
+    private JTable incentive_list;
 
     //current dearler
     private String dealerId;
@@ -49,13 +54,13 @@ public class IncentiveAddEditDialog extends JDialog {
     //incentive file, should be replaced by dealer_Incentive.txt
     String file = "data/IncentiveSample.txt";
 
-    public IncentiveAddEditDialog(String dealerId){
+    public IncentiveAddEditDialog(String dealerId, JTable incentive_list){
         setTitle("add incentive");
         init(dealerId);
     }
 
     //edit constructor
-    public IncentiveAddEditDialog(String dealerId, Incentive incentive){
+    public IncentiveAddEditDialog(String dealerId, Incentive incentive, JTable incentive_list){
         this.incentive = incentive;
         init(dealerId);
         setTitle("edit incentive");
@@ -208,6 +213,7 @@ public class IncentiveAddEditDialog extends JDialog {
         buttonSave.addActionListener(vl);
 
         buttonCancel.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 close();
@@ -360,7 +366,5 @@ public class IncentiveAddEditDialog extends JDialog {
     private void close(){
         dispose();
     }
-    public static void main(String[] args) {
-        IncentiveAddEditDialog dialog = new IncentiveAddEditDialog("");
-    }
+
 }

@@ -45,7 +45,7 @@ class IncentiveList extends JPanel {
         setBackground(new Color(206, 206, 206));
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(1000, 530));
-        service = new IncentiveServiceAPI_Test("src/com/neuSep17/dto/IncentiveSample.txt");
+        service = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
         incentive_model = new IncentiveTableModel(service);
         incentive_list = new JTable(incentive_model);
         //set table header size, color , font
@@ -76,6 +76,9 @@ class IncentiveList extends JPanel {
         add(scrollPane);
     }
 
+    public JTable get_table(){
+        return incentive_list;
+    }
 
     public void searchTable(String searchContent){
         sorter = new TableRowSorter<>(incentive_list.getModel());

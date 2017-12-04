@@ -20,8 +20,10 @@ public class IncentiveMainFrame extends JFrame {
         //panel instance
         filterPanel = new IncentiveFilterPanel();
         searchPanel = new IncentiveSearchPanel();
-        toolPanel = new IncentiveToolPanel();
         listPanel = new IncentiveDisplay();
+        JTable table = listPanel.getIncentive_list().get_table();
+        toolPanel = new IncentiveToolPanel(table);
+
 
         //set up layout
         setLayout(new BorderLayout());

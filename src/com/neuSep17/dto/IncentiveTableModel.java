@@ -2,11 +2,13 @@ package com.neuSep17.dto;
 
 import java.util.ArrayList;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 
-public class IncentiveTableModel implements TableModel {
+public class IncentiveTableModel extends AbstractTableModel {
 	
 	private IncentiveServiceAPI_Test incentiveAPI;	
   private String[] columnTitles = {"ID", "Title", "Discount", "Start Date", "End Date", "Criterion", "Description"};
@@ -80,6 +82,7 @@ public class IncentiveTableModel implements TableModel {
 		return incentiveData;
 
 	}
+
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
