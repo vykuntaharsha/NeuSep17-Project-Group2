@@ -22,11 +22,9 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.neuSep17.dto.Category;
 import com.neuSep17.dto.Vehicle;
 
 public class ImageSlideShow extends JPanel implements ActionListener {
