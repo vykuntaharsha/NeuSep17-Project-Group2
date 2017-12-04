@@ -434,7 +434,7 @@ public class InventoryServiceAPI_Test {
 		vehicles.sort(new Comparator<Vehicle>() {
 			@Override
 			public int compare(Vehicle v1, Vehicle v2) {
-				return v1.getYear() - v2.getYear();
+				return v1.getMake().compareTo(v2.getMake());
 			}
 		});
 	}
