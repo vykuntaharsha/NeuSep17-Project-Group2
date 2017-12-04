@@ -27,12 +27,12 @@ public class FilterCheckBoxPanel extends JPanel
     private JPanel checkBoxesPanel;
     private boolean isButtonMore = true;
     private FilterCheckBoxListener fcbl;
-    private BrowseInventoryFrame bif;
+    private FilterPanel parent;
 
-    public FilterCheckBoxPanel(String title, BrowseInventoryFrame bif)
+    public FilterCheckBoxPanel(String title, FilterPanel parent)
     {
         this.title = title;
-        this.bif = bif;
+        this.parent = parent;
         this.checkBoxes = new ArrayList<JCheckBox>();
         this.fcbl = new FilterCheckBoxListener();
         createPanelComponents();
@@ -70,6 +70,25 @@ public class FilterCheckBoxPanel extends JPanel
         addCheckBoxesListeners();
     }
 
+    public int getCurrentHeight()
+    {
+        if (!isButtonHide)
+        {
+            return 40;
+        }
+
+        if (!isButtonMore)
+        {
+            return 40 + 30 + checkBoxes.size() * 25;
+        }
+
+        if (checkBoxes.size() > 4)
+        {
+            return 40 + 30 + 4 * 25;
+        }
+        return 40 + checkBoxes.size() * 25;
+    }
+
     public void populateCheckBoxes(List<String> items)
     {
         if (items == null)
@@ -102,7 +121,6 @@ public class FilterCheckBoxPanel extends JPanel
             buttonMore.setVisible(false);
             buttonLess.setVisible(false);
         }
-
     }
 
     private void removeCheckBoxesListeners()
@@ -280,7 +298,6 @@ public class FilterCheckBoxPanel extends JPanel
                 buttonLess.setVisible(true);
                 isButtonMore = false;
                 index = checkBoxes.size();
-
             }
             else if (e.getSource() == buttonLess)
             {
@@ -289,9 +306,8 @@ public class FilterCheckBoxPanel extends JPanel
                 isButtonMore = true;
                 index = DEFAULT_CHECKBOXES_NUMBER;
             }
-
             hideCheckBoxesFrom(index);
-            bif.resizeFilterPanel();
+            parent.resizeFilterPanel();
         }
     }
 
@@ -305,7 +321,7 @@ public class FilterCheckBoxPanel extends JPanel
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            bif.updateFilterConditions();
+            parent.updateFilterConditions();
         }
     }
 }
