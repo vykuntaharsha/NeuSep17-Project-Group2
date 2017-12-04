@@ -37,7 +37,7 @@ public class VehicleCell extends JPanel {
         add(image, gbc_image);
         
         StringBuilder title= new StringBuilder("<html>"+v.getYear() + " " + v.getMake() + " " + v.getModel());
-        if (discount > 0 ) title.append("&emsp&emsp <font color='red'> Sale Price: "+(v.getPrice()-discount)+"</font>");
+        if (discount > 0 ) title.append("&emsp <font color='red'> On Sale: "+(v.getPrice()-discount)+"!</font>");
         title.append("<html>");
         LinkLabel nameLabel = new LinkLabel(title.toString(),v.getId());            
         nameLabel.setVerticalAlignment(SwingConstants.BOTTOM);
