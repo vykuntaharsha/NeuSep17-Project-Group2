@@ -12,10 +12,13 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -228,17 +231,31 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
          * load the first page 15 images and then let the swing worker do the
          * rest
          */
+        Image notfound;
+        try {
+            notfound=ImageIO.read(new File("src/com/neuSep17/ui/consumer/imagenotfound.jpg"));
+        } catch (IOException e) {  
+            notfound=null;
+            e.printStackTrace();
+        }
+        
+        Image temp;
         for (int i = 0; i < perpage; ++i)
         {
             Vehicle v = invsAPI.getVehicles().get(i);
             int random = (int) Math.round(2 * Math.random());
-            Image temp = invsAPI.getVehicleImage(v.getBodyType()).get(random);
+            try {
+                temp = InventoryServiceAPI_Test.getVehicleImage(v.getBodyType()).get(random);
+            } catch (IOException e1) {
+                temp=notfound;
+                e1.printStackTrace();
+            }
             temp = temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT);
             cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
-        // updateThread t=new updateThread(); t.execute(); //TODO check this
-        // strange exception
+         updateThread t=new updateThread(); 
+         t.execute(); 
         return;
     }
 
@@ -252,13 +269,16 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
                 if (!cache.containsKey(v))
                 {
                     int i = (int) Math.round(2 * Math.random());
-                    Image temp = invsAPI.getVehicleImage(v.getBodyType()).get(i);
+                    Image temp = InventoryServiceAPI_Test.getVehicleImage(v.getBodyType()).get(i);
                     temp = temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT);
                     cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
-                    toDisplay.add(v);
                 }
             }
             return null;
+        }
+        
+        protected void done() {
+            System.out.println("update finished");
         }
     }
 
