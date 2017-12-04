@@ -52,7 +52,9 @@ public class SearchPanel extends JPanel {
         searchPanel.setOpaque(true);
         // search
         search = new JButton("Search");
-        searchText = new JTextField(10);
+        searchText = new JTextField(100);
+        //searchText.setPreferredSize(new Dimension(800, 20));
+        searchText.setMaximumSize(new Dimension(800, 30));
 
         // sort
         sortBy = new JLabel("Sort by : ");
@@ -70,10 +72,11 @@ public class SearchPanel extends JPanel {
         BoxLayout boxlayout = new BoxLayout(searchPanel, BoxLayout.X_AXIS);
         searchPanel.setLayout(boxlayout);
         searchPanel.add(Box.createHorizontalStrut(210));
-        searchPanel.add(Box.createHorizontalGlue());
+        //searchPanel.add(Box.createHorizontalGlue());
         searchPanel.add(searchText);
         searchPanel.add(search);
-        searchPanel.add(Box.createHorizontalStrut(50));
+        //searchPanel.add(Box.createHorizontalGlue());
+        searchPanel.add(Box.createHorizontalStrut(190));
         searchPanel.add(sortBy);
         searchPanel.add(sortItem);
         this.add(searchPanel);
