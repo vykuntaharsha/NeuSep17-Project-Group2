@@ -133,7 +133,8 @@ public class InventoryServiceAPI_Test {
 		
 	}
 	
-	public ArrayList<Image> getVehicleImage(String bodyType){
+	public static ArrayList<Image> getVehicleImage(String bodyType) throws IOException{
+		LinkedHashMap<String, ArrayList<Image>> vehicleImagesMap = getVehicleImagesMap();
 		if(bodyType.equalsIgnoreCase("truck")) {
 			return vehicleImagesMap.get("truck");
 		}
