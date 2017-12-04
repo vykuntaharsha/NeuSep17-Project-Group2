@@ -24,13 +24,13 @@ public class FilterPanel extends JPanel
     private String[] filterKeys = { "category", "year", "make", "price", "type" };
     private JPanel filterPanel;
     private JButton resetFilter;
-    boolean isExpand = false;
+    private int panelHeight = 595;
 
     public FilterPanel(BrowseInventoryFrame bif)
     {
         this.parent = bif;
         this.setLayout(new BorderLayout(0, 0));
-        this.setPreferredSize(new Dimension(210, 615));
+        this.setPreferredSize(new Dimension(210, panelHeight));
         createComponents();
         addComponents();
     }
@@ -38,6 +38,7 @@ public class FilterPanel extends JPanel
     public void setCheckBoxPanelsMap(Map<String, List<String>> checkBoxPanelsMap)
     {
         this.checkBoxPanelsMap = checkBoxPanelsMap;
+        filterScrollPane.getVerticalScrollBar().setValue(0);
         resetFilterCheckBox();
         updateFilterCheckBoxPanels();
     }
@@ -46,7 +47,7 @@ public class FilterPanel extends JPanel
     {
         filterPanel = new JPanel();
         filterScrollPane = new JScrollPane();
-        filterScrollPane.setPreferredSize(new Dimension(200, 615));
+        filterScrollPane.setPreferredSize(new Dimension(200, panelHeight));
         checkBoxPanels = new FilterCheckBoxPanel[filterKeys.length];
         for (int i = 0; i < checkBoxPanels.length; i++)
         {
@@ -121,10 +122,10 @@ public class FilterPanel extends JPanel
             height += checkBoxPanel.getCurrentHeight();
         }
 
-        if (height < 615)
+        if (height < panelHeight)
         {
             filterPanel.remove(filterPanel.getComponentCount() - 1);
-            filterPanel.add(Box.createVerticalStrut(615 - 10 - height));
+            filterPanel.add(Box.createVerticalStrut(panelHeight - 10 - height));
         }
         else
         {
