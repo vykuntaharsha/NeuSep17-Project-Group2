@@ -30,7 +30,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     IncentiveServiceAPI_Test incsAPI;
     // service API end
 
-    private String dealerID;
     private ArrayList<Vehicle> toDisplay;
     private List<Vehicle> searchedVehicles;
 
@@ -50,28 +49,21 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     public BrowseInventoryFrame(InventoryServiceAPI_Test invsAPI)
     {
-        super();
         setTitle("Browse Inventory of xx dealer");
 
-        // replaced by your folder
         this.invsAPI = invsAPI;
         incsAPI = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
-        // dealerID= dealer.getID();
+        this.cache = new HashMap<Vehicle, ImageIcon>();
+        this.toDisplay = new ArrayList<Vehicle>();
         setPage(0);
         perpage = 15;
 
-        this.cache = new HashMap<Vehicle, ImageIcon>();
-        this.toDisplay = new ArrayList<Vehicle>();
         updateVehicle();
 
-        this.setSize(1200, 700);
-        searchedVehicles = toDisplay;
         createComponents();
         addComponents();
-
         doSearch(null);
         addListeners();
-
     }
 
     private void createComponents()
@@ -110,7 +102,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
         BrowseWindowListener m = new BrowseWindowListener();
         this.addWindowListener(m);
-
     }
 
     public int getPage()
@@ -194,6 +185,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         }
         updateThread t = new updateThread();
         t.execute();
+        searchedVehicles = toDisplay;
         return;
     }
 
@@ -223,6 +215,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void makeThisVisible()
     {
+        this.setSize(1200, 700);
         this.setVisible(true);
     }
 
