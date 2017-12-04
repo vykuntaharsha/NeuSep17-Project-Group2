@@ -58,12 +58,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     // filter end
 
     // **search start***
-    private JLabel sortBy;
-    private JButton search;
-    private JTextField searchText;
-    private JComboBox<String> sortItem;
-    private String[] sortKeys = { "Select Sort By", "Price: High To Low", "Price: Low To High", "Year: High To Low",
-            "Year: Low To High", "Make: A - Z", "Make: Z - A" };
+    private SearchPanel searchPanel;
     // **search end***
 
     public BrowseInventoryFrame() // (Dealer dealer)
@@ -96,26 +91,11 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private void createComponents()
     {
         // search panel
-        createSearchPanelComponents();
+        searchPanel = new SearchPanel(this);
         // filter panel
         filterPanel = new FilterPanel(this);
         // list panel
         listpanel = new ListPanel(this);
-    }
-
-    private void createSearchPanelComponents()
-    {
-        // search
-        search = new JButton("Search");
-        searchText = new JTextField(10);
-
-        // sort
-        sortBy = new JLabel("Sort by : ");
-        sortItem = new JComboBox();
-        for (int i = 0; i < sortKeys.length; i++)
-        {
-            sortItem.addItem(sortKeys[i]);
-        }
     }
 
     private void addComponents()
@@ -124,8 +104,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         con.setLayout(new BorderLayout(1, 1));
 
         // search panel
-        JPanel searchPanel = new JPanel();
-        addSearchPanelComponents(searchPanel);
         con.add(searchPanel, BorderLayout.NORTH);
 
         // filter panel
@@ -135,25 +113,10 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         con.add(listpanel, BorderLayout.CENTER);
     }
 
-    private void addSearchPanelComponents(JPanel searchPanel) // search and sort
-    {
-        searchPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        BoxLayout boxlayout = new BoxLayout(searchPanel, BoxLayout.X_AXIS);
-        searchPanel.setLayout(boxlayout);
-        searchPanel.add(Box.createHorizontalStrut(5));
-        searchPanel.add(Box.createHorizontalGlue());
-        searchPanel.add(searchText);
-        searchPanel.add(search);
-        searchPanel.add(Box.createHorizontalStrut(50));
-        searchPanel.add(sortBy);
-        searchPanel.add(sortItem);
-    }
-
     private void addListeners()
     {
         // search panel
-        addSearchPanelListeners();
-        addSortPanelListeners();
+        searchPanel.addListeners();
         // filter panel
         filterPanel.addListeners();
         // list panel
@@ -162,23 +125,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         BrowseWindowListener m = new BrowseWindowListener();
         this.addWindowListener(m);
 
-    }
-
-    private void addSearchPanelListeners()
-    {
-        // search button listener
-        SearchListener searchlistener = new SearchListener();
-        search.addActionListener(searchlistener);
-
-        // press enter listener
-        SearchKeyListener searchKeyListener = new SearchKeyListener();
-        searchText.addKeyListener(searchKeyListener);
-    }
-
-    private void addSortPanelListeners()
-    {
-        SortListener sortlistener = new SortListener();
-        sortItem.addActionListener(sortlistener);
     }
 
     public int getPage()
@@ -289,127 +235,45 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void resetSortItem()
     {
-        sortItem.setSelectedIndex(0);
+        searchPanel.getSortItem().setSelectedIndex(0);
     }
 
-    class SearchKeyListener implements KeyListener
-    {
-
-        @Override
-        public void keyTyped(KeyEvent e)
-        {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e)
-        {
-            if (e.getKeyCode() == e.VK_ENTER)
-            {
-                updateSearch();
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e)
-        {
-
-        }
-    }
-
-    class SearchListener implements ActionListener
-    {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            updateSearch();
-        }
-    }
-
-    class SortListener implements ActionListener
-    {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            updateSort();
-        }
-    }
-
-    private void updateSearch()
-    {
-        String searchInfo = searchText.getText();
-        // System.out.println(searchInfo);
-        doSearch(searchInfo);
-    }
-
-    private void updateSort()
-    {
-        String sortMethod = sortItem.getSelectedIndex() == 0 ? null : (String) sortItem.getSelectedItem();
-        // System.out.println(sortMethod);
-        doSort(sortMethod);
-    }
-
-    private void doSort(String sortMethod)
+    public void doSort(String sortMethod)
     {
         if (sortMethod == null)
         {
             return;
         }
-        StringBuilder sortType = new StringBuilder();
+
         boolean isAscending = true;
-        isAscending = updateSortType(sortMethod, sortType);
-        // System.out.println(sortMethod + " + " + sortType.toString() + " + " +
-        // isAscending);
-        searchedVehicles = invsAPI.sortVehicles(searchedVehicles, sortType.toString(), isAscending);
+        if (sortMethod.contains(searchPanel.sortKeys[0])) {
+            return;
+        }
+
+        String[] sortMethodSplit = sortMethod.split(":");
+        String sortType = sortMethodSplit[0].toLowerCase().trim();
+
+        isAscending = updateSortType(sortMethodSplit[1]);
+        //System.out.println(sortMethod + " + " + sortType.toString() + " + " + isAscending);
+
+        searchedVehicles = invsAPI.sortVehicles(searchedVehicles, sortType, isAscending);
         filterPanel.updateFilterConditions();
         displaytoList();
     }
 
-    private boolean updateSortType(String sortMethod, StringBuilder sortType)
+    private boolean updateSortType(String ascendDescribe)
     {
-        if (sortMethod.toLowerCase().contains("year"))
+        if (ascendDescribe.toLowerCase().contains("high to low") || ascendDescribe.toLowerCase().contains("z - a"))
         {
-            sortType.delete(0, sortMethod.length());
-            sortType.append("year");
-            if (sortMethod.toLowerCase().contains("low to high"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
-        if (sortMethod.toLowerCase().contains("price"))
+        else
         {
-            sortType.delete(0, sortMethod.length());
-            sortType.append("price");
-            if (sortMethod.toLowerCase().contains("low to high"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
         }
-        if (sortMethod.toLowerCase().contains("make"))
-        {
-            sortType.delete(0, sortMethod.length());
-            sortType.append("make");
-            if (sortMethod.toLowerCase().contains("a - z"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
-    private void doSearch(String search)
+    public void doSearch(String search)
     {
         searchedVehicles = InventoryServiceAPI_Test.vehiclesSearchAndFilter(invsAPI.getVehicles(), null, null, null,
                 null, null, search);
