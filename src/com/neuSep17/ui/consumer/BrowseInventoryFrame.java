@@ -3,7 +3,6 @@ package com.neuSep17.ui.consumer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,14 +12,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -30,11 +25,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.border.TitledBorder;
 
 import com.neuSep17.dto.Vehicle;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
@@ -58,12 +51,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     // list end
 
     // filter start
-    private JScrollPane filterScrollPane;
-    private Map<String, List<String>> checkBoxPanelsMap;
-    private FilterCheckBoxPanel[] checkBoxPanels;
-    private String[] filterKeys = { "category", "year", "make", "price", "type" };
-    private JPanel filterPanel;
-    private JButton resetFilter;
+    private FilterPanel filterPanel;
     // filter end
 
     // **search start***
@@ -107,7 +95,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // search panel
         createSearchPanelComponents();
         // filter panel
-        createFilterPanelComponents();
+        filterPanel = new FilterPanel(this);
         // list panel
         listpanel = new ListPanel(this);
     }
@@ -127,18 +115,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         }
     }
 
-    private void createFilterPanelComponents()
-    {
-        filterPanel = new JPanel();
-        filterScrollPane = new JScrollPane();
-        checkBoxPanels = new FilterCheckBoxPanel[filterKeys.length];
-        for (int i = 0; i < checkBoxPanels.length; i++)
-        {
-            checkBoxPanels[i] = new FilterCheckBoxPanel(filterKeys[i], this);
-        }
-        resetFilter = new JButton("Clear All");
-    }
-
     private void addComponents()
     {
         Container con = getContentPane();
@@ -150,9 +126,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         con.add(searchPanel, BorderLayout.NORTH);
 
         // filter panel
-        filterScrollPane.setViewportView(filterPanel);
-        addFilterPanelComponents();
-        con.add(filterScrollPane, BorderLayout.WEST);
+        con.add(filterPanel, BorderLayout.WEST);
         // list panel
 
         con.add(listpanel, BorderLayout.CENTER);
@@ -172,56 +146,13 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         searchPanel.add(sortItem);
     }
 
-    private void addFilterPanelComponents()
-    {
-        BoxLayout boxLayout = new BoxLayout(filterPanel, BoxLayout.Y_AXIS);
-        filterPanel.setLayout(boxLayout);
-        filterPanel.setAutoscrolls(true);
-        filterPanel.setBorder(new TitledBorder("Filter"));
-        JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        linePanel.add(resetFilter);
-        filterPanel.add(linePanel);
-        for (int i = 0; i < checkBoxPanels.length; i++)
-        {
-            filterPanel.add(checkBoxPanels[i]);
-        }
-        filterPanel.add(Box.createVerticalStrut(0));
-    }
-
-    public void resizeFilterPanel()
-    {
-        int height = 40;
-        for (FilterCheckBoxPanel checkBoxPanel : checkBoxPanels)
-        {
-            if (!checkBoxPanel.isButtonHide())
-            {
-                height += 40;
-            }
-            else
-            {
-                height += checkBoxPanel.getSize().height;
-            }
-        }
-
-        if (height < 615)
-        {
-            filterPanel.remove(filterPanel.getComponentCount() - 1);
-            filterPanel.add(Box.createVerticalStrut(615 - height));
-        }
-        else
-        {
-            filterPanel.remove(filterPanel.getComponentCount() - 1);
-            filterPanel.add(Box.createVerticalStrut(0));
-        }
-    }
-
     private void addListeners()
     {
         // search panel
         addSearchPanelListeners();
         addSortPanelListeners();
         // filter panel
-        addResetFilterListeners();
+        filterPanel.addListeners();
         // list panel
         listpanel.addListeners();
 
@@ -245,25 +176,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     {
         SortListener sortlistener = new SortListener();
         sortItem.addActionListener(sortlistener);
-    }
-
-    private void resetFilter()
-    {
-        resetFilterCheckBox();
-        updateFilterConditions();
-    }
-
-    private void addResetFilterListeners()
-    {
-        resetFilter.addActionListener(new FilterResetListener());
-    }
-
-    private void resetFilterCheckBox()
-    {
-        for (int i = 0; i < checkBoxPanels.length; i++)
-        {
-            checkBoxPanels[i].clearAllChecked();
-        }
     }
 
     public int getPage()
@@ -312,75 +224,47 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void updateVehicle()
     {
-        /*   
-         *    load the first page 15 images and then let the swing worker do the rest
-         */        
-        for (int i=0;i<perpage;++i){
-            Vehicle v=invsAPI.getVehicles().get(i);
-            int random=(int) Math.round(2*Math.random());
-            Image temp=invsAPI.getVehicleImage(v.getBodyType()).get(random);
-            temp=temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT);
+        /*
+         * load the first page 15 images and then let the swing worker do the
+         * rest
+         */
+        for (int i = 0; i < perpage; ++i)
+        {
+            Vehicle v = invsAPI.getVehicles().get(i);
+            int random = (int) Math.round(2 * Math.random());
+            Image temp = invsAPI.getVehicleImage(v.getBodyType()).get(random);
+            temp = temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT);
             cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
-        //updateThread t=new updateThread(); t.execute();  //TODO check this strange exception        
-        return;        
+        // updateThread t=new updateThread(); t.execute(); //TODO check this
+        // strange exception
+        return;
     }
 
     class updateThread extends SwingWorker<Void, Void>
     {
-
         @Override
         protected Void doInBackground() throws Exception
         {
-
             for (Vehicle v : invsAPI.getVehicles())
             {
-                if (!cache.containsKey(v)){
-                    int i=(int) Math.round(2*Math.random());
-                    Image temp=invsAPI.getVehicleImage(v.getBodyType()).get(i);
-                    temp=temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT); 
+                if (!cache.containsKey(v))
+                {
+                    int i = (int) Math.round(2 * Math.random());
+                    Image temp = invsAPI.getVehicleImage(v.getBodyType()).get(i);
+                    temp = temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT);
                     cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
                     toDisplay.add(v);
-                }                
-            }            
+                }
+            }
             return null;
         }
-
     }
 
     private void makeThisVisible()
     {
         this.setVisible(true);
-    }
-
-    class FilterResetListener implements ActionListener
-    {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            resetFilter();
-        }
-    }
-
-    public void updateFilterConditions()
-    {
-        String categoriesFilter = checkBoxPanels[0].generateFilterCondition();
-        if (categoriesFilter != null)
-        {
-            categoriesFilter = categoriesFilter.trim().toLowerCase();
-        }
-        doFilter(categoriesFilter, checkBoxPanels[1].generateFilterCondition(),
-                checkBoxPanels[2].generateFilterCondition(), checkBoxPanels[3].generateFilterCondition(),
-                checkBoxPanels[4].generateFilterCondition());
-    }
-
-    private void updateFilterCheckBoxPanels()
-    {
-        for (int i = 0; i < checkBoxPanels.length; i++)
-        {
-            checkBoxPanels[i].populateCheckBoxes(checkBoxPanelsMap.get(filterKeys[i]));
-        }
     }
 
     private void resetSortItem()
@@ -457,7 +341,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // System.out.println(sortMethod + " + " + sortType.toString() + " + " +
         // isAscending);
         searchedVehicles = invsAPI.sortVehicles(searchedVehicles, sortType.toString(), isAscending);
-        updateFilterConditions();
+        filterPanel.updateFilterConditions();
         displaytoList();
     }
 
@@ -510,16 +394,13 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         searchedVehicles = InventoryServiceAPI_Test.vehiclesSearchAndFilter(invsAPI.getVehicles(), null, null, null,
                 null, null, search);
         toDisplay = (ArrayList<Vehicle>) searchedVehicles;
-        checkBoxPanelsMap = InventoryServiceAPI_Test.getComboBoxItemsMap(toDisplay);
         setPage(0);
-        resetFilterCheckBox();
-        updateFilterCheckBoxPanels();
-        displaytoList();
-
+        filterPanel.setCheckBoxPanelsMap(InventoryServiceAPI_Test.getComboBoxItemsMap(toDisplay));
         resetSortItem();
+        displaytoList();
     }
 
-    private void doFilter(String category, String year, String make, String price, String type)
+    public void doFilter(String category, String year, String make, String price, String type)
     {
         toDisplay = (ArrayList<Vehicle>) InventoryServiceAPI_Test.vehiclesSearchAndFilter(searchedVehicles, category,
                 year, make, price, type, null);
