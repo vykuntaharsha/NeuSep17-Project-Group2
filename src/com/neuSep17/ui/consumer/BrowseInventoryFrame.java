@@ -1,13 +1,8 @@
 package com.neuSep17.ui.consumer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
@@ -19,16 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
@@ -61,14 +48,13 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private SearchPanel searchPanel;
     // **search end***
 
-    public BrowseInventoryFrame() // (Dealer dealer)
+    public BrowseInventoryFrame(InventoryServiceAPI_Test invsAPI)
     {
         super();
         setTitle("Browse Inventory of xx dealer");
 
         // replaced by your folder
-        String file = "data/gmps-bresee";
-        invsAPI = new InventoryServiceAPI_Test(file);
+        this.invsAPI = invsAPI;
         incsAPI = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
         // dealerID= dealer.getID();
         setPage(0);
@@ -178,30 +164,36 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
          * rest
          */
         Image notfound;
-        try {
-            notfound=ImageIO.read(new File("src/com/neuSep17/ui/consumer/imagenotfound.jpg"));
-        } catch (IOException e) {  
-            notfound=null;
+        try
+        {
+            notfound = ImageIO.read(new File("src/com/neuSep17/ui/consumer/imagenotfound.jpg"));
+        }
+        catch (IOException e)
+        {
+            notfound = null;
             e.printStackTrace();
         }
-        
+
         Image temp;
         for (int i = 0; i < perpage; ++i)
         {
             Vehicle v = invsAPI.getVehicles().get(i);
             int random = (int) Math.round(2 * Math.random());
-            try {
+            try
+            {
                 temp = InventoryServiceAPI_Test.getVehicleImage(v.getBodyType()).get(random);
-            } catch (IOException e1) {
-                temp=notfound;
+            }
+            catch (IOException e1)
+            {
+                temp = notfound;
                 e1.printStackTrace();
             }
             temp = temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT);
             cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
-         updateThread t=new updateThread(); 
-         t.execute(); 
+        updateThread t = new updateThread();
+        t.execute();
         return;
     }
 
@@ -222,8 +214,9 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             }
             return null;
         }
-        
-        protected void done() {
+
+        protected void done()
+        {
             System.out.println("update finished");
         }
     }
@@ -246,7 +239,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         }
 
         boolean isAscending = true;
-        if (sortMethod.contains(searchPanel.sortKeys[0])) {
+        if (sortMethod.contains(searchPanel.sortKeys[0]))
+        {
             return;
         }
 
@@ -254,7 +248,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         String sortType = sortMethodSplit[0].toLowerCase().trim();
 
         isAscending = updateSortType(sortMethodSplit[1]);
-        //System.out.println(sortMethod + " + " + sortType.toString() + " + " + isAscending);
+        // System.out.println(sortMethod + " + " + sortType.toString() + " + " +
+        // isAscending);
 
         searchedVehicles = invsAPI.sortVehicles(searchedVehicles, sortType, isAscending);
         filterPanel.updateFilterConditions();
@@ -335,12 +330,11 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         public void windowOpened(WindowEvent e)
         {
         }
-
     }
 
     public static void main(String[] args)
     {
-        BrowseInventoryFrame bif = new BrowseInventoryFrame();
+        BrowseInventoryFrame bif = new BrowseInventoryFrame(new InventoryServiceAPI_Test("data/gmps-bresee"));
         Thread BrowseInventoryThread = new Thread(() -> bif.run());
         SwingUtilities.invokeLater(BrowseInventoryThread);
     }

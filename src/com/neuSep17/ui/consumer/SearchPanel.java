@@ -1,13 +1,26 @@
 package com.neuSep17.ui.consumer;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class SearchPanel extends JPanel {
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class SearchPanel extends JPanel
+{
     private BrowseInventoryFrame parent;
     private JPanel searchPanel;
     private JPanel backPanel;
@@ -15,37 +28,38 @@ public class SearchPanel extends JPanel {
     private JButton search;
     private JTextField searchText;
     private JComboBox<String> sortItem;
-    public String[] sortKeys = {"Select Sort By",
-            "Price: High To Low",
-            "Price: Low To High",
-            "Year: High To Low",
-            "Year: Low To High",
-            "Make: A - Z", "Make: Z - A" };
+    public String[] sortKeys = { "Select Sort By", "Price: High To Low", "Price: Low To High", "Year: High To Low",
+            "Year: Low To High", "Make: A - Z", "Make: Z - A" };
 
-    public SearchPanel(BrowseInventoryFrame bif) {
+    public SearchPanel(BrowseInventoryFrame bif)
+    {
         this.parent = bif;
         this.setLayout(new BorderLayout(0, 0));
         this.setPreferredSize(new Dimension(1200, 50));
         createSearchPanelComponents();
         addSearchPanelComponents();
     }
-    public JComboBox<String> getSortItem() {
+
+    public JComboBox<String> getSortItem()
+    {
         return this.sortItem;
     }
 
-    public String[] getSortKeys() {
+    public String[] getSortKeys()
+    {
         return sortKeys;
     }
 
     private void createSearchPanelComponents()
     {
-        //background add picture
-        searchPanel = new JPanel() {
-            public void paintComponent(Graphics g) {
-                ImageIcon backImage =
-                        new ImageIcon("data/images/bannerOfCar.jpg");
+        // background add picture
+        searchPanel = new JPanel()
+        {
+            public void paintComponent(Graphics g)
+            {
+                ImageIcon backImage = new ImageIcon("data/images/bannerOfCar.jpg");
 
-                g.drawImage(backImage.getImage(), 0, 0, this.getSize().width,this.getSize().height,this);
+                g.drawImage(backImage.getImage(), 0, 0, this.getSize().width, this.getSize().height, this);
             }
         };
         searchPanel.setLayout(new BorderLayout());
@@ -62,9 +76,9 @@ public class SearchPanel extends JPanel {
             sortItem.addItem(sortKeys[i]);
         }
     }
+
     private void addSearchPanelComponents() // search and sort
     {
-
 
         searchPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         BoxLayout boxlayout = new BoxLayout(searchPanel, BoxLayout.X_AXIS);
@@ -80,10 +94,12 @@ public class SearchPanel extends JPanel {
 
     }
 
-    public void addListeners(){
+    public void addListeners()
+    {
         addSearchPanelListeners();
         addSortPanelListeners();
     }
+
     private void addSearchPanelListeners()
     {
         // search button listener
@@ -100,6 +116,7 @@ public class SearchPanel extends JPanel {
         SortListener sortlistener = new SortListener();
         sortItem.addActionListener(sortlistener);
     }
+
     public void updateSearch()
     {
         String searchInfo = searchText.getText();
@@ -113,6 +130,7 @@ public class SearchPanel extends JPanel {
         // System.out.println(sortMethod);
         parent.doSort(sortMethod);
     }
+
     class SearchKeyListener implements KeyListener
     {
 
@@ -156,4 +174,3 @@ public class SearchPanel extends JPanel {
         }
     }
 }
-
