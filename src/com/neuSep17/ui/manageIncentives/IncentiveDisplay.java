@@ -16,15 +16,12 @@ import java.util.ArrayList;
  */
 public class IncentiveDisplay extends JPanel {
     IncentiveList incentive_list;
-    SortList sort_list;
 
 
     public IncentiveDisplay() {
         //set layout
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         incentive_list = new IncentiveList();
-        sort_list = new SortList();
-        //add(sort_list);
         add(incentive_list);
     }
 
@@ -42,7 +39,7 @@ class IncentiveList extends JPanel {
 
     public IncentiveList() {
 
-        setBackground(new Color(206, 206, 206));
+        setBackground(new Color(226, 247, 252));
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(1000, 530));
         service = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
@@ -52,7 +49,7 @@ class IncentiveList extends JPanel {
         JTableHeader T_header = incentive_list.getTableHeader();
         T_header.setPreferredSize(new Dimension(1,25));
         T_header.setBackground(new Color(0, 0, 0));
-        T_header.setForeground(new Color(61, 200, 247));
+        T_header.setForeground(new Color(226, 247, 252));
         T_header.setFont(new Font("Menlo", Font.PLAIN, 16));
 
         for (int i = 0; i < 7; i++) {
@@ -63,7 +60,7 @@ class IncentiveList extends JPanel {
         // set table attribute
         incentive_list.setForeground(new Color(0, 0, 0));
         incentive_list.setGridColor(new Color(0, 0, 0));
-        incentive_list.setBackground(new Color(61, 200, 247));
+        incentive_list.setBackground(new Color(226, 247, 252));
         incentive_list.setFont(new Font("Menlo", Font.PLAIN, 12));
         //sort function
         incentive_list.setAutoCreateRowSorter(true);
@@ -111,20 +108,4 @@ class IncentiveList extends JPanel {
 
 }
 
-class SortList extends JPanel {
 
-    private JComboBox sortCombo;
-
-    public SortList() {
-        String[] sort_name = { "Discount high to low", "Discount low to high","Start date", "End date"};
-        sortCombo = new JComboBox(sort_name);
-        sortCombo.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        add(sortCombo);
-        setLayout(new FlowLayout(FlowLayout.RIGHT));
-        setBackground(new Color(206, 206, 206));
-        setPreferredSize(new Dimension(1000, 30));
-    }
-
-
-
-}
