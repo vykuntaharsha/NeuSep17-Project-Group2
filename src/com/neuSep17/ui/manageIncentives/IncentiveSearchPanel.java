@@ -12,21 +12,28 @@ public class IncentiveSearchPanel extends JPanel {
     private JButton searchButton;
     private IncentiveSearchListener searchListener;
 
+    private Color bgColor = new Color(226, 247, 252);
+    private Color fgColor = new Color(156, 199, 231);
+
     public IncentiveSearchPanel(){
         Dimension dim = getPreferredSize();
         dim.height = 100;
         setPreferredSize(dim);
+        setBackground(bgColor);
 
         title = new JLabel("Manage Incentives");
         title.setPreferredSize(new Dimension(650,60));
-        title.setFont(new Font("Menlo", Font.PLAIN, 35));
+        title.setFont(new Font("Segoe UI Historic", Font.PLAIN, 35));
+
         searchNotice = new JLabel("Search by key words:");
         searchNotice.setPreferredSize(new Dimension(250, 34));
-        searchNotice.setFont(new Font("Menlo", Font.PLAIN, 18));
+        searchNotice.setFont(new Font("Segoe UI Historic", Font.PLAIN, 18));
+
         textField = new TextField();
         textField.setPreferredSize(new Dimension(850, 34));
         searchButton = new JButton("Search");
-        searchButton.setPreferredSize(new Dimension(80,34));
+        searchButton.setBackground(fgColor);
+        searchButton.setFont(new Font("Segoe UI Historic", Font.PLAIN, 16));
 
 
         panelLayout();

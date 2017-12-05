@@ -27,10 +27,13 @@ public class IncentiveFilterPanel extends JPanel {
 
     private IncentiveFilterListener filterListener;
 
+    private Color bgColor = new Color(226, 247, 252);
+
     public IncentiveFilterPanel(){
         Dimension dim = getPreferredSize();
         dim.width = 200;
         setPreferredSize(dim);
+        setBackground(bgColor);
 
         Border innerBorder = BorderFactory.createTitledBorder("Refine by");
         Border outerBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);

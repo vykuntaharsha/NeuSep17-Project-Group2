@@ -15,15 +15,28 @@ public class IncentiveToolPanel extends JPanel {
     private String[] incentive_temp;
     private Incentive incentive_test;
 
+    private Color bgColor = new Color(226, 247, 252);
+    private Color fgColor = new Color(156, 199, 231);
+
     public IncentiveToolPanel(JTable incentive_list){
         Dimension dim = getPreferredSize();
-        dim.height = 80;
+        dim.height = 30;
         setPreferredSize(dim);
+        setBackground(bgColor);
+
 
         addButton = new JButton("add");
         deleteButton = new JButton("delete");
         editButton = new JButton("edit");
         buttonLayout();
+
+        addButton.setBackground(fgColor);
+        editButton.setBackground(fgColor);
+        deleteButton.setBackground(fgColor);
+
+        addButton.setFont(new Font("Segoe UI Historic", Font.PLAIN, 16));
+        editButton.setFont(new Font("Segoe UI Historic", Font.PLAIN, 16));
+        deleteButton.setFont(new Font("Segoe UI Historic", Font.PLAIN, 16));
 
         addButton.addActionListener(new ActionListener() {
             @Override
