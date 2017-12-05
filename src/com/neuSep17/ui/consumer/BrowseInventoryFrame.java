@@ -1,8 +1,6 @@
 package com.neuSep17.ui.consumer;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
@@ -216,6 +214,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private void makeThisVisible()
     {
         this.setSize(1200, 700);
+        this.setMinimumSize(new Dimension(900, 600));
         this.setVisible(true);
     }
 
