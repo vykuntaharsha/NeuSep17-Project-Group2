@@ -28,7 +28,8 @@ public class IncentiveToolPanel extends JPanel {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IncentiveAddEditDialog addDialog = new IncentiveAddEditDialog("",incentive_list);
+                //first parameter should be replaced by current dealerId
+                new IncentiveAddEditDialog("gmps-camino",incentive_list);
             }
         });
 
@@ -70,7 +71,8 @@ public class IncentiveToolPanel extends JPanel {
                     JOptionPane.showMessageDialog(null, "Please select a line first!");
                 }else {
                     incentive_test = new Incentive(incentive_temp);
-                    IncentiveAddEditDialog editDialog = new IncentiveAddEditDialog("", incentive_test, incentive_list);
+                    //first parameter should be replaced by current dealerId
+                    new IncentiveAddEditDialog("gmps-camino", incentive_test, incentive_list);
                 }
             }
         });
