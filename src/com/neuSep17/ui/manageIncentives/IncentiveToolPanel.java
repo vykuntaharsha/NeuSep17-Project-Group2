@@ -65,10 +65,12 @@ public class IncentiveToolPanel extends JPanel {
         editButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
-                incentive_test = new Incentive(incentive_temp);
-                IncentiveAddEditDialog editDialog = new IncentiveAddEditDialog("",incentive_test,incentive_list);
-
+                if(incentive_temp == null || incentive_temp.length == 0){
+                    JOptionPane.showMessageDialog(null, "Please select a line first!");
+                }else {
+                    incentive_test = new Incentive(incentive_temp);
+                    IncentiveAddEditDialog editDialog = new IncentiveAddEditDialog("", incentive_test, incentive_list);
+                }
             }
         });
     }

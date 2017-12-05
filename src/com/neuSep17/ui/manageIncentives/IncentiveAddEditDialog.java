@@ -5,19 +5,13 @@ import com.neuSep17.dto.Incentive;
 import com.neuSep17.dto.IncentiveTableModel;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 import com.neuSep17.service.InventoryServiceAPI_Test;
-import javafx.scene.control.DatePicker;
 
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.List;
@@ -55,6 +49,7 @@ public class IncentiveAddEditDialog extends JDialog {
     String file = "data/IncentiveSample.txt";
 
     public IncentiveAddEditDialog(String dealerId, JTable incentive_list){
+        this.incentive_list = incentive_list;
         setTitle("add incentive");
         init(dealerId);
     }
@@ -62,6 +57,7 @@ public class IncentiveAddEditDialog extends JDialog {
     //edit constructor
     public IncentiveAddEditDialog(String dealerId, Incentive incentive, JTable incentive_list){
         this.incentive = incentive;
+        this.incentive_list = incentive_list;
         init(dealerId);
         setTitle("edit incentive");
     }
@@ -143,14 +139,14 @@ public class IncentiveAddEditDialog extends JDialog {
         }
         crit[4] = criterion.get(criterion.size() - 1);
 
-        if(crit[0].equals("all")){
-            criterions[0].setSelectedItem(crit[0]);
+        if(crit[0].replace("[","").equals("all")){
+            criterions[0].setSelectedIndex(1);
             for(i = 1; i < criterions.length;i++){
                 criterions[i].setEnabled(false);
             }
         }else{
             for(i = 1; i < criterions.length;i++){
-                criterions[i].setSelectedItem(crit[i].equals("no") ? criterions[i].getItemAt(0) : crit[i]);
+                criterions[i].setSelectedItem(crit[i].replace("]","").equals("no") ? criterions[i].getItemAt(0) : crit[i]);
             }
         }
     }
@@ -323,7 +319,11 @@ public class IncentiveAddEditDialog extends JDialog {
         incentive = new Incentive(arr);
         incentiveAPI.addIncentive(incentive);
         incentiveAPI.saveIncentiveToFile();
+
+
+        refresh();
         close();
+
     }
 
     private String generateIncentiveID(){
@@ -367,4 +367,8 @@ public class IncentiveAddEditDialog extends JDialog {
         dispose();
     }
 
+    private void refresh(){
+        incentive_list.setModel(new IncentiveTableModel(new IncentiveServiceAPI_Test("data/IncentiveSample.txt")));
+        incentive_list.updateUI();
+    }
 }
