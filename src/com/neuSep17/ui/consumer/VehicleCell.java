@@ -36,10 +36,8 @@ public class VehicleCell extends JPanel {
         gbc_image.gridy = 0;
         add(image, gbc_image);
         
-        StringBuilder title= new StringBuilder("<html>"+v.getYear() + " " + v.getMake() + " " + v.getModel());
-        if (discount > 0 ) title.append("&emsp <font color='red'> On Sale: "+(v.getPrice()-discount)+"!</font>");
-        title.append("<html>");
-        LinkLabel nameLabel = new LinkLabel(title.toString(),v.getId());            
+        String title= v.getYear() + " " + v.getMake() + " " + v.getModel();       
+        LinkLabel nameLabel = new LinkLabel(title, v.getId());            
         nameLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         nameLabel.setFont(new Font(nameLabel.getFont().getFontName(), Font.BOLD, 24));
         GridBagConstraints gbc_nameLabel = new GridBagConstraints();
@@ -59,13 +57,13 @@ public class VehicleCell extends JPanel {
         gbl_specPane.rowWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
         specPane.setLayout(gbl_specPane);
 
-        JLabel priceLabel = new JLabel("price: " + v.getPrice().toString());
-        GridBagConstraints gbc_priceLabel = new GridBagConstraints();
-        gbc_priceLabel.anchor = GridBagConstraints.SOUTHWEST;
-        gbc_priceLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_priceLabel.gridx = 0;
-        gbc_priceLabel.gridy = 0;
-        specPane.add(priceLabel, gbc_priceLabel);
+        JLabel typeLabel = new JLabel("type: " + v.getBodyType());
+        GridBagConstraints gbc_typeLabel = new GridBagConstraints();
+        gbc_typeLabel.insets = new Insets(0, 0, 5, 5);
+        gbc_typeLabel.anchor = GridBagConstraints.NORTHWEST;
+        gbc_typeLabel.gridx = 0;
+        gbc_typeLabel.gridy = 0;
+        specPane.add(typeLabel, gbc_typeLabel);
 
         JLabel categoryLabel = new JLabel("category: " + v.getCategory().toString());
         GridBagConstraints gbc_categoryLabel = new GridBagConstraints();
@@ -74,15 +72,19 @@ public class VehicleCell extends JPanel {
         gbc_categoryLabel.gridx = 1;
         gbc_categoryLabel.gridy = 0;
         specPane.add(categoryLabel, gbc_categoryLabel);
-                    
-        JLabel description = new JLabel("description");
-        GridBagConstraints gbc_description = new GridBagConstraints();
-        gbc_description.anchor = GridBagConstraints.NORTHWEST;
-        gbc_description.gridheight = 2;
-        gbc_description.insets = new Insets(0, 0, 5, 0);
-        gbc_description.gridx = 2;
-        gbc_description.gridy = 0;
-        specPane.add(description, gbc_description);
+        
+        String price= "price: " + v.getPrice().toString();
+        if (discount > 0 ) {
+            price="<html><STRIKE>"+price+"</STRIKE><br /> <font color='red' size='+2'> On Sale: "+(v.getPrice()-discount)+"!</font><html>";
+        }
+        JLabel priceLabel = new JLabel(price);
+        GridBagConstraints gbc_priceLabel = new GridBagConstraints();
+        gbc_priceLabel.gridheight = 2;
+        gbc_priceLabel.anchor = GridBagConstraints.NORTH;
+        gbc_priceLabel.insets = new Insets(0, 0, 5, 0);
+        gbc_priceLabel.gridx = 2;
+        gbc_priceLabel.gridy = 0;
+        specPane.add(priceLabel, gbc_priceLabel);
 
         JLabel trimLabel = new JLabel("trim: " + v.getTrim());
         GridBagConstraints gbc_trimLabel = new GridBagConstraints();
@@ -98,14 +100,6 @@ public class VehicleCell extends JPanel {
         gbc_specPane.gridx = 1;
         gbc_specPane.gridy = 1;
         add(specPane, gbc_specPane);
-
-        JLabel typeLabel = new JLabel("type: " + v.getBodyType());
-        GridBagConstraints gbc_typeLabel = new GridBagConstraints();
-        gbc_typeLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_typeLabel.anchor = GridBagConstraints.NORTHWEST;
-        gbc_typeLabel.gridx = 1;
-        gbc_typeLabel.gridy = 1;
-        specPane.add(typeLabel, gbc_typeLabel);
 
     }
 
