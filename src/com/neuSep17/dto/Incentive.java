@@ -7,7 +7,7 @@ public class Incentive {
     private String id;
     private String webId;
     private String title;
-    private Float discount;
+    private float discount;
     private String startDate;
     private String endDate;
     private ArrayList<String> criterion = new ArrayList<String>();
@@ -24,6 +24,8 @@ public class Incentive {
         	
         String[] criterionArr = arr[6].split(",");
         for(String data : criterionArr) {
+        		if(data.equalsIgnoreCase("no"))
+        			continue;
           criterion.add(data.trim());
         }
         
@@ -50,7 +52,7 @@ public class Incentive {
 		return title;
 	}
 
-	public Float getDiscount() {
+	public float getDiscount() {
 		return discount;
 	}
 
@@ -82,7 +84,7 @@ public class Incentive {
 		this.title = title;
 	}
 
-	public void setDiscount(Float discount) {
+	public void setDiscount(float discount) {
 		this.discount = discount;
 	}
 
