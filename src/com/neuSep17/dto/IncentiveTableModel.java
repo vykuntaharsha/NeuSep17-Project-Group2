@@ -3,13 +3,16 @@ package com.neuSep17.dto;
 import java.util.ArrayList;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 
 public class IncentiveTableModel extends AbstractTableModel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private IncentiveServiceAPI_Test incentiveAPI;	
   private String[] columnTitles = {"ID", "Title", "Discount", "Start Date", "End Date", "Criterion", "Description"};
 
@@ -83,7 +86,6 @@ public class IncentiveTableModel extends AbstractTableModel {
 
 	}
 
-
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
@@ -101,5 +103,8 @@ public class IncentiveTableModel extends AbstractTableModel {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	public void refreshIncentivesTable() {
+		this.fireTableDataChanged();
+	}
 }
