@@ -38,7 +38,8 @@ public class IncentiveToolPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //temp
-                IncentiveDeleteDialog deleteDialog = new IncentiveDeleteDialog(incentive_test);
+                incentive_test = new Incentive(incentive_temp);
+                IncentiveDeleteDialog deleteDialog = new IncentiveDeleteDialog(incentive_test,incentive_list);
 
 
             }

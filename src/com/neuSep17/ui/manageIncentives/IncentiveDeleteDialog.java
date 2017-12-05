@@ -1,6 +1,7 @@
 package com.neuSep17.ui.manageIncentives;
 
 import com.neuSep17.dto.Incentive;
+import com.neuSep17.dto.IncentiveTableModel;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 
 import javax.swing.*;
@@ -11,16 +12,20 @@ import java.awt.event.ActionListener;
 public class IncentiveDeleteDialog extends JDialog {
     private JLabel explaination;
     private JButton yes, no;
+    private JTable incentive_list;
+    String file = "data/IncentiveSample.txt";
 
     private IncentiveServiceAPI_Test incentiveAPI;
     private Incentive incentive;
 
-    public IncentiveDeleteDialog(Incentive incentive){
+    public IncentiveDeleteDialog(Incentive incentive, JTable incentive_list){
         this.incentive = incentive;
+        this.incentive_list = incentive_list;
         setTitle("Delete The Incentive");
         setSize(600,250);
         setVisible(true);
 
+        incentiveAPI = new IncentiveServiceAPI_Test(file);
         create();
         makeListeners();
         display();
@@ -66,10 +71,18 @@ public class IncentiveDeleteDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == yes){
                 incentiveAPI.deleteIncentive(incentive.getId());
+                incentiveAPI.saveIncentiveToFile();
+                refresh();
+                setVisible(false);
             }
             if(e.getSource() == no){
                 setVisible(false);
             }
+        }
+
+        private void refresh(){
+            incentive_list.setModel(new IncentiveTableModel(new IncentiveServiceAPI_Test("data/IncentiveSample.txt")));
+            incentive_list.updateUI();
         }
     }
 }
