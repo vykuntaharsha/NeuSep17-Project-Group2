@@ -1,4 +1,11 @@
 package com.neuSep17.ui.consumer;
+import com.neuSep17.dto.Vehicle;
+import com.neuSep17.service.IncentiveServiceAPI_Test;
+import com.neuSep17.service.InventoryServiceAPI_Test;
+
+import com.neuSep17.dto.Vehicle;
+import com.neuSep17.service.IncentiveServiceAPI_Test;
+import com.neuSep17.service.InventoryServiceAPI_Test;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -17,9 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import com.neuSep17.dto.Vehicle;
-import com.neuSep17.service.IncentiveServiceAPI_Test;
-import com.neuSep17.service.InventoryServiceAPI_Test;
+
 
 public class BrowseInventoryFrame extends JFrame implements Runnable
 {
