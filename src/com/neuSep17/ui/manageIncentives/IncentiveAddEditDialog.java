@@ -10,12 +10,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.List;
-import java.util.Map;
 
 public class IncentiveAddEditDialog extends JDialog {
 
@@ -24,14 +26,18 @@ public class IncentiveAddEditDialog extends JDialog {
     private InventoryServiceAPI_Test inventoryAPI;
     private JTable incentive_list;
 
-    //current dearler
+    //current dealer
     private String dealerId;
 
-    //label
     private Incentive incentive;
+
+    //label
     private JLabel labelTitle, labelDiscount,labelStart,labelEnd,labelCriterion,labelDescription;
 
-    private JTextField fieldTitle,fieldDiscount,fieldStart,fieldEnd;
+    private JTextField fieldTitle,fieldDiscount;
+
+    JSpinner startDate, endDate;
+    DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
 
     private JTextArea description;
     private JScrollPane scrollPane;
@@ -63,9 +69,7 @@ public class IncentiveAddEditDialog extends JDialog {
     }
 
     private void init(String dealerId){
-        //replace by current dealerId
-        dealerId = "gmps-bresee";
-        this.dealerId = dealerId;//"gmps-camino";
+        this.dealerId = dealerId;
         incentiveAPI = new IncentiveServiceAPI_Test(file);
         inventoryAPI = new InventoryServiceAPI_Test("data/"+dealerId);
         initComponents();
@@ -85,8 +89,8 @@ public class IncentiveAddEditDialog extends JDialog {
 
         fieldTitle = new JTextField(incentive == null ? "" : incentive.getTitle(),20);
         fieldDiscount = new JTextField(incentive == null ? "" : String.valueOf(incentive.getDiscount()),20);
-        fieldStart = new JTextField(incentive == null ? "" : incentive.getStartDate(),20);
-        fieldEnd = new JTextField(incentive == null ? "" : incentive.getEndDate(),20);
+
+        createDateComponents();
 
         description = new JTextArea(incentive == null ? "" : incentive.getDescription(),3,20);
         description.setLineWrap(true);
@@ -103,6 +107,26 @@ public class IncentiveAddEditDialog extends JDialog {
         buttonCancel = new JButton("Cancel");
     }
 
+    private void createDateComponents(){
+        startDate = new JSpinner(new SpinnerDateModel());
+        endDate = new JSpinner(new SpinnerDateModel());
+        try {
+
+            JSpinner.DateEditor startEditor = new JSpinner.DateEditor(startDate, "yyyy-MM-dd");
+            JSpinner.DateEditor endEditor = new JSpinner.DateEditor(endDate, "yyyy-MM-dd");
+
+            startDate.setEditor(startEditor);
+            endDate.setEditor(endEditor);
+
+            startDate.setValue(incentive == null ?
+                    new Date() : fmt.parse(incentive.getStartDate()));
+            endDate.setValue(incentive == null ?
+                    new Date() : fmt.parse(incentive.getEndDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void createCriterionComponents(){
         criterions = new JComboBox[criterionKey.length];
         criterionMap = inventoryAPI.getComboBoxItemsMap(inventoryAPI.getVehicles());
@@ -116,7 +140,9 @@ public class IncentiveAddEditDialog extends JDialog {
                     if(criterionKey[i].equals("price")){
                         item = item.substring(item.indexOf("~")+1);
                     }
-                    criterions[i].addItem(item);
+                    if(!item.isEmpty()) {
+                        criterions[i].addItem(item);
+                    }
                 }
             }
         }
@@ -160,8 +186,8 @@ public class IncentiveAddEditDialog extends JDialog {
 
         addLine(constraints,labelTitle,fieldTitle);
         addLine(constraints,labelDiscount,fieldDiscount);
-        addLine(constraints,labelStart,fieldStart);
-        addLine(constraints,labelEnd,fieldEnd);
+        addLine(constraints,labelStart,startDate);
+        addLine(constraints,labelEnd,endDate);
         addCriterion(constraints);
 //        constraints.ipady = 40;
         addLine(constraints,labelDescription,scrollPane);
@@ -251,6 +277,11 @@ public class IncentiveAddEditDialog extends JDialog {
                 }else{
                     AlertDialog(labelDiscount.getText(),"price");
                 }
+            } else if (!isVaildDate()){
+                alert.showMessageDialog(new JFrame(),
+                        "Start date should less than end date.",
+                        "Input Invalid",
+                        JOptionPane.WARNING_MESSAGE);
             } else if (!isVaildText(description.getText())) {
                 AlertDialog(labelDescription.getText(),"");
             } else if(isValidCriterions()){
@@ -276,6 +307,11 @@ public class IncentiveAddEditDialog extends JDialog {
         return false;
     }
 
+    private boolean isVaildDate(){
+        String start = fmt.format(startDate.getValue());
+        String end = fmt.format(endDate.getValue());
+        return start.compareTo(end) == -1;
+    }
     private boolean isValidCriterions(){
         if(criterions[0].getSelectedIndex() != 0){
             return true;
@@ -307,8 +343,8 @@ public class IncentiveAddEditDialog extends JDialog {
         arr[1] = dealerId;
         arr[2] = fieldTitle.getText().trim();
         arr[3] = fieldDiscount.getText();
-        arr[4] = fieldStart.getText();
-        arr[5] = fieldEnd.getText();
+        arr[4] = fmt.format(startDate.getValue());
+        arr[5] = fmt.format(endDate.getValue());
         arr[6] = getCriterionValue();
         arr[7] = description.getText();
         if(incentive == null){
