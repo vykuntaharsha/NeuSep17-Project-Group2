@@ -8,20 +8,17 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class IncentiveFilterPanel extends JPanel {
-
     private JLabel rangeLabel;
-    private JLabel vehicleLabel;
-    private JLabel colorLabel;
+    private JLabel categoryLabel;
     private JLabel makerLabel;
     private JLabel typeLabel;
-    private JLabel yearLabel;
+    private JLabel modelLabel;
 
-    private JList rangeList;
-    private JComboBox vehicleCombo;
-    private JComboBox colorCombo;
+    private JComboBox rangeCombo;
+    private JComboBox categoryCombo;
     private JComboBox makerCombo;
+    private JComboBox modelCombo;
     private JComboBox typeCombo;
-    private JComboBox yearCombo;
 
     private JButton filterSubmit;
 
@@ -40,25 +37,20 @@ public class IncentiveFilterPanel extends JPanel {
         setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
 
         //set up boxes
-        vehicleCombo = new JComboBox();
-        colorCombo = new JComboBox();
+        rangeCombo = new JComboBox();
+        categoryCombo = new JComboBox();
         makerCombo = new JComboBox();
         typeCombo = new JComboBox();
-        yearCombo = new JComboBox();
+        modelCombo = new JComboBox();
         setBox();
 
-        //set up lists
-        rangeList = new JList();
-        setList();
-
-
         //set up labels
-        vehicleLabel = new JLabel("Vehicle");
-        colorLabel = new JLabel("Color");
+        categoryLabel = new JLabel("Category");
         rangeLabel = new JLabel("Range");
         makerLabel = new JLabel("Maker");
+        modelLabel = new JLabel("Model");
         typeLabel = new JLabel("Type");
-        yearLabel = new JLabel("Year");
+
 
         //set up OK button
         filterSubmit = new JButton("Submit");
@@ -66,24 +58,24 @@ public class IncentiveFilterPanel extends JPanel {
         //set layout
         filterLayout();
 
+        allChosenListeners();
+
         //search button
         filterSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String range = (String)rangeList.getSelectedValue();
-                String color = (String)colorCombo.getSelectedItem();
-                String vehicle = (String)vehicleCombo.getSelectedItem();
+                String range = (String)rangeCombo.getSelectedItem();
+                String category = (String)categoryCombo.getSelectedItem();
                 String maker = (String)makerCombo.getSelectedItem();
                 String type = (String)typeCombo.getSelectedItem();
-                String year = (String)yearCombo.getSelectedItem();
+                String model = (String)modelCombo.getSelectedItem();
 
                 ArrayList<String> filterList = new ArrayList<>();
                 filterList.add(range);
-                filterList.add(color);
-                filterList.add(vehicle);
+                filterList.add(category);
                 filterList.add(maker);
                 filterList.add(type);
-                filterList.add(year);
+                filterList.add(model);
 
                 IncentiveFilterEvent fe = new IncentiveFilterEvent(e, filterList);
 
@@ -94,26 +86,63 @@ public class IncentiveFilterPanel extends JPanel {
         });
     }
 
-    public void setBox(){
-        DefaultComboBoxModel vehicleModel = new DefaultComboBoxModel();
-        vehicleModel.addElement("");
-        vehicleModel.addElement("Camry");
-        vehicleModel.addElement("Corolla");
-        vehicleModel.addElement("RAV4");
-        vehicleCombo.setModel(vehicleModel);
+    private void allChosenListeners() {
+        allChosenListener cl = new allChosenListener();
+        rangeCombo.addActionListener(cl);
+    }
 
-        DefaultComboBoxModel colorsModel = new DefaultComboBoxModel();
-        colorsModel.addElement("");
-        colorsModel.addElement("Red");
-        colorsModel.addElement("white");
-        colorsModel.addElement("Grey");
-        colorCombo.setModel(colorsModel);
+    class allChosenListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            updateCreterion();
+        }
+    }
+
+    private void updateCreterion(){
+        if(rangeCombo.getSelectedIndex() != 0){
+            categoryCombo.setSelectedItem(categoryCombo.getItemAt(0));
+            categoryCombo.setEnabled(false);
+            makerCombo.setSelectedItem(makerCombo.getItemAt(0));
+            makerCombo.setEnabled(false);
+            modelCombo.setSelectedItem(modelCombo.getItemAt(0));
+            modelCombo.setEnabled(false);
+            typeCombo.setSelectedItem(typeCombo.getItemAt(0));
+            typeCombo.setEnabled(false);
+        }else{
+            categoryCombo.setEnabled(true);
+            makerCombo.setEnabled(true);
+            modelCombo.setEnabled(true);
+            typeCombo.setEnabled(true);
+        }
+    }
+
+
+    public void setBox(){
+        DefaultComboBoxModel rangeModel = new DefaultComboBoxModel();
+        rangeModel.addElement("Not All");
+        rangeModel.addElement("All");
+        rangeCombo.setModel(rangeModel);
+
+        DefaultComboBoxModel modelModel = new DefaultComboBoxModel();
+        modelModel.addElement("");
+        modelModel.addElement("Camry");
+        modelModel.addElement("Corolla");
+        modelModel.addElement("RAV4");
+        modelCombo.setModel(modelModel);
+
+        DefaultComboBoxModel categoryModel = new DefaultComboBoxModel();
+        categoryModel.addElement("");
+        categoryModel.addElement("New");
+        categoryModel.addElement("Used");
+        categoryCombo.setModel(categoryModel);
 
         DefaultComboBoxModel makerModel = new DefaultComboBoxModel();
         makerModel.addElement("");
         makerModel.addElement("Toyota");
         makerModel.addElement("Nissan");
         makerModel.addElement("BMW");
+        makerModel.addElement("Honda");
+        makerModel.addElement("Chevrolet");
         makerCombo.setModel(makerModel);
 
         DefaultComboBoxModel typeModel = new DefaultComboBoxModel();
@@ -123,35 +152,6 @@ public class IncentiveFilterPanel extends JPanel {
         typeModel.addElement("Van");
         typeCombo.setModel(typeModel);
 
-        DefaultComboBoxModel yearModel = new DefaultComboBoxModel();
-        yearModel.addElement("");
-        yearModel.addElement("2017");
-        yearModel.addElement("2016");
-        yearModel.addElement("2015");
-        yearModel.addElement("2014");
-        yearModel.addElement("2013");
-        yearModel.addElement("2012");
-        yearModel.addElement("2011");
-        yearModel.addElement("2010");
-        yearModel.addElement("2009");
-        yearModel.addElement("2008");
-        yearModel.addElement("2007");
-        yearModel.addElement("2006");
-        yearModel.addElement("2005");
-        yearModel.addElement("2004");
-        yearModel.addElement("2003");
-        yearModel.addElement("2002");
-        yearModel.addElement("2001");
-        yearCombo.setModel(yearModel);
-    }
-
-    public void setList(){
-        DefaultListModel rangeModel = new DefaultListModel();
-        rangeModel.addElement("Not All");
-        rangeModel.addElement("All");
-        rangeList.setModel(rangeModel);
-        rangeList.setPreferredSize(new Dimension(80, 66));
-        rangeList.setBorder(BorderFactory.createEtchedBorder());
     }
 
     public void filterLayout(){
@@ -167,44 +167,32 @@ public class IncentiveFilterPanel extends JPanel {
         gc.gridy = 0;
         gc.fill = GridBagConstraints.NONE;
         gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 15);
+        gc.insets = new Insets (0, 0, 0, 5);
         add(rangeLabel, gc);
 
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.LINE_END;
-        gc.insets = new Insets (0, 0, 0, 5);
-        add(rangeList, gc);
+        gc.insets = new Insets (0, 0, 0, 0);
+        add(rangeCombo, gc);
 
         //second row
         gc.gridy++;
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 30);
-        add(colorLabel, gc);
+        gc.insets = new Insets (0, 0, 0, 5);
+        add(categoryLabel, gc);
 
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
         gc.insets = new Insets (0, 0, 0, 0);
-        add(colorCombo, gc);
+        add(categoryCombo, gc);
 
-
-        //third row
-        gc.gridy++;
-        gc.gridx = 0;
-        gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 30);
-        add(vehicleLabel, gc);
-
-        gc.gridx = 1;
-        gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gc.insets = new Insets (0, 0, 0, 0);
-        add(vehicleCombo, gc);
 
         //4th row
         gc.gridy++;
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 30);
+        gc.insets = new Insets (0, 0, 0, 10);
         add(makerLabel, gc);
 
         gc.gridx = 1;
@@ -216,25 +204,25 @@ public class IncentiveFilterPanel extends JPanel {
         gc.gridy++;
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 30);
+        gc.insets = new Insets (0, 0, 0, 10);
+        add(modelLabel, gc);
+
+        gc.gridx = 1;
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gc.insets = new Insets (0, 0, 0, 0);
+        add(modelCombo, gc);
+
+        //6th row
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;
+        gc.insets = new Insets (0, 0, 0, 10);
         add(typeLabel, gc);
 
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
         gc.insets = new Insets (0, 0, 0, 0);
         add(typeCombo, gc);
-
-        //5th row
-        gc.gridy++;
-        gc.gridx = 0;
-        gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 30);
-        add(yearLabel, gc);
-
-        gc.gridx = 1;
-        gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gc.insets = new Insets (0, 0, 0, 0);
-        add(yearCombo, gc);
 
         //final row
         gc.gridy++;
