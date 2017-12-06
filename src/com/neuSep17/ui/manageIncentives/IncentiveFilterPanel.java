@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.EventObject;
 
 public class IncentiveFilterPanel extends JPanel {
     private JLabel rangeLabel;
@@ -13,20 +15,51 @@ public class IncentiveFilterPanel extends JPanel {
     private JLabel makerLabel;
     private JLabel typeLabel;
     private JLabel modelLabel;
-
     private JComboBox rangeCombo;
     private JComboBox categoryCombo;
     private JComboBox makerCombo;
     private JComboBox modelCombo;
     private JComboBox typeCombo;
-
     private JButton filterSubmit;
-
     private IncentiveFilterListener filterListener;
-
     private Color bgColor = new Color(226, 247, 252);
 
-    public IncentiveFilterPanel(){
+    public IncentiveFilterPanel() {
+
+        setFilterPanel();
+        filterLayout();
+        allChosenListeners();
+        addFilterListener();
+
+    }
+
+    private void addFilterListener() {
+        filterSubmit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String range = (String) rangeCombo.getSelectedItem();
+                String category = (String) categoryCombo.getSelectedItem();
+                String maker = (String) makerCombo.getSelectedItem();
+                String type = (String) typeCombo.getSelectedItem();
+                String model = (String) modelCombo.getSelectedItem();
+
+                ArrayList<String> filterList = new ArrayList<>();
+                filterList.add(range);
+                filterList.add(category);
+                filterList.add(maker);
+                filterList.add(type);
+                filterList.add(model);
+
+                IncentiveFilterEvent fe = new IncentiveFilterEvent(e, filterList);
+
+                if (filterListener != null) {
+                    filterListener.filterEventOccurred(fe);
+                }
+            }
+        });
+    }
+
+    private void setFilterPanel() {
         Dimension dim = getPreferredSize();
         dim.width = 200;
         setPreferredSize(dim);
@@ -50,40 +83,8 @@ public class IncentiveFilterPanel extends JPanel {
         makerLabel = new JLabel("Maker");
         modelLabel = new JLabel("Model");
         typeLabel = new JLabel("Type");
-
-
         //set up OK button
         filterSubmit = new JButton("Submit");
-
-        //set layout
-        filterLayout();
-
-        allChosenListeners();
-
-        //search button
-        filterSubmit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String range = (String)rangeCombo.getSelectedItem();
-                String category = (String)categoryCombo.getSelectedItem();
-                String maker = (String)makerCombo.getSelectedItem();
-                String type = (String)typeCombo.getSelectedItem();
-                String model = (String)modelCombo.getSelectedItem();
-
-                ArrayList<String> filterList = new ArrayList<>();
-                filterList.add(range);
-                filterList.add(category);
-                filterList.add(maker);
-                filterList.add(type);
-                filterList.add(model);
-
-                IncentiveFilterEvent fe = new IncentiveFilterEvent(e, filterList);
-
-                if (filterListener != null){
-                    filterListener.filterEventOccurred(fe);
-                }
-            }
-        });
     }
 
     private void allChosenListeners() {
@@ -91,15 +92,15 @@ public class IncentiveFilterPanel extends JPanel {
         rangeCombo.addActionListener(cl);
     }
 
-    class allChosenListener implements ActionListener{
+    class allChosenListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             updateCreterion();
         }
     }
 
-    private void updateCreterion(){
-        if(rangeCombo.getSelectedIndex() != 0){
+    private void updateCreterion() {
+        if (rangeCombo.getSelectedIndex() != 0) {
             categoryCombo.setSelectedItem(categoryCombo.getItemAt(0));
             categoryCombo.setEnabled(false);
             makerCombo.setSelectedItem(makerCombo.getItemAt(0));
@@ -108,7 +109,7 @@ public class IncentiveFilterPanel extends JPanel {
             modelCombo.setEnabled(false);
             typeCombo.setSelectedItem(typeCombo.getItemAt(0));
             typeCombo.setEnabled(false);
-        }else{
+        } else {
             categoryCombo.setEnabled(true);
             makerCombo.setEnabled(true);
             modelCombo.setEnabled(true);
@@ -117,7 +118,7 @@ public class IncentiveFilterPanel extends JPanel {
     }
 
 
-    public void setBox(){
+    public void setBox() {
         DefaultComboBoxModel rangeModel = new DefaultComboBoxModel();
         rangeModel.addElement("Not All");
         rangeModel.addElement("All");
@@ -154,7 +155,7 @@ public class IncentiveFilterPanel extends JPanel {
 
     }
 
-    public void filterLayout(){
+    public void filterLayout() {
         setLayout(new GridBagLayout());
 
         GridBagConstraints gc = new GridBagConstraints();
@@ -167,24 +168,24 @@ public class IncentiveFilterPanel extends JPanel {
         gc.gridy = 0;
         gc.fill = GridBagConstraints.NONE;
         gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 5);
+        gc.insets = new Insets(0, 0, 0, 5);
         add(rangeLabel, gc);
 
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.LINE_END;
-        gc.insets = new Insets (0, 0, 0, 0);
+        gc.insets = new Insets(0, 0, 0, 0);
         add(rangeCombo, gc);
 
         //second row
         gc.gridy++;
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 5);
+        gc.insets = new Insets(0, 0, 0, 5);
         add(categoryLabel, gc);
 
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gc.insets = new Insets (0, 0, 0, 0);
+        gc.insets = new Insets(0, 0, 0, 0);
         add(categoryCombo, gc);
 
 
@@ -192,36 +193,36 @@ public class IncentiveFilterPanel extends JPanel {
         gc.gridy++;
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 10);
+        gc.insets = new Insets(0, 0, 0, 10);
         add(makerLabel, gc);
 
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gc.insets = new Insets (0, 0, 0, 0);
+        gc.insets = new Insets(0, 0, 0, 0);
         add(makerCombo, gc);
 
         //5th row
         gc.gridy++;
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 10);
+        gc.insets = new Insets(0, 0, 0, 10);
         add(modelLabel, gc);
 
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gc.insets = new Insets (0, 0, 0, 0);
+        gc.insets = new Insets(0, 0, 0, 0);
         add(modelCombo, gc);
 
         //6th row
         gc.gridy++;
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gc.insets = new Insets (0, 0, 0, 10);
+        gc.insets = new Insets(0, 0, 0, 10);
         add(typeLabel, gc);
 
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gc.insets = new Insets (0, 0, 0, 0);
+        gc.insets = new Insets(0, 0, 0, 0);
         add(typeCombo, gc);
 
         //final row
@@ -231,20 +232,37 @@ public class IncentiveFilterPanel extends JPanel {
 
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gc.insets = new Insets (0, 0, 0, 0);
+        gc.insets = new Insets(0, 0, 0, 0);
         add(filterSubmit, gc);
     }
 
-    //grey out
-//    class ActionListener implements ActionListener{
-//
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//
-//        }
-//    }
 
-    public void setFilterListener(IncentiveFilterListener filterListener){
+    public void setFilterListener(IncentiveFilterListener filterListener) {
         this.filterListener = filterListener;
+    }
+}
+
+interface IncentiveFilterListener extends EventListener {
+    void filterEventOccurred(IncentiveFilterEvent fe);
+}
+
+class IncentiveFilterEvent extends EventObject {
+    private ArrayList<String> filterList;
+
+    public IncentiveFilterEvent(Object source) {
+        super(source);
+    }
+
+    public IncentiveFilterEvent(Object source, ArrayList<String> filterList) {
+        super(source);
+        this.filterList = filterList;
+    }
+
+    public void setFilterList(ArrayList<String> filterList) {
+        this.filterList = filterList;
+    }
+
+    public ArrayList<String> getFilterList() {
+        return filterList;
     }
 }

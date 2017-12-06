@@ -14,8 +14,10 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,53 +27,44 @@ public class IncentiveAddEditDialog extends JDialog {
     private IncentiveServiceAPI_Test incentiveAPI;
     private InventoryServiceAPI_Test inventoryAPI;
     private JTable incentive_list;
-
     //current dealer
     private String dealerId;
-
     private Incentive incentive;
-
     //label
-    private JLabel labelTitle, labelDiscount,labelStart,labelEnd,labelCriterion,labelDescription;
-
-    private JTextField fieldTitle,fieldDiscount;
-
+    private JLabel labelTitle, labelDiscount, labelStart, labelEnd, labelCriterion, labelDescription;
+    private JTextField fieldTitle, fieldDiscount;
     JSpinner startDate, endDate;
-    DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
-
+    DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
     private JTextArea description;
     private JScrollPane scrollPane;
-
     //comboBoxes for criterion
     private JComboBox[] criterions;
     private Map<String, List<String>> criterionMap;
-    private String[] criterionKey = {"range","category","year","make","price"};
-
+    private String[] criterionKey = {"range", "category", "year", "make", "price"};
     private JButton buttonSave;
     private JButton buttonCancel;
     private JOptionPane alert;
-
     //incentive file, should be replaced by dealer_Incentive.txt
     String file = "data/IncentiveSample.txt";
 
-    public IncentiveAddEditDialog(String dealerId, JTable incentive_list){
+    public IncentiveAddEditDialog(String dealerId, JTable incentive_list) {
         this.incentive_list = incentive_list;
         setTitle("add incentive");
         init(dealerId);
     }
 
     //edit constructor
-    public IncentiveAddEditDialog(String dealerId, Incentive incentive, JTable incentive_list){
+    public IncentiveAddEditDialog(String dealerId, Incentive incentive, JTable incentive_list) {
         this.incentive = incentive;
         this.incentive_list = incentive_list;
         init(dealerId);
         setTitle("edit incentive");
     }
 
-    private void init(String dealerId){
+    private void init(String dealerId) {
         this.dealerId = dealerId;
         incentiveAPI = new IncentiveServiceAPI_Test(file);
-        inventoryAPI = new InventoryServiceAPI_Test("data/"+dealerId);
+        inventoryAPI = new InventoryServiceAPI_Test("data/" + dealerId);
         initComponents();
         addComponents();
         makeListeners();
@@ -87,19 +80,19 @@ public class IncentiveAddEditDialog extends JDialog {
         labelDescription = new JLabel("Description: ");
 
 
-        fieldTitle = new JTextField(incentive == null ? "" : incentive.getTitle(),20);
-        fieldDiscount = new JTextField(incentive == null ? "" : String.valueOf(incentive.getDiscount()),20);
+        fieldTitle = new JTextField(incentive == null ? "" : incentive.getTitle(), 20);
+        fieldDiscount = new JTextField(incentive == null ? "" : String.valueOf(incentive.getDiscount()), 20);
 
         createDateComponents();
 
-        description = new JTextArea(incentive == null ? "" : incentive.getDescription(),3,20);
+        description = new JTextArea(incentive == null ? "" : incentive.getDescription(), 3, 20);
         description.setLineWrap(true);
         description.setWrapStyleWord(true);
         scrollPane = new JScrollPane(description);
 
         createCriterionComponents();
 
-        if(incentive != null){
+        if (incentive != null) {
             initCriterion(incentive);
         }
 
@@ -107,7 +100,7 @@ public class IncentiveAddEditDialog extends JDialog {
         buttonCancel = new JButton("Cancel");
     }
 
-    private void createDateComponents(){
+    private void createDateComponents() {
         startDate = new JSpinner(new SpinnerDateModel());
         endDate = new JSpinner(new SpinnerDateModel());
         try {
@@ -127,31 +120,30 @@ public class IncentiveAddEditDialog extends JDialog {
         }
     }
 
-    private void createCriterionComponents(){
+    private void createCriterionComponents() {
         criterions = new JComboBox[criterionKey.length];
         criterionMap = inventoryAPI.getComboBoxItemsMap(inventoryAPI.getVehicles());
-        for(int i = 0;i < criterions.length;i++){
+        for (int i = 0; i < criterions.length; i++) {
             criterions[i] = new JComboBox();
-            criterions[i].addItem("Choose "+criterionKey[i]+"...");
-            criterions[i].setPreferredSize(new Dimension(200,30));
+            criterions[i].addItem("Choose " + criterionKey[i] + "...");
+            criterions[i].setPreferredSize(new Dimension(200, 30));
             criterions[i].setName(criterionKey[i]);
-            if(i > 1){
-                for(String item : criterionMap.get(criterionKey[i])){
-                    if(criterionKey[i].equals("price")){
-                        item = item.substring(item.indexOf("~")+1);
+            if (i > 1) {
+                for (String item : criterionMap.get(criterionKey[i])) {
+                    if (criterionKey[i].equals("price")) {
+                        item = item.substring(item.indexOf("~") + 1);
                     }
-                    if(!item.isEmpty()) {
+                    if (!item.isEmpty()) {
                         criterions[i].addItem(item);
                     }
                 }
             }
         }
         criterions[0].addItem("all");
-        for(Category s : Category.values()){
+        for (Category s : Category.values()) {
             criterions[1].addItem(s);
         }
     }
-
 
 
     private void initCriterion(Incentive incentive) {
@@ -159,20 +151,20 @@ public class IncentiveAddEditDialog extends JDialog {
         ArrayList<String> criterion = incentive.getCriterion();
         String[] crit = new String[5];
         int i = 0;
-        while (i < 4){
+        while (i < 4) {
             crit[i] = criterion.get(i);
             i++;
         }
         crit[4] = criterion.get(criterion.size() - 1);
 
-        if(crit[0].replace("[","").equals("all")){
+        if (crit[0].replace("[", "").equals("all")) {
             criterions[0].setSelectedIndex(1);
-            for(i = 1; i < criterions.length;i++){
+            for (i = 1; i < criterions.length; i++) {
                 criterions[i].setEnabled(false);
             }
-        }else{
-            for(i = 1; i < criterions.length;i++){
-                criterions[i].setSelectedItem(crit[i].replace("]","").equals("no") ? criterions[i].getItemAt(0) : crit[i]);
+        } else {
+            for (i = 1; i < criterions.length; i++) {
+                criterions[i].setSelectedItem(crit[i].replace("]", "").equals("no") ? criterions[i].getItemAt(0) : crit[i]);
             }
         }
     }
@@ -181,40 +173,40 @@ public class IncentiveAddEditDialog extends JDialog {
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridy = 0;
-        constraints.insets = new Insets(5,5,5,5);
+        constraints.insets = new Insets(5, 5, 5, 5);
         constraints.anchor = GridBagConstraints.WEST;
 
-        addLine(constraints,labelTitle,fieldTitle);
-        addLine(constraints,labelDiscount,fieldDiscount);
-        addLine(constraints,labelStart,startDate);
-        addLine(constraints,labelEnd,endDate);
+        addLine(constraints, labelTitle, fieldTitle);
+        addLine(constraints, labelDiscount, fieldDiscount);
+        addLine(constraints, labelStart, startDate);
+        addLine(constraints, labelEnd, endDate);
         addCriterion(constraints);
 //        constraints.ipady = 40;
-        addLine(constraints,labelDescription,scrollPane);
+        addLine(constraints, labelDescription, scrollPane);
 
         addButton(constraints);
     }
 
-    private void addLine(GridBagConstraints c, JComponent label, JComponent text){
+    private void addLine(GridBagConstraints c, JComponent label, JComponent text) {
         c.gridx = 0;
-        add(label,c);
+        add(label, c);
         c.gridx = 1;
-        add(text,c);
+        add(text, c);
         c.gridy++;
     }
 
-    private void addCriterion(GridBagConstraints c){
+    private void addCriterion(GridBagConstraints c) {
         c.gridx = 0;
-        add(labelCriterion,c);
+        add(labelCriterion, c);
         c.gridheight = 1;
         c.gridx = 1;
-        for(int i = 0; i < criterions.length;i++){
-            add(criterions[i],c);
+        for (int i = 0; i < criterions.length; i++) {
+            add(criterions[i], c);
             c.gridy++;
         }
     }
 
-    private void addButton(GridBagConstraints constraints){
+    private void addButton(GridBagConstraints constraints) {
         JPanel panelButtons = new JPanel();
         panelButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelButtons.add(buttonSave);
@@ -224,7 +216,7 @@ public class IncentiveAddEditDialog extends JDialog {
         constraints.gridx = 0;
         constraints.gridwidth = 2;
         constraints.anchor = GridBagConstraints.CENTER;
-        add(panelButtons,constraints);
+        add(panelButtons, constraints);
     }
 
     private void makeListeners() {
@@ -243,21 +235,21 @@ public class IncentiveAddEditDialog extends JDialog {
         });
     }
 
-    class CriterionActionListener implements ActionListener{
+    class CriterionActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             updateCreterion();
         }
     }
 
-    private void updateCreterion(){
-        if(criterions[0].getSelectedIndex() != 0){
-            for(int i = 1; i < criterions.length;i++){
+    private void updateCreterion() {
+        if (criterions[0].getSelectedIndex() != 0) {
+            for (int i = 1; i < criterions.length; i++) {
                 criterions[i].setSelectedItem(criterions[i].getItemAt(0));
                 criterions[i].setEnabled(false);
             }
-        }else{
-            for(int i = 1; i < criterions.length;i++){
+        } else {
+            for (int i = 1; i < criterions.length; i++) {
                 criterions[i].setEnabled(true);
             }
         }
@@ -270,67 +262,68 @@ public class IncentiveAddEditDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
 
             if (!isVaildText(fieldTitle.getText())) {
-                AlertDialog(labelTitle.getText(),"");
+                AlertDialog(labelTitle.getText(), "");
             } else if (!isVaildText(fieldDiscount.getText()) || !isValidNum(fieldDiscount.getText())) {
-                if(!isVaildText(fieldDiscount.getText()) ){
-                    AlertDialog(labelDiscount.getText(),"");
-                }else{
-                    AlertDialog(labelDiscount.getText(),"price");
+                if (!isVaildText(fieldDiscount.getText())) {
+                    AlertDialog(labelDiscount.getText(), "");
+                } else {
+                    AlertDialog(labelDiscount.getText(), "price");
                 }
-            } else if (!isVaildDate()){
+            } else if (!isVaildDate()) {
                 alert.showMessageDialog(new JFrame(),
                         "Start date should less than end date.",
                         "Input Invalid",
                         JOptionPane.WARNING_MESSAGE);
             } else if (!isVaildText(description.getText())) {
-                AlertDialog(labelDescription.getText(),"");
-            } else if(isValidCriterions()){
+                AlertDialog(labelDescription.getText(), "");
+            } else if (isValidCriterions()) {
                 saveIncentive();
             }
         }
     }
 
-    private boolean isVaildText(String text){
-        if (text == null || text.trim().equals("")){
+    private boolean isVaildText(String text) {
+        if (text == null || text.trim().equals("")) {
             return false;
         }
         return true;
     }
 
-    private boolean isValidNum(String text){
+    private boolean isValidNum(String text) {
         //string.trim().matches(s)
         Pattern p = Pattern.compile("^\\d+(.\\d+)?$");//not negative number- float/double
         Matcher m = p.matcher(fieldDiscount.getText());
-        if (m.matches()){
+        if (m.matches()) {
             return true;
         }
         return false;
     }
 
-    private boolean isVaildDate(){
+    private boolean isVaildDate() {
         String start = fmt.format(startDate.getValue());
         String end = fmt.format(endDate.getValue());
         return start.compareTo(end) == -1;
     }
-    private boolean isValidCriterions(){
-        if(criterions[0].getSelectedIndex() != 0){
+
+    private boolean isValidCriterions() {
+        if (criterions[0].getSelectedIndex() != 0) {
             return true;
         }
         for (int i = 1; i < criterions.length; i++) {
-            if (criterions[i].getSelectedIndex() == 0){
-                AlertDialog(criterions[i].getName(),"");
+            if (criterions[i].getSelectedIndex() == 0) {
+                AlertDialog(criterions[i].getName(), "");
                 return false;
             }
         }
         return true;
     }
 
-    private void AlertDialog(String content,String flag){
+    private void AlertDialog(String content, String flag) {
         String messge = "";
-        if ( flag.equals("price") ){
+        if (flag.equals("price")) {
             messge = " Price must be digits.";
-        }else{
-            messge = content+" is not supposed to be NULL.";
+        } else {
+            messge = content + " is not supposed to be NULL.";
         }
         alert.showMessageDialog(new JFrame(),
                 messge,
@@ -338,7 +331,7 @@ public class IncentiveAddEditDialog extends JDialog {
                 JOptionPane.WARNING_MESSAGE);
     }
 
-    private void saveIncentive(){
+    private void saveIncentive() {
         String[] arr = new String[8];
         arr[1] = dealerId;
         arr[2] = fieldTitle.getText().trim();
@@ -347,9 +340,9 @@ public class IncentiveAddEditDialog extends JDialog {
         arr[5] = fmt.format(endDate.getValue());
         arr[6] = getCriterionValue();
         arr[7] = description.getText();
-        if(incentive == null){
+        if (incentive == null) {
             arr[0] = generateIncentiveID();
-        }else{
+        } else {
             arr[0] = incentive.getId();
         }
         incentive = new Incentive(arr);
@@ -362,11 +355,11 @@ public class IncentiveAddEditDialog extends JDialog {
 
     }
 
-    private String generateIncentiveID(){
+    private String generateIncentiveID() {
         int max = 0;
-        for(Incentive incentive : incentiveAPI.getIncentives()){
+        for (Incentive incentive : incentiveAPI.getIncentives()) {
             int i = Integer.parseInt(incentive.getId());
-            if(i > max){
+            if (i > max) {
                 max = i;
             }
         }
@@ -375,15 +368,15 @@ public class IncentiveAddEditDialog extends JDialog {
         return format.format(max);
     }
 
-    private String getCriterionValue(){
+    private String getCriterionValue() {
         //VIN(or all, or no),category,year,make,model,trim,type,price
-        if(criterions[0].getSelectedIndex() == 1){
-            return  "all,no,no,no,no,no,no,no";
-        }else{
+        if (criterions[0].getSelectedIndex() == 1) {
+            return "all,no,no,no,no,no,no,no";
+        } else {
             StringBuilder sb = new StringBuilder();
             sb.append("all,");
             //category,year,make
-            for(int i = 1; i < 4; i++){
+            for (int i = 1; i < 4; i++) {
                 sb.append(criterions[i].getSelectedIndex() == 0 ? "no," : criterions[i].getSelectedItem());
             }
             //model,trim,type(we haven't decided to add all these fields, just add it here.)
@@ -399,11 +392,11 @@ public class IncentiveAddEditDialog extends JDialog {
         setVisible(true);
     }
 
-    private void close(){
+    private void close() {
         dispose();
     }
 
-    private void refresh(){
+    private void refresh() {
         incentive_list.setModel(new IncentiveTableModel(new IncentiveServiceAPI_Test("data/IncentiveSample.txt")));
         incentive_list.updateUI();
     }

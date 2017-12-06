@@ -15,8 +15,17 @@ public class IncentiveDisplay extends JPanel {
     IncentiveList incentive_list;
 
     public IncentiveDisplay() {
-        //set layout
+
+        setDisplayPanel();
+        creatList();
+
+    }
+
+    private void setDisplayPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    }
+
+    private void creatList() {
         incentive_list = new IncentiveList();
         add(incentive_list);
     }
@@ -52,6 +61,8 @@ class IncentiveList extends JPanel {
         setBackground(new Color(226, 247, 252));
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(1000, 600));
+
+        //set text to left
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.LEFT);
         for (int x = 0; x < incentive_list.getColumnCount(); x++) {
@@ -61,12 +72,14 @@ class IncentiveList extends JPanel {
             TableColumn firstColumn = incentive_list.getColumnModel().getColumn(i);
             firstColumn.setPreferredWidth(150);
         }
+
         // set table attribute
         incentive_list.setForeground(new Color(0, 0, 0));
         incentive_list.setGridColor(new Color(0, 0, 0));
         incentive_list.setBackground(new Color(226, 247, 252));
         incentive_list.setFont(new Font("Menlo", Font.PLAIN, 12));
-        //sort function
+
+        //set Sorter
         incentive_list.setAutoCreateRowSorter(true);
         incentive_list.setPreferredScrollableViewportSize(new Dimension(980, 600));
         incentive_list.setFillsViewportHeight(true);

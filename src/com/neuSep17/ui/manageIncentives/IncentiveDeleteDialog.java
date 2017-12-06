@@ -14,21 +14,23 @@ public class IncentiveDeleteDialog extends JDialog {
     private JButton yes, no;
     private JTable incentive_list;
     String file = "data/IncentiveSample.txt";
-
     private IncentiveServiceAPI_Test incentiveAPI;
     private Incentive incentive;
 
     public IncentiveDeleteDialog(Incentive incentive, JTable incentive_list){
         this.incentive = incentive;
         this.incentive_list = incentive_list;
-        setTitle("Delete The Incentive");
-        setSize(600,250);
-        setVisible(true);
-
         incentiveAPI = new IncentiveServiceAPI_Test(file);
+        setDeletePanel();
         create();
         makeListeners();
         display();
+    }
+
+    private void setDeletePanel() {
+        setTitle("Delete The Incentive");
+        setSize(600,250);
+        setVisible(true);
     }
 
     public void create(){
