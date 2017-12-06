@@ -6,4 +6,4 @@ incentiveId~webId~title~discount~startDate~endDate~id,category,year,make,model,t
 000001~gmps-bresee~High End Vehicle Sale~500.0~2010-01-01~2100-12-31~all,no,no,no,no,no,no,no~Valid if price of vehicle >= 80000
 000005~gmps-camino~Dodge VIN:2950629603 Special~2000.0~2010-01-01~2100-12-31~2950629603,no,no,no,no,no,no,no~Only Dodge VIN:2950629603 apply
 000007~gmps-camino~Expired~500.0~2010-01-01~2016-12-31~all,no,no,no,no,no,no,no~All the vehicle apply(Expired)
-000008~gmps-bresee~Black Friday~600.0~2017-10-1~2099-10-1~all,no,no,no,no,no,no,no~lalala
+000008~gmps-bresee~Black Friday~600.0~2017-10-01~2099-10-01~all,no,no,no,no,no,no,no~lalala
