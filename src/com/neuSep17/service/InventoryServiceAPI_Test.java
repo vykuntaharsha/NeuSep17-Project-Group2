@@ -256,19 +256,19 @@ public class InventoryServiceAPI_Test {
 
 	private static boolean categoryFilter(Vehicle vehicle, String category) {
 		//test
-		if (category == null)
+		if (category == null || category.equals(""))
 			return true;
 		return category.contains(vehicle.getCategory().toString().toLowerCase());
 	}
 
 	private static boolean yearFilter(Vehicle vehicle, String year) {
-		if (year == null)
+		if (year == null || year.equals(""))
 			return true;
 		return year.contains(vehicle.getYear().toString());
 	}
 
 	private static boolean makeFilter(Vehicle vehicle, String make) {
-		if (make == null)
+		if (make == null || make.equals(""))
 			return true;
 		String target = vehicle.getMake();
 		String[] makes = make.split(";");
@@ -280,7 +280,7 @@ public class InventoryServiceAPI_Test {
 	}
 
 	private static boolean priceFilter(Vehicle vehicle, String price) {
-		if (price == null)
+		if (price == null || price.equals(""))
 			return true;
 		float vehiclePrice = vehicle.getPrice();
 		String[] priceRanges = price.split(";");
@@ -300,7 +300,7 @@ public class InventoryServiceAPI_Test {
 	}
 
 	private static boolean typeFilter(Vehicle vehicle, String type) {
-		if (type == null)
+		if (type == null || type.equals(""))
 			return true;
 		String target = vehicle.getBodyType();
 		String [] types = type.split(";");
@@ -312,7 +312,7 @@ public class InventoryServiceAPI_Test {
 	}
 
 	private static boolean searchFilter(Vehicle vehicle, String search) {
-		if (search == null)
+		if (search == null || search.equals(""))
 			return true;
 		search = search.toLowerCase();
 		String vehicleString = vehicle.toSearchContent().toLowerCase();
