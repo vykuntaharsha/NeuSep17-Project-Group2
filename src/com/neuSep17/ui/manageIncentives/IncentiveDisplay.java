@@ -1,14 +1,11 @@
 package com.neuSep17.ui.manageIncentives;
 
-import com.neuSep17.dto.Incentive;
 import com.neuSep17.dto.IncentiveTableModel;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +13,6 @@ import java.util.ArrayList;
  */
 public class IncentiveDisplay extends JPanel {
     IncentiveList incentive_list;
-
 
     public IncentiveDisplay() {
         //set layout
@@ -38,25 +34,33 @@ class IncentiveList extends JPanel {
     private RowFilter searchRowFilter;
 
     public IncentiveList() {
+        createIncentivelist();
+        setIncentivelist();
+        setHeader();
+    }
 
-        setBackground(new Color(226, 247, 252));
-        setLayout(new FlowLayout());
-        setPreferredSize(new Dimension(1000, 530));
-        service = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
-        incentive_model = new IncentiveTableModel(service);
-        incentive_list = new JTable(incentive_model);
-        //set table header size, color , font
+    private void setHeader() {
         JTableHeader T_header = incentive_list.getTableHeader();
-        T_header.setPreferredSize(new Dimension(1,25));
+        T_header.setPreferredSize(new Dimension(1, 25));
         T_header.setBackground(new Color(0, 0, 0));
         T_header.setForeground(new Color(226, 247, 252));
         T_header.setFont(new Font("Menlo", Font.PLAIN, 16));
+    }
 
+    private void setIncentivelist() {
+
+        setBackground(new Color(226, 247, 252));
+        setLayout(new FlowLayout());
+        setPreferredSize(new Dimension(1000, 600));
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.LEFT);
+        for (int x = 0; x < incentive_list.getColumnCount(); x++) {
+            incentive_list.getColumnModel().getColumn(x).setCellRenderer(centerRenderer);
+        }
         for (int i = 0; i < 7; i++) {
             TableColumn firstColumn = incentive_list.getColumnModel().getColumn(i);
             firstColumn.setPreferredWidth(150);
         }
-
         // set table attribute
         incentive_list.setForeground(new Color(0, 0, 0));
         incentive_list.setGridColor(new Color(0, 0, 0));
@@ -64,22 +68,27 @@ class IncentiveList extends JPanel {
         incentive_list.setFont(new Font("Menlo", Font.PLAIN, 12));
         //sort function
         incentive_list.setAutoCreateRowSorter(true);
-        incentive_list.setPreferredScrollableViewportSize(new Dimension(980, 530));
+        incentive_list.setPreferredScrollableViewportSize(new Dimension(980, 600));
         incentive_list.setFillsViewportHeight(true);
         incentive_list.setAutoCreateColumnsFromModel(true);
-        incentive_list.setRowHeight(100);
-
+        incentive_list.setRowHeight(60);
         JScrollPane scrollPane = new JScrollPane(incentive_list);
         add(scrollPane);
     }
 
-    public JTable get_table(){
+    private void createIncentivelist() {
+        service = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
+        incentive_model = new IncentiveTableModel(service);
+        incentive_list = new JTable(incentive_model);
+    }
+
+    public JTable get_table() {
         return incentive_list;
     }
 
-    public void searchTable(String searchContent){
+    public void searchTable(String searchContent) {
         sorter = new TableRowSorter<>(incentive_list.getModel());
-        if (searchContent.length() == 0){
+        if (searchContent.length() == 0) {
             sorter.setRowFilter(null);
         } else {
             searchRowFilter = RowFilter.regexFilter("(?i)" + searchContent);
@@ -88,16 +97,16 @@ class IncentiveList extends JPanel {
         incentive_list.setRowSorter(sorter);
     }
 
-    public void filterTable(ArrayList<String> filterList){
+    public void filterTable(ArrayList<String> filterList) {
         sorter = new TableRowSorter<>(incentive_list.getModel());
 
         int filterNumber = 0;
-        for (String filter: filterList){
+        for (String filter : filterList) {
             filterNumber++;
         }
-        ArrayList<RowFilter<Object,Object>> filters = new ArrayList<>(filterNumber);
-        for (String filter: filterList){
-            if (filter != "Not All"){
+        ArrayList<RowFilter<Object, Object>> filters = new ArrayList<>(filterNumber);
+        for (String filter : filterList) {
+            if (filter != "Not All") {
                 filters.add(RowFilter.regexFilter(filter.toLowerCase(), 5));
             }
         }

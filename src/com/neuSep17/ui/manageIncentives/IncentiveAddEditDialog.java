@@ -389,7 +389,7 @@ public class IncentiveAddEditDialog extends JDialog {
             //model,trim,type(we haven't decided to add all these fields, just add it here.)
             sb.append("no,no,no,");
             //price
-            sb.append(criterions[5].getSelectedIndex() == 0 ? "no" : criterions[5].getSelectedItem());
+            sb.append(criterions[4].getSelectedIndex() == 0 ? "no" : criterions[4].getSelectedItem());
             return sb.toString();
         }
     }
