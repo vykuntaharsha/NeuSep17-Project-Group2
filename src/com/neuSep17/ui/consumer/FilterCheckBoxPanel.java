@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -133,12 +134,14 @@ public class FilterCheckBoxPanel extends JPanel
 
     private void createShowAndHideComponents()
     {
-        buttonHide = new JButton("-");
-        buttonHide.setOpaque(false);
+        ImageIcon hideIcon = new ImageIcon("data/images/hideIcon.png");
+        buttonHide = new JButton("", hideIcon);
+        buttonHide.setBorderPainted(false);
         buttonHide.setPreferredSize(new Dimension(20, 20));
 
-        buttonShow = new JButton("+");
-        buttonShow.setOpaque(false);
+        ImageIcon showIcon = new ImageIcon("data/images/showIcon.png");
+        buttonShow = new JButton("", showIcon);
+        buttonShow.setBorderPainted(false);
         buttonShow.setPreferredSize(new Dimension(20, 20));
         buttonShow.setVisible(false);
     }
