@@ -14,6 +14,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +42,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private HashMap<Vehicle, ImageIcon> cache;
     private ListPanel listpanel;
     private int perpage, page;
+    private ImageIcon loadingIMG;
     // list end
 
     // filter start
@@ -60,6 +63,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         this.toDisplay = new ArrayList<Vehicle>();
         setPage(0);
         perpage = 15;
+        
+        getLoadingIMG();
 
         updateVehicle();
 
@@ -67,6 +72,20 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         addComponents();
         doSearch(null);
         addListeners();
+    }
+
+    private void getLoadingIMG() {
+        
+        File temp=new File("data/images/loading.gif");       
+        
+        try {
+            URL url = temp.toURI().toURL();
+            loadingIMG=new ImageIcon(url);
+        } catch (MalformedURLException e) {
+            loadingIMG=null;
+            e.printStackTrace();
+        }
+        
     }
 
     private void createComponents()
@@ -129,7 +148,10 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     ImageIcon getIcon(Vehicle v)
     {
-        return cache.get(v);
+        if (cache.containsKey(v)) {   // just reading, thread safe
+            return cache.get(v);
+        }
+        else return loadingIMG;
     }
 
     int getPerPage()
