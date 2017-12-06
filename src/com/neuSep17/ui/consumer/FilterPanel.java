@@ -1,6 +1,7 @@
 package com.neuSep17.ui.consumer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -24,13 +25,14 @@ public class FilterPanel extends JPanel
     private String[] filterKeys = { "category", "year", "make", "price", "type" };
     private JPanel filterPanel;
     private JButton resetFilter;
-    private int panelHeight = 595;
+    private int northPanelHeight = 120;
 
     public FilterPanel(BrowseInventoryFrame bif)
     {
         this.parent = bif;
         this.setLayout(new BorderLayout(0, 0));
-        this.setPreferredSize(new Dimension(210, panelHeight));
+        this.setBackground(Color.WHITE);
+        this.setPreferredSize(new Dimension(210, parent.getSize().height - northPanelHeight));
         createComponents();
         addComponents();
     }
@@ -47,22 +49,24 @@ public class FilterPanel extends JPanel
     {
         filterPanel = new JPanel();
         filterScrollPane = new JScrollPane();
-        filterScrollPane.setPreferredSize(new Dimension(200, panelHeight));
+        filterScrollPane.setPreferredSize(new Dimension(200, parent.getSize().height - northPanelHeight));
+        filterScrollPane.setOpaque(false);
         checkBoxPanels = new FilterCheckBoxPanel[filterKeys.length];
         for (int i = 0; i < checkBoxPanels.length; i++)
         {
             checkBoxPanels[i] = new FilterCheckBoxPanel(filterKeys[i], this);
         }
         resetFilter = new JButton("Clear All");
-
     }
 
     private void addComponents()
     {
         filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
+        filterPanel.setOpaque(false);
         filterPanel.setAutoscrolls(true);
         filterPanel.setBorder(new TitledBorder("Filter"));
         JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        linePanel.setOpaque(false);
         linePanel.add(resetFilter);
         filterPanel.add(linePanel);
         for (int i = 0; i < checkBoxPanels.length; i++)
@@ -122,10 +126,10 @@ public class FilterPanel extends JPanel
             height += checkBoxPanel.getCurrentHeight();
         }
 
-        if (height < panelHeight)
+        if (height < parent.getSize().height - northPanelHeight)
         {
             filterPanel.remove(filterPanel.getComponentCount() - 1);
-            filterPanel.add(Box.createVerticalStrut(panelHeight - 10 - height));
+            filterPanel.add(Box.createVerticalStrut(parent.getSize().height - northPanelHeight - height));
         }
         else
         {

@@ -1,6 +1,5 @@
 package com.neuSep17.ui.consumer;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -35,6 +34,7 @@ public class FilterCheckBoxPanel extends JPanel
         this.parent = parent;
         this.checkBoxes = new ArrayList<JCheckBox>();
         this.fcbl = new FilterCheckBoxListener();
+        this.setOpaque(false);
         createPanelComponents();
         addPanelComponents();
         addPanelListeners();
@@ -136,12 +136,10 @@ public class FilterCheckBoxPanel extends JPanel
         buttonHide = new JButton("-");
         buttonHide.setOpaque(false);
         buttonHide.setPreferredSize(new Dimension(20, 20));
-        buttonHide.setBackground(Color.WHITE);
 
         buttonShow = new JButton("+");
         buttonShow.setOpaque(false);
         buttonShow.setPreferredSize(new Dimension(20, 20));
-        buttonShow.setBackground(Color.WHITE);
         buttonShow.setVisible(false);
     }
 
@@ -160,18 +158,17 @@ public class FilterCheckBoxPanel extends JPanel
     {
         buttonMore = new JButton("More");
         buttonMore.setOpaque(false);
-        buttonMore.setBackground(Color.WHITE);
         buttonMore.setVisible(false);
 
         buttonLess = new JButton("Less");
         buttonLess.setOpaque(false);
-        buttonLess.setBackground(Color.WHITE);
         buttonLess.setVisible(false);
     }
 
     private void addShowAndHideComponents()
     {
         JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        linePanel.setOpaque(false);
         linePanel.add(buttonHide);
         linePanel.add(buttonShow);
         linePanel.add(new JLabel(title.toUpperCase()));
@@ -182,9 +179,11 @@ public class FilterCheckBoxPanel extends JPanel
     {
         checkBoxesPanel.removeAll();
         checkBoxesPanel.setLayout(new BoxLayout(checkBoxesPanel, BoxLayout.Y_AXIS));
+        checkBoxesPanel.setOpaque(false);
         for (JCheckBox checkBox : checkBoxes)
         {
             JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+            linePanel.setOpaque(false);
             linePanel.add(checkBox);
             linePanel.setPreferredSize(
                     new Dimension(checkBox.getPreferredSize().width, checkBox.getPreferredSize().height + 2));
@@ -195,6 +194,7 @@ public class FilterCheckBoxPanel extends JPanel
     private void addLessAndMoreComponents()
     {
         JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        linePanel.setOpaque(false);
         linePanel.add(buttonMore);
         linePanel.add(buttonLess);
         this.add(linePanel);
