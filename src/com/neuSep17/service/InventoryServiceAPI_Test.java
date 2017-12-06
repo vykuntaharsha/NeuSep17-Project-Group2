@@ -255,6 +255,7 @@ public class InventoryServiceAPI_Test {
 	}
 
 	private static boolean categoryFilter(Vehicle vehicle, String category) {
+		//test
 		if (category == null)
 			return true;
 		return category.contains(vehicle.getCategory().toString().toLowerCase());
