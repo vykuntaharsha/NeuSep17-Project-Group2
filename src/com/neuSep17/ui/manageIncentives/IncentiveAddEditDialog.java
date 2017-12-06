@@ -302,7 +302,7 @@ public class IncentiveAddEditDialog extends JDialog {
     private boolean isVaildDate() {
         String start = fmt.format(startDate.getValue());
         String end = fmt.format(endDate.getValue());
-        return start.compareTo(end) == -1;
+        return start.compareTo(end) < 0;
     }
 
     private boolean isValidCriterions() {
