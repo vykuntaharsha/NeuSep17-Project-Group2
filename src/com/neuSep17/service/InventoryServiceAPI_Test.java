@@ -234,6 +234,7 @@ public class InventoryServiceAPI_Test {
 	 * @param category desired category of the vehicles
 	 * @param year desired years of the vehicles
 	 * @param make desired makes of the vehicles
+     * @param model desired model of the vehicles
 	 * @param price desired price range of the vehicles
 	 * @param type desired types of the vehicles
 	 * @param search search keywords for the vehicles
@@ -254,17 +255,32 @@ public class InventoryServiceAPI_Test {
 		return filteredVehicles;
 	}
 
+    public static List<Vehicle> vehiclesSearchAndFilter_test(List<Vehicle> vehicles,  String category, String year, String make, String model, String price,
+                                                        String type, String search){
+        List<Vehicle> filteredVehicles = new ArrayList<Vehicle>();
+        // if (vehicles == null) {
+
+        // }
+
+        for (Vehicle vehicle : vehicles) {
+            if (categoryFilter(vehicle, category) && yearFilter(vehicle, year)  && makeFilter(vehicle, make) && modelFilter(vehicle, model) && priceFilter(vehicle, price) && typeFilter(vehicle, type) && searchFilter(vehicle, search)) {
+                filteredVehicles.add(vehicle);
+            }
+        }
+        return filteredVehicles;
+    }
+
 	private static boolean categoryFilter(Vehicle vehicle, String category) {
 		//test
 		if (category == null || category.equals(""))
 			return true;
-		return category.contains(vehicle.getCategory().toString().toLowerCase());
+		return vehicle.getCategory().toString().toLowerCase().contains(category);
 	}
 
 	private static boolean yearFilter(Vehicle vehicle, String year) {
 		if (year == null || year.equals(""))
 			return true;
-		return year.contains(vehicle.getYear().toString());
+		return vehicle.getYear().toString().contains(year);
 	}
 
 	private static boolean makeFilter(Vehicle vehicle, String make) {
@@ -273,11 +289,17 @@ public class InventoryServiceAPI_Test {
 		String target = vehicle.getMake();
 		String[] makes = make.split(";");
 		for (String s : makes) {
-			if (s.equals(target))
+			if (target.toLowerCase().contains(s))
 				return true;
 		}
 		return false;
 	}
+
+    private static boolean modelFilter(Vehicle vehicle, String model) {
+        if (model == null || model.equals(""))
+            return true;
+        return vehicle.getModel().toString().contains(model);
+    }
 
 	private static boolean priceFilter(Vehicle vehicle, String price) {
 		if (price == null || price.equals(""))
@@ -305,7 +327,7 @@ public class InventoryServiceAPI_Test {
 		String target = vehicle.getBodyType();
 		String [] types = type.split(";");
 		for (String s : types) {
-			if(s.equals(target))
+			if(target.toLowerCase().contains(s))
 				return true;
 		}
 		return false;
@@ -337,22 +359,26 @@ public class InventoryServiceAPI_Test {
 		List<String> makeList = new ArrayList<String>();
 		List<String> priceList = new ArrayList<String>();
 		List<String> typeList = new ArrayList<String>();
+        List<String> modelList = new ArrayList<>();
 		TreeSet<String> categorySet = new TreeSet<>();
 		TreeSet<String> yearSet = new TreeSet<>();
 		TreeSet<String> makeSet = new TreeSet<>();
 		TreeSet<String> priceSet = new TreeSet<>();
 		TreeSet<String> typeSet = new TreeSet<>();
+        TreeSet<String> modelSet = new TreeSet<>();
 		for (Vehicle vehicle : vehicles) {
 			String category = vehicle.getCategory().toString().toLowerCase();
 			String year = vehicle.getYear().toString();
 			String make = vehicle.getMake();
 			String type = vehicle.getBodyType();
 			String price = priceToString(vehicle.getPrice());
+            String model = vehicle.getModel();
 			categorySet.add(category);
 			yearSet.add(year);
 			makeSet.add(make);
 			priceSet.add(price);
 			typeSet.add(type);
+            modelSet.add(model);
 		}
 		Map<String, List<String>> map = new HashMap<>();
 		categoryList.addAll(categorySet);
@@ -360,11 +386,13 @@ public class InventoryServiceAPI_Test {
 		makeList.addAll(makeSet);
 		priceList.addAll(priceSet);
 		typeList.addAll(typeSet);
+        modelList.addAll(modelSet);
 		map.put("category", categoryList);
 		map.put("year", yearList);
 		map.put("make", makeList);
 		map.put("price", priceList);
 		map.put("type", typeList);
+        map.put("model",modelList);
 		return map;
 	}
 

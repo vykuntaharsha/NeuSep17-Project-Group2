@@ -104,13 +104,14 @@ class IncentiveList extends JPanel {
         for (String filter : filterList) {
             filterNumber++;
         }
-        ArrayList<RowFilter<Object, Object>> filters = new ArrayList<>(filterNumber);
-        for (String filter : filterList) {
-            if (filter != "Not All") {
-                filters.add(RowFilter.regexFilter(filter.toLowerCase(), 5));
-            }
+        ArrayList<RowFilter<Object,Object>> filters = new ArrayList<>(filterNumber);
+        for (String filter: filterList){
+            if (filter != "Not All"){
+                filters.add(RowFilter.regexFilter("(?i)" + filter, 5));
+
+        if (searchRowFilter != null) {
+            filters.add(searchRowFilter);
         }
-        filters.add(searchRowFilter);
         sorter.setRowFilter(RowFilter.andFilter(filters));
         incentive_list.setRowSorter(sorter);
     }
