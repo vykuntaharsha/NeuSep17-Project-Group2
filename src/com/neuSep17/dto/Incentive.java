@@ -24,8 +24,6 @@ public class Incentive {
         	
         String[] criterionArr = arr[6].split(",");
         for(String data : criterionArr) {
-        		if(data.equalsIgnoreCase("no"))
-        			continue;
           criterion.add(data.trim());
         }
         
