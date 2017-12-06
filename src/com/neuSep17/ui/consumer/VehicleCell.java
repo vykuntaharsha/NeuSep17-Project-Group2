@@ -20,6 +20,7 @@ public class VehicleCell extends JPanel {
     public VehicleCell(Vehicle v, ImageIcon icon, float discount) {
         super();
         this.setBorder(new MatteBorder(2, 0, 2, 0, Color.BLACK));
+        this.setBackground(Color.WHITE);
         
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[] {181, 150, 0};
@@ -99,6 +100,8 @@ public class VehicleCell extends JPanel {
         gbc_categoryLabel.gridx = 0;
         gbc_categoryLabel.gridy = 2;
         specPane.add(categoryLabel, gbc_categoryLabel);
+        
+        specPane.setBackground(Color.WHITE);
 
     }
 

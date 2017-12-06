@@ -16,6 +16,7 @@ class PagePane extends JPanel
     PagePane(BrowseInventoryFrame ancestor, int maxPage)
     {
         super();
+        this.setBackground(Color.WHITE);
         page=ancestor.getPage();
         JButton first = new JButton("<<");
         JButton pre = new JButton("<");
