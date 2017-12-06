@@ -15,7 +15,7 @@ class LinkLabel extends JLabel{
     public LinkLabel(String toDisplay, String toLink) {
         super(toDisplay);
         this.link=toLink;
-        
+        this.setHorizontalAlignment(CENTER);
         this.addMouseListener(new MouseAdapter(){
             
             public void mouseEntered(MouseEvent e) {

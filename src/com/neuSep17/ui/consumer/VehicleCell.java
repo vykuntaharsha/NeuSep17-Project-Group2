@@ -19,17 +19,19 @@ public class VehicleCell extends JPanel {
    
     public VehicleCell(Vehicle v, ImageIcon icon, float discount) {
         super();
-        this.setBorder(new MatteBorder(1, 0, 1, 0, Color.BLACK));
+        this.setBorder(new MatteBorder(2, 0, 2, 0, Color.BLACK));
+        
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[] {181, 150, 0};
-        gridBagLayout.rowHeights = new int[]{50, 0, 0};
+        gridBagLayout.rowHeights = new int[]{28, 0, 0};
         gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-        gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+        gridBagLayout.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
         setLayout(gridBagLayout);
         
         JLabel image = new JLabel(icon);
         GridBagConstraints gbc_image = new GridBagConstraints();
-        gbc_image.fill = GridBagConstraints.BOTH;
+        gbc_image.anchor = GridBagConstraints.SOUTH;
+        gbc_image.fill = GridBagConstraints.HORIZONTAL;
         gbc_image.gridheight = 2;
         gbc_image.insets = new Insets(0, 0, 0, 5);
         gbc_image.gridx = 0;
@@ -41,20 +43,24 @@ public class VehicleCell extends JPanel {
         nameLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         nameLabel.setFont(new Font(nameLabel.getFont().getFontName(), Font.BOLD, 24));
         GridBagConstraints gbc_nameLabel = new GridBagConstraints();
-        gbc_nameLabel.anchor = GridBagConstraints.WEST;
+        gbc_nameLabel.fill = GridBagConstraints.HORIZONTAL;
+        gbc_nameLabel.anchor = GridBagConstraints.SOUTH;
         gbc_nameLabel.insets = new Insets(0, 0, 5, 0);
         gbc_nameLabel.gridx = 1;
         gbc_nameLabel.gridy = 0;
-        add(nameLabel, gbc_nameLabel);
-        
-        this.setBorder(new MatteBorder(1, 0, 1, 0, Color.BLACK));
+        nameLabel.setBorder(new MatteBorder(0, 0, 2, 0, Color.GRAY));
+        add(nameLabel, gbc_nameLabel);  
 
         JPanel specPane = new JPanel();
         GridBagLayout gbl_specPane = new GridBagLayout();
-        gbl_specPane.columnWidths = new int[] { 110, 110, 0, 0 };
-        gbl_specPane.rowHeights = new int[] { 0, 0, 0, 0 };
-        gbl_specPane.columnWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
-        gbl_specPane.rowWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
+        gbl_specPane.columnWidths = new int[] { 110, 110, 0 };
+        gbl_specPane.rowHeights = new int[] { 0, 0, 0, 0, 0 };
+        gbl_specPane.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+        gbl_specPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+        GridBagConstraints gbc_specPane = new GridBagConstraints();
+        gbc_specPane.gridx = 1;
+        gbc_specPane.gridy = 1;
+        add(specPane, gbc_specPane);
         specPane.setLayout(gbl_specPane);
 
         JLabel typeLabel = new JLabel("type: " + v.getBodyType());
@@ -64,14 +70,6 @@ public class VehicleCell extends JPanel {
         gbc_typeLabel.gridx = 0;
         gbc_typeLabel.gridy = 0;
         specPane.add(typeLabel, gbc_typeLabel);
-
-        JLabel categoryLabel = new JLabel("category: " + v.getCategory().toString());
-        GridBagConstraints gbc_categoryLabel = new GridBagConstraints();
-        gbc_categoryLabel.anchor = GridBagConstraints.SOUTHWEST;
-        gbc_categoryLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_categoryLabel.gridx = 1;
-        gbc_categoryLabel.gridy = 0;
-        specPane.add(categoryLabel, gbc_categoryLabel);
         
         String price= "price: " + v.getPrice().toString();
         if (discount > 0 ) {
@@ -79,10 +77,10 @@ public class VehicleCell extends JPanel {
         }
         JLabel priceLabel = new JLabel(price);
         GridBagConstraints gbc_priceLabel = new GridBagConstraints();
-        gbc_priceLabel.gridheight = 2;
-        gbc_priceLabel.anchor = GridBagConstraints.NORTH;
+        gbc_priceLabel.gridheight = 3;
+        gbc_priceLabel.anchor = GridBagConstraints.NORTHEAST;
         gbc_priceLabel.insets = new Insets(0, 0, 5, 0);
-        gbc_priceLabel.gridx = 2;
+        gbc_priceLabel.gridx = 1;
         gbc_priceLabel.gridy = 0;
         specPane.add(priceLabel, gbc_priceLabel);
 
@@ -94,12 +92,13 @@ public class VehicleCell extends JPanel {
         gbc_trimLabel.gridy = 1;
         specPane.add(trimLabel, gbc_trimLabel);
 
-        GridBagConstraints gbc_specPane = new GridBagConstraints();
-        gbc_specPane.anchor = GridBagConstraints.SOUTH;
-        gbc_specPane.fill = GridBagConstraints.HORIZONTAL;
-        gbc_specPane.gridx = 1;
-        gbc_specPane.gridy = 1;
-        add(specPane, gbc_specPane);
+        JLabel categoryLabel = new JLabel("category: " + v.getCategory().toString());
+        GridBagConstraints gbc_categoryLabel = new GridBagConstraints();
+        gbc_categoryLabel.anchor = GridBagConstraints.NORTHWEST;
+        gbc_categoryLabel.insets = new Insets(0, 0, 5, 5);
+        gbc_categoryLabel.gridx = 0;
+        gbc_categoryLabel.gridy = 2;
+        specPane.add(categoryLabel, gbc_categoryLabel);
 
     }
 
