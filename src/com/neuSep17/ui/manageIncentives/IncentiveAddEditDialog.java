@@ -309,11 +309,15 @@ public class IncentiveAddEditDialog extends JDialog {
         if (criterions[0].getSelectedIndex() != 0) {
             return true;
         }
+        boolean result = false;
         for (int i = 1; i < criterions.length; i++) {
-            if (criterions[i].getSelectedIndex() == 0) {
-                AlertDialog(criterions[i].getName(), "");
-                return false;
+            if (criterions[i].getSelectedIndex() != 0) {
+                result = true;
             }
+        }
+        if (!result) {
+            AlertDialog("Criterion", "");
+            return false;
         }
         return true;
     }
@@ -374,10 +378,10 @@ public class IncentiveAddEditDialog extends JDialog {
             return "all,no,no,no,no,no,no,no";
         } else {
             StringBuilder sb = new StringBuilder();
-            sb.append("all,");
+            sb.append("no,");
             //category,year,make
             for (int i = 1; i < 4; i++) {
-                sb.append(criterions[i].getSelectedIndex() == 0 ? "no," : criterions[i].getSelectedItem());
+                sb.append(criterions[i].getSelectedIndex() == 0 ? "no," : criterions[i].getSelectedItem()+",");
             }
             //model,trim,type(we haven't decided to add all these fields, just add it here.)
             sb.append("no,no,no,");
