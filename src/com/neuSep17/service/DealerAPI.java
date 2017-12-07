@@ -1,46 +1,51 @@
 package com.neuSep17.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import com.neuSep17.dto.Dealer;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import com.neuSep17.dto.Dealer;
+// use the URL instead of local absolute path
 
 public class DealerAPI {
 	
 	private LinkedHashMap<String, Dealer> DealerMap;
-	private String fileName;
-	
+	private String fileUrl;
+
 	public ArrayList<Dealer> getDealers() {
 		return new ArrayList<Dealer>(DealerMap.values());
 	}
 	
-	public DealerAPI(String file) {
-		this.fileName = file;
+	public DealerAPI(String fileUrl) {
+		this.fileUrl = fileUrl;
 		try {
-			DealerMap = getDealersMap(file);
+			DealerMap = getDealersMap(fileUrl);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	protected LinkedHashMap<String, Dealer> getDealersMap(String file) throws IOException {
-		File inventoryFile = new File(file);
-		BufferedReader reader = new BufferedReader(new FileReader(inventoryFile));
+	protected LinkedHashMap<String, Dealer> getDealersMap(String fileUrl) throws IOException {
+//		File inventoryFile = new File(file);
+
+		URL url = new URL(fileUrl);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		DataInputStream input = new DataInputStream(conn.getInputStream());
+
+
+//		BufferedReader reader = new BufferedReader(new FileReader(inventoryFile));
 		LinkedHashMap<String, Dealer> dealerObjMap = new LinkedHashMap<String, Dealer>();		
 		String line = null;
 		
-		while((line=reader.readLine())!=null) {
+		while((line = input.readLine())!=null) {
 			String[] dealerArray = line.split("\t");
-			//should be "Dealer dealer =new Dealer(dealerArray[0],dealerArray[1], dealerArray[2])"?
-			Dealer dealer =new Dealer(dealerArray[0],dealerArray[1], dealerArray[2]);
-			//should be dealerObjMap?
+			Dealer dealer = new Dealer(dealerArray[0],dealerArray[1], dealerArray[2]);
 			dealerObjMap.put(dealer.getId(), dealer);
 		}
-		reader.close();
+//		reader.close();
 		return dealerObjMap;
 	}
 	
