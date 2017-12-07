@@ -106,7 +106,7 @@ public class ConsumerScreen  extends JFrame{
 
     public void makeThisVisible(){
         this.setTitle("Consumer Screen");
-        this.setSize(1800,16000);
+        this.setSize(1920,1200);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
