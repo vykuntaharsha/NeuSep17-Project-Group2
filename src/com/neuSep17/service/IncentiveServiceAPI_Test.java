@@ -141,24 +141,12 @@ public class IncentiveServiceAPI_Test {
 			if(count==1) {continue;}
 			String[] incentiveDataArray = line.split("~");
 			Incentive incentive =new Incentive(incentiveDataArray);
-			incentive.setCriterion(this.getRefinedIncentiveCriterion(incentive.getCriterion()));
 			incentives.put(incentive.getId(), incentive);
 		}
 		reader.close();
 		return incentives;
 	
 	}
-
-	private ArrayList<String> getRefinedIncentiveCriterion(ArrayList<String> criterion){
-		ArrayList<String> newList = new ArrayList<>();
-		for(int i=0; i<criterion.size(); i++) {
-			if(!criterion.get(i).equalsIgnoreCase("no"))
-				newList.add(criterion.get(i));
-		}
-		
-		return newList;
-	}
-	
 	
 	public int getTotalIncentiveAmount() {
 		return incentivesMap.size();
