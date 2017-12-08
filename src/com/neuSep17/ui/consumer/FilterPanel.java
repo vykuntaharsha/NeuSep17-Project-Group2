@@ -44,10 +44,14 @@ public class FilterPanel extends JPanel
         updateFilterCheckBoxPanels();
     }
 
-    public void setEnableCheckBoxMap(Map<String, Map<String, Integer>> enableCheckBoxesMap)
+    public void setEnableCheckBoxMap(Map<String, Map<String, Integer>> enableCheckBoxesMap, String currentChecked)
     {
         for (int i = 0; i < checkBoxPanels.length; i++)
         {
+            if (checkBoxPanels[i].getTitle().equals(currentChecked))
+            {
+                continue;
+            }
             checkBoxPanels[i].setEnableCheckBoxes(enableCheckBoxesMap.get(filterKeys[i]));
         }
     }
@@ -113,7 +117,7 @@ public class FilterPanel extends JPanel
         }
     }
 
-    public void updateFilterConditions()
+    public void updateFilterConditions(String currentChecked)
     {
         String categoriesFilter = checkBoxPanels[0].generateFilterCondition();
         if (categoriesFilter != null)
@@ -122,7 +126,7 @@ public class FilterPanel extends JPanel
         }
         parent.doFilter(categoriesFilter, checkBoxPanels[1].generateFilterCondition(),
                 checkBoxPanels[2].generateFilterCondition(), checkBoxPanels[3].generateFilterCondition(),
-                checkBoxPanels[4].generateFilterCondition());
+                checkBoxPanels[4].generateFilterCondition(), currentChecked);
     }
 
     public void resizeFilterPanel()
@@ -148,6 +152,6 @@ public class FilterPanel extends JPanel
     private void resetFilter()
     {
         resetFilterCheckBox();
-        updateFilterConditions();
+        updateFilterConditions("");
     }
 }

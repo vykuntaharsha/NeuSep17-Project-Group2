@@ -275,7 +275,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // isAscending);
 
         searchedVehicles = invsAPI.sortVehicles(searchedVehicles, sortType, isAscending);
-        filterPanel.updateFilterConditions();
+        filterPanel.updateFilterConditions("");
         displaytoList();
     }
 
@@ -302,12 +302,12 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         displaytoList();
     }
 
-    public void doFilter(String category, String year, String make, String price, String type)
+    public void doFilter(String category, String year, String make, String price, String type, String currentChecked)
     {
         toDisplay = (ArrayList<Vehicle>) InventoryServiceAPI_Test.vehiclesSearchAndFilter(searchedVehicles, category,
                 year, make, price, type, null);
         setPage(0);
-        filterPanel.setEnableCheckBoxMap(InventoryServiceAPI_Test.getComboBoxItemsMap(toDisplay));
+        filterPanel.setEnableCheckBoxMap(InventoryServiceAPI_Test.getComboBoxItemsMap(toDisplay), currentChecked);
         displaytoList();
     }
 

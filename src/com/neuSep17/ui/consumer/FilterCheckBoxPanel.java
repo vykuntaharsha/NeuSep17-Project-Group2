@@ -345,12 +345,17 @@ public class FilterCheckBoxPanel extends JPanel
         return isButtonHide;
     }
 
+    public String getTitle()
+    {
+        return title;
+    }
+
     class FilterCheckBoxListener implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            parent.updateFilterConditions();
+            parent.updateFilterConditions(title);
         }
     }
 }
