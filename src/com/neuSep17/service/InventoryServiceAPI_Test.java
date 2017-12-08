@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -348,51 +349,39 @@ public class InventoryServiceAPI_Test {
 
 	/**
 	 * Take in a list of vehicles and return a map. The keys of the map are "category", "year", "make",
-	 * "price" and "type". The corresponding values are sorted values contained by the passed in list
-	 *  of vehicles.
+	 * "price" and "type". The value are maps whose keys are sorted corresponding values contained by 
+	 * the passed in list of vehicles and the corresponding keys are their counts.
 	 * @param vehicles list of vehicles passed in
 	 * @return the result map
 	 */
-	public static Map<String, List<String>> getComboBoxItemsMap(List<Vehicle> vehicles) {
-		List<String> categoryList = new ArrayList<String>();
-		List<String> yearList = new ArrayList<String>();
-		List<String> makeList = new ArrayList<String>();
-		List<String> priceList = new ArrayList<String>();
-		List<String> typeList = new ArrayList<String>();
-        List<String> modelList = new ArrayList<>();
-		TreeSet<String> categorySet = new TreeSet<>();
-		TreeSet<String> yearSet = new TreeSet<>();
-		TreeSet<String> makeSet = new TreeSet<>();
-		TreeSet<String> priceSet = new TreeSet<>();
-		TreeSet<String> typeSet = new TreeSet<>();
-        TreeSet<String> modelSet = new TreeSet<>();
+	public static Map<String, Map<String, Integer>> getComboBoxItemsMap(List<Vehicle> vehicles) {
+		TreeMap<String, Integer> categoryMap = new TreeMap<>();
+		TreeMap<String, Integer> yearMap = new TreeMap<>();
+		TreeMap<String, Integer> makeMap = new TreeMap<>();
+		TreeMap<String, Integer> priceMap = new TreeMap<>();
+		TreeMap<String, Integer> typeMap = new TreeMap<>();
+		TreeMap<String, Integer> modelMap = new TreeMap<>();
 		for (Vehicle vehicle : vehicles) {
 			String category = vehicle.getCategory().toString().toLowerCase();
 			String year = vehicle.getYear().toString();
 			String make = vehicle.getMake();
 			String type = vehicle.getBodyType();
 			String price = priceToString(vehicle.getPrice());
-            String model = vehicle.getModel();
-			categorySet.add(category);
-			yearSet.add(year);
-			makeSet.add(make);
-			priceSet.add(price);
-			typeSet.add(type);
-            modelSet.add(model);
+			String model = vehicle.getModel();
+			addToCountMap(categoryMap, category);
+			addToCountMap(yearMap, year);
+			addToCountMap(makeMap, make);
+			addToCountMap(priceMap, price);
+			addToCountMap(typeMap, type);
+			addToCountMap(modelMap, model);
 		}
-		Map<String, List<String>> map = new HashMap<>();
-		categoryList.addAll(categorySet);
-		yearList.addAll(yearSet);
-		makeList.addAll(makeSet);
-		priceList.addAll(priceSet);
-		typeList.addAll(typeSet);
-        modelList.addAll(modelSet);
-		map.put("category", categoryList);
-		map.put("year", yearList);
-		map.put("make", makeList);
-		map.put("price", priceList);
-		map.put("type", typeList);
-        map.put("model",modelList);
+		Map<String, Map<String, Integer>> map = new HashMap<>();
+		map.put("category", categoryMap);
+		map.put("year", yearMap);
+		map.put("make", makeMap);
+		map.put("price", priceMap);
+		map.put("type", typeMap);
+		map.put("model", modelMap);
 		return map;
 	}
 
@@ -405,6 +394,13 @@ public class InventoryServiceAPI_Test {
 			}
 		}
 		return "100000~";
+	}
+
+	private static void addToCountMap(Map<String, Integer> map, String item) {
+		if (map.containsKey(item))
+			map.put(item, map.get(item) + 1);
+		else
+			map.put(item, 1);
 	}
 
 	/**
