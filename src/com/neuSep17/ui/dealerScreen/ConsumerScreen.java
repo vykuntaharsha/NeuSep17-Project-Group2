@@ -15,8 +15,8 @@ import static com.neuSep17.ui.dealerScreen.DealerScreen.GImage;
 
 public class ConsumerScreen  extends JFrame{
     JFrame jframe = new JFrame();
-    private JLabel first, second;
-    private JButton browser, empty[];
+    private JLabel first, second, third;
+    private JButton browser, empty[], browserAll;
     private JComboBox combobox;
     private DealerAPI dealerAPI = new DealerAPI("https://raw.githubusercontent.com/vykuntaharsha/NeuSep17-Project-Group2/master/data/dealers");
     private ArrayList<Dealer> dealerList = dealerAPI.getDealers();
@@ -27,7 +27,7 @@ public class ConsumerScreen  extends JFrame{
 
         GImage = new JPanel() {
             protected void paintComponent (Graphics g) {
-                ImageIcon icon = new ImageIcon("/Users/kevinshi721/GitHub/NeuSep17-Project-Group2/src/com/neuSep17/ui/dealerScreen/background1.jpg");
+                ImageIcon icon = new ImageIcon("C:\\Users\\lbjfo\\Documents\\GitHub\\NeuSep17-Project-Group2\\src\\com\\neuSep17\\ui\\dealerScreen\\background1.jpg");
                 Image img = icon.getImage();
                 g.drawImage(img, 0, 0, icon.getIconWidth(),
                         icon.getIconHeight(), icon.getImageObserver());
@@ -48,17 +48,26 @@ public class ConsumerScreen  extends JFrame{
 
     private void createComponents() {
 
-        browser = new JButton("Browse Super Good Cars here !");
-        browser.setFont(new Font("Default", Font.BOLD, 40));
+//        browser = new JButton("Browse Super Good Cars here !");
+        browser = new JButton("Browse selected dealer");
+        browser.setFont(new Font("Default", Font.BOLD, 24));
         browser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        first = new JLabel ("Best Price, Best Service ! ");
-        first.setFont(new Font("Default",Font.BOLD, 60));
+        browserAll = new JButton("Browse all vehicle");
+        browserAll.setFont(new Font("Default", Font.BOLD, 24));
+        browserAll.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        first = new JLabel ("Please select your dealer ");
+        first.setFont(new Font("Default",Font.BOLD, 40));
         first.setForeground(Color.BLACK);
 
         second = new JLabel("Select My Dealer");
         second.setFont(new Font("Default",Font.ITALIC, 40));
         second.setForeground(Color.BLACK);
+
+        third = new JLabel("If you have no idea ");
+        third.setFont(new Font("Default",Font.BOLD, 40));
+        third.setForeground(Color.BLACK);
 
         for (Dealer d: dealerList){
             dealerNameList.add(d.getId());
@@ -67,9 +76,10 @@ public class ConsumerScreen  extends JFrame{
         combobox=new JComboBox(dealerNameList.toArray());
         combobox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         combobox.setSelectedItem(null);
+        combobox.setFont(new Font("Default",Font.ITALIC,24));
 
-        empty = new JButton[2];
-        for(int i = 0; i < 2; i ++) {
+        empty = new JButton[3];
+        for(int i = 0; i < 3; i ++) {
             empty[i] = new JButton("");
             empty[i].setContentAreaFilled(false);
             empty[i].setBorderPainted(false);
@@ -85,22 +95,33 @@ public class ConsumerScreen  extends JFrame{
         con.setLayout(gridbag);
         GImage.setLayout(new GridLayout(6,1));
 
-        JPanel pan = new JPanel();
-        pan.setLayout(new GridLayout(1,2));
-        pan.setOpaque(false);
-        pan.add(second);
-        pan.add(combobox);
+        JPanel pan1 = new JPanel();
+        pan1.setLayout(new GridLayout(1,2));
+        pan1.setOpaque(false);
+        pan1.add(combobox);
+        pan1.add(browser);
 
-        GImage.add(first);
+        JPanel pan2 = new JPanel();
+        pan2.setLayout(new GridLayout(1,2));
+        pan2.setOpaque(false);
+        pan2.add(third);
+        pan2.add(browserAll);
+
+
         GImage.add(empty[0]);
-        GImage.add(pan);
+        GImage.add(first);
+        GImage.add(pan1);
         GImage.add(empty[1]);
-        GImage.add(browser);
+        GImage.add(pan2);
+
+
     }
 
     private void addListener() {
         Browser browserCar = new Browser();
         browser.addActionListener(browserCar);
+        BrowserAll browser = new BrowserAll();
+        browserAll.addActionListener(browser);
     }
 
     public Dealer getSelectedDealer(){
@@ -126,6 +147,18 @@ public class ConsumerScreen  extends JFrame{
         }
     }
 
+    class BrowserAll implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e){
+                //new DealerInventoryScreen();
+                System.out.println("You have clicked the second button!");
+
+                dispose();
+
+        }
+    }
+
 
     public void makeThisVisible(){
         this.setTitle("Consumer Screen");
@@ -133,4 +166,9 @@ public class ConsumerScreen  extends JFrame{
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
+    public static void main(String[] args){
+        new ConsumerScreen();
+    }
+
 }
