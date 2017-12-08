@@ -349,7 +349,7 @@ public class InventoryServiceAPI_Test {
 
 	/**
 	 * Take in a list of vehicles and return a map. The keys of the map are "category", "year", "make",
-	 * "price" and "type". The value is a map whose keys are sorted corresponding values contained by 
+	 * "price" and "type". The value are maps whose keys are sorted corresponding values contained by 
 	 * the passed in list of vehicles and the corresponding keys are their counts.
 	 * @param vehicles list of vehicles passed in
 	 * @return the result map
