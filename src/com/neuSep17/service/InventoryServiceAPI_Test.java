@@ -275,13 +275,13 @@ public class InventoryServiceAPI_Test {
 		//test
 		if (category == null || category.equals(""))
 			return true;
-		return vehicle.getCategory().toString().toLowerCase().contains(category);
+		return category.contains(vehicle.getCategory().toString().toLowerCase());
 	}
 
 	private static boolean yearFilter(Vehicle vehicle, String year) {
 		if (year == null || year.equals(""))
 			return true;
-		return vehicle.getYear().toString().contains(year);
+		return year.contains(vehicle.getYear().toString());
 	}
 
 	private static boolean makeFilter(Vehicle vehicle, String make) {
@@ -290,7 +290,7 @@ public class InventoryServiceAPI_Test {
 		String target = vehicle.getMake();
 		String[] makes = make.split(";");
 		for (String s : makes) {
-			if (target.toLowerCase().contains(s))
+			if (s.equals(target))
 				return true;
 		}
 		return false;
@@ -328,7 +328,7 @@ public class InventoryServiceAPI_Test {
 		String target = vehicle.getBodyType();
 		String [] types = type.split(";");
 		for (String s : types) {
-			if(target.toLowerCase().contains(s))
+			if(s.equals(target))
 				return true;
 		}
 		return false;
