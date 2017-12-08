@@ -1,13 +1,9 @@
 package com.neuSep17.ui.consumer;
-import com.neuSep17.dto.Vehicle;
-import com.neuSep17.service.IncentiveServiceAPI_Test;
-import com.neuSep17.service.InventoryServiceAPI_Test;
 
-import com.neuSep17.dto.Vehicle;
-import com.neuSep17.service.IncentiveServiceAPI_Test;
-import com.neuSep17.service.InventoryServiceAPI_Test;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
@@ -26,7 +22,9 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-
+import com.neuSep17.dto.Vehicle;
+import com.neuSep17.service.IncentiveServiceAPI_Test;
+import com.neuSep17.service.InventoryServiceAPI_Test;
 
 public class BrowseInventoryFrame extends JFrame implements Runnable
 {
@@ -63,7 +61,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         this.toDisplay = new ArrayList<Vehicle>();
         setPage(0);
         perpage = 15;
-        
+
         getLoadingIMG();
 
         updateVehicle();
@@ -74,18 +72,22 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         addListeners();
     }
 
-    private void getLoadingIMG() {
-        
-        File temp=new File("data/images/loading.gif");       
-        
-        try {
+    private void getLoadingIMG()
+    {
+
+        File temp = new File("data/images/loading.gif");
+
+        try
+        {
             URL url = temp.toURI().toURL();
-            loadingIMG=new ImageIcon(url);
-        } catch (MalformedURLException e) {
-            loadingIMG=null;
+            loadingIMG = new ImageIcon(url);
+        }
+        catch (MalformedURLException e)
+        {
+            loadingIMG = null;
             e.printStackTrace();
         }
-        
+
     }
 
     private void createComponents()
@@ -148,10 +150,12 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     ImageIcon getIcon(Vehicle v)
     {
-        if (cache.containsKey(v)) {   // just reading, thread safe
+        if (cache.containsKey(v))
+        { // just reading, thread safe
             return cache.get(v);
         }
-        else return loadingIMG;
+        else
+            return loadingIMG;
     }
 
     int getPerPage()
@@ -303,6 +307,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         toDisplay = (ArrayList<Vehicle>) InventoryServiceAPI_Test.vehiclesSearchAndFilter(searchedVehicles, category,
                 year, make, price, type, null);
         setPage(0);
+        filterPanel.setEnableCheckBoxMap(InventoryServiceAPI_Test.getComboBoxItemsMap(toDisplay));
         displaytoList();
     }
 

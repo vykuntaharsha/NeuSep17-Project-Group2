@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -90,20 +93,43 @@ public class FilterCheckBoxPanel extends JPanel
         return 40 + checkBoxes.size() * 25;
     }
 
-    public void populateCheckBoxes(List<String> items)
+    public void populateCheckBoxes(Map<String, Integer> itemsMap)
     {
-        if (items == null)
+        if (itemsMap == null)
         {
             return;
         }
 
         removeCheckBoxesListeners();
         checkBoxes.clear();
-        createCheckBoxesComponents(items);
+        createCheckBoxesComponents(itemsMap);
         addCheckBoxesComponents();
         hideCheckBoxesFrom(DEFAULT_CHECKBOXES_NUMBER);
         resetButtons();
         addCheckBoxesListeners();
+    }
+
+    public void setEnableCheckBoxes(Map<String, Integer> enableItemsMap)
+    {
+        if (enableItemsMap == null)
+        {
+            return;
+        }
+
+        Set<String> enableItems = enableItemsMap.keySet();
+        for (JCheckBox checkBox : checkBoxes)
+        {
+            if (enableItems.contains(checkBox.getName()))
+            {
+                checkBox.setText(checkBox.getName() + " (" + enableItemsMap.get(checkBox.getName()) + ")");
+                checkBox.setEnabled(true);
+            }
+            else
+            {
+                checkBox.setText(checkBox.getName() + " (0)");
+                checkBox.setEnabled(false);
+            }
+        }
     }
 
     private void resetButtons()
@@ -146,13 +172,13 @@ public class FilterCheckBoxPanel extends JPanel
         buttonShow.setVisible(false);
     }
 
-    private void createCheckBoxesComponents(List<String> items)
+    private void createCheckBoxesComponents(Map<String, Integer> itemsMap)
     {
-        for (String item : items)
+        for (Entry<String, Integer> entry : itemsMap.entrySet())
         {
             JCheckBox checkBox = new JCheckBox();
-            checkBox.setText(item);
-            checkBox.setName(item);
+            checkBox.setText(entry.getKey() + " (" + entry.getValue() + ")");
+            checkBox.setName(entry.getKey());
             checkBoxes.add(checkBox);
         }
     }

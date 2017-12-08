@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.Box;
@@ -18,7 +17,7 @@ import javax.swing.border.TitledBorder;
 
 public class FilterPanel extends JPanel
 {
-    private Map<String, List<String>> checkBoxPanelsMap;
+    private Map<String, Map<String, Integer>> checkBoxPanelsMap;
     private BrowseInventoryFrame parent;
     private JScrollPane filterScrollPane;
     private FilterCheckBoxPanel[] checkBoxPanels;
@@ -37,12 +36,20 @@ public class FilterPanel extends JPanel
         addComponents();
     }
 
-    public void setCheckBoxPanelsMap(Map<String, List<String>> checkBoxPanelsMap)
+    public void setCheckBoxPanelsMap(Map<String, Map<String, Integer>> checkBoxPanelsMap)
     {
         this.checkBoxPanelsMap = checkBoxPanelsMap;
         filterScrollPane.getVerticalScrollBar().setValue(0);
         resetFilterCheckBox();
         updateFilterCheckBoxPanels();
+    }
+
+    public void setEnableCheckBoxMap(Map<String, Map<String, Integer>> enableCheckBoxesMap)
+    {
+        for (int i = 0; i < checkBoxPanels.length; i++)
+        {
+            checkBoxPanels[i].setEnableCheckBoxes(enableCheckBoxesMap.get(filterKeys[i]));
+        }
     }
 
     private void createComponents()
