@@ -97,9 +97,9 @@ public class DealerLogin extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-
+            String passwordTexted = passwordTextField.getText();
             if (dealerComboBox.getSelectedItem() != null) {
-                if (passwordTextField.getText() == getSelectedDealer().getPassword()) {
+                if (passwordTexted.equals(getSelectedDealer().getPassword())) {
                     JOptionPane.showMessageDialog(null, "Login Successfully", "Login", JOptionPane.INFORMATION_MESSAGE);
                     //new ManageInventoryScreen();
                     System.out.println("You have choosed " + dealerComboBox.getSelectedItem() + ", Close Dealer Screen -> Open Dealer Inventory Screen");
