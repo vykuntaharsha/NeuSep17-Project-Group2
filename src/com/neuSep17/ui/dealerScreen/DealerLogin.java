@@ -12,10 +12,6 @@ import java.util.ArrayList;
 
 public class DealerLogin extends JFrame {
 
-    public static void main(String[] args) {
-        new DealerLogin();
-    }
-
     private JLabel screenTitle, selectDealerLabel, passwordLabel;
     private JComboBox dealerComboBox;
     private JTextField passwordTextField;
@@ -97,17 +93,15 @@ public class DealerLogin extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            String passwordTexted = passwordTextField.getText();
-            if (dealerComboBox.getSelectedItem() != null) {
-                if (passwordTexted.equals(getSelectedDealer().getPassword())) {
-                    JOptionPane.showMessageDialog(null, "Login Successfully", "Login", JOptionPane.INFORMATION_MESSAGE);
-                    //new ManageInventoryScreen();
-                    System.out.println("You have choosed " + dealerComboBox.getSelectedItem() + ", Close Dealer Screen -> Open Dealer Inventory Screen");
+           if (dealerComboBox.getSelectedItem() != null) {
+                if (passwordTextField.getText().equals(getSelectedDealer().getPassword())) {
+                    JOptionPane.showMessageDialog(null, "Login Successfully", "Login Validation", JOptionPane.INFORMATION_MESSAGE);
+                    new DealerScreen(dealerComboBox.getSelectedItem().toString());
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please Check Your Password", "Invalid Password", JOptionPane.ERROR_MESSAGE);
-
+                    JOptionPane.showMessageDialog(null, "Please Re-Check Your Password", "Login Validation", JOptionPane.ERROR_MESSAGE);
                 }
+
             } else {
                 JOptionPane.showMessageDialog(null, "Please Select a Dealer", "Error", JOptionPane.ERROR_MESSAGE);
             }

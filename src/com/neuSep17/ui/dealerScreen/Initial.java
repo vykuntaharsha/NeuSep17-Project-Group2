@@ -100,7 +100,7 @@ public class Initial extends JFrame{
         @Override
         public void actionPerformed (ActionEvent e){
             if(e.getSource() == dealer) {
-                new DealerScreen();
+                new DealerLogin();
                 dispose();
             }
         }
@@ -110,8 +110,8 @@ public class Initial extends JFrame{
         @Override
         public void actionPerformed (ActionEvent e){
             if(e.getSource() == consumer) {
-                new ConsumerScreen();
-//                dispose();
+//                new ConsumerScreen();
+                dispose();
             }
         }
     }
