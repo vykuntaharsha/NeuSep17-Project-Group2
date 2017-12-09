@@ -36,7 +36,7 @@ public class DealerLogin extends JFrame {
         screenTitle.setFont(new Font("Default", Font.BOLD, 60));
         screenTitle.setForeground(Color.BLACK);
 
-        selectDealerLabel = new JLabel("Selcet Dealer");
+        selectDealerLabel = new JLabel("Select Dealer");
         selectDealerLabel.setFont(new Font("Default", Font.PLAIN, 40));
         selectDealerLabel.setForeground(Color.BLACK);
 
