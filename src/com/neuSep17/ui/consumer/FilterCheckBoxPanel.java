@@ -109,9 +109,9 @@ public class FilterCheckBoxPanel extends JPanel
         addCheckBoxesListeners();
     }
 
-    public void setEnableCheckBoxes(Map<String, Integer> enableItemsMap)
+    public void setEnableCheckBoxes(Map<String, Integer> enableItemsMap, String currentChecked)
     {
-        if (enableItemsMap == null)
+        if (enableItemsMap == null || (title.equals(currentChecked) && !isAllUnchecked()))
         {
             return;
         }
@@ -130,6 +130,18 @@ public class FilterCheckBoxPanel extends JPanel
                 checkBox.setEnabled(false);
             }
         }
+    }
+
+    private boolean isAllUnchecked()
+    {
+        for (JCheckBox checkBox : checkBoxes)
+        {
+            if (checkBox.isSelected())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void resetButtons()
@@ -343,11 +355,6 @@ public class FilterCheckBoxPanel extends JPanel
     public boolean isButtonHide()
     {
         return isButtonHide;
-    }
-
-    public String getTitle()
-    {
-        return title;
     }
 
     class FilterCheckBoxListener implements ActionListener

@@ -48,11 +48,7 @@ public class FilterPanel extends JPanel
     {
         for (int i = 0; i < checkBoxPanels.length; i++)
         {
-            if (checkBoxPanels[i].getTitle().equals(currentChecked))
-            {
-                continue;
-            }
-            checkBoxPanels[i].setEnableCheckBoxes(enableCheckBoxesMap.get(filterKeys[i]));
+            checkBoxPanels[i].setEnableCheckBoxes(enableCheckBoxesMap.get(filterKeys[i]), currentChecked);
         }
     }
 
