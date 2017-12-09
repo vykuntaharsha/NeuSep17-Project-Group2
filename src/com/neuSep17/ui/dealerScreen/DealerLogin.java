@@ -20,7 +20,7 @@ public class DealerLogin extends JFrame {
     private JComboBox dealerComboBox;
     private JTextField passwordTextField;
     private JButton loginButton, exitButton;
-    private DealerAPI dealerAPI = new DealerAPI("https://raw.githubusercontent.com/vykuntaharsha/NeuSep17-Project-Group2/master/data/dealers");
+    private DealerAPI dealerAPI = new DealerAPI("https://raw.githubusercontent.com/vykuntaharsha/NeuSep17-Project-Group2/DearlerScreenV2/data/dealers");
     private ArrayList<Dealer> dealerList = dealerAPI.getDealers();
     private ArrayList<String> dealerNameList = new ArrayList<>();
     
