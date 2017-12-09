@@ -12,6 +12,9 @@ import java.util.ArrayList;
 
 public class DealerLogin extends JFrame {
 
+    public static void main(String[] args) {
+        new DealerLogin();
+    }
     private JLabel screenTitle, selectDealerLabel, passwordLabel;
     private JComboBox dealerComboBox;
     private JTextField passwordTextField;
@@ -32,13 +35,13 @@ public class DealerLogin extends JFrame {
     }
 
     private void createComponents() {
-        screenTitle = new JLabel("Welcome to Dealer Login!");
-        screenTitle.setFont(new Font("Default", Font.BOLD, 60));
-        screenTitle.setForeground(Color.BLACK);
+        screenTitle = new JLabel("Welcome to Dealer Login!", JLabel.CENTER);
+        screenTitle.setFont(new Font("Default", Font.BOLD, 55));
+        screenTitle.setForeground(Color.DARK_GRAY);
 
-        selectDealerLabel = new JLabel("Select Dealer");
-        selectDealerLabel.setFont(new Font("Default", Font.PLAIN, 40));
-        selectDealerLabel.setForeground(Color.BLACK);
+        selectDealerLabel = new JLabel("Dealer Name", JLabel.RIGHT);
+        selectDealerLabel.setFont(new Font("Default", Font.BOLD, 20));
+        selectDealerLabel.setForeground(Color.DARK_GRAY);
 
         for (Dealer d : dealerList) {
             dealerNameList.add(d.getId());
@@ -46,33 +49,114 @@ public class DealerLogin extends JFrame {
 
         dealerComboBox = new JComboBox(dealerNameList.toArray());
         dealerComboBox.setSelectedItem(null);
+        dealerComboBox.setForeground(Color.DARK_GRAY);
 
-        passwordLabel = new JLabel("Password");
-        passwordLabel.setFont(new Font("Default", Font.PLAIN, 40));
+        passwordLabel = new JLabel("Password", JLabel.RIGHT);
+        passwordLabel.setFont(new Font("Default", Font.BOLD, 20));
+        passwordLabel.setForeground(Color.DARK_GRAY);
 
         passwordTextField = new JPasswordField();
         passwordTextField.setEditable(true);
+        passwordTextField.setForeground(Color.DARK_GRAY);
 
 
         loginButton = new JButton("Login");
-        loginButton.setFont(new Font("Default",Font.PLAIN,40));
+        loginButton.setFont(new Font("Default",Font.BOLD,20));
+        loginButton.setForeground(Color.DARK_GRAY);
 
         exitButton = new JButton("Exit");
-        exitButton.setFont(new Font("Default", Font.PLAIN, 40));
+        exitButton.setFont(new Font("Default", Font.BOLD, 20));
+        exitButton.setForeground(Color.DARK_GRAY);
     }
 
     private void addComponentsUsingGridBagLayout() {
         Container con = getContentPane();
 
-        GridLayout layout = new GridLayout(8, 1,1,1);
-        con.setLayout(layout);
-        con.add(screenTitle);
-        con.add(selectDealerLabel);
-        con.add(dealerComboBox);
-        con.add(passwordLabel);
-        con.add(passwordTextField);
-        con.add(loginButton);
-        con.add(exitButton);
+
+        ImageIcon backgroundImage = new ImageIcon("/Users/kevinshi721/GitHub/NeuSep17-Project-Group2/src/com/neuSep17/ui/dealerScreen/DealerLoginBackground.jpg");
+
+        JLabel backgroundLabel = new JLabel(backgroundImage);
+
+        this.add(backgroundLabel);
+
+        backgroundLabel.setSize(backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
+        backgroundLabel.setLocation(0, 0);
+
+        backgroundLabel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        backgroundLabel.add(screenTitle);
+        backgroundLabel.add(selectDealerLabel);
+        backgroundLabel.add(dealerComboBox);
+        backgroundLabel.add(passwordLabel);
+        backgroundLabel.add(passwordTextField);
+        backgroundLabel.add(loginButton);
+        backgroundLabel.add(exitButton);
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 4;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(50, 0, 200, 0);
+        gbc.weightx = 0.8;
+//        gbc.weighty = 0.5;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        backgroundLabel.add(screenTitle, gbc);
+
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        backgroundLabel.add(selectDealerLabel, gbc);
+
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        backgroundLabel.add(dealerComboBox, gbc);
+
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        backgroundLabel.add(passwordLabel, gbc);
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(0, 0, 0, 529);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        backgroundLabel.add(passwordTextField, gbc);
+
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(200, 400, 50, 0);
+        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        backgroundLabel.add(loginButton, gbc);
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(200, 0, 50, 400);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        backgroundLabel.add(exitButton, gbc);
+
     }
 
     private void addListener() {
