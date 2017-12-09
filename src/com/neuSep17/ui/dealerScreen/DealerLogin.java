@@ -2,8 +2,6 @@ package com.neuSep17.ui.dealerScreen;
 
 import com.neuSep17.dto.Dealer;
 import com.neuSep17.service.DealerAPI;
-//import com.neuSep17.ui.manageIncentives.IncentiveAPP;
-
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,57 +9,40 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class DealerScreen extends JFrame {
+public class DealerLogin extends JFrame {
 
-    JFrame jframe = new JFrame();
-    public static JPanel GImage = null;
+    public static void main(String[] args) {
+        new DealerLogin();
+    }
 
-    private JLabel screenTitle, selectDealerLabel;
+    private JLabel screenTitle, selectDealerLabel, passwordLabel;
     private JComboBox dealerComboBox;
-    private JButton mngInvButton, mngIncButton, empty[];
+    private JButton loginButton, exitButton;
     private DealerAPI dealerAPI = new DealerAPI("https://raw.githubusercontent.com/vykuntaharsha/NeuSep17-Project-Group2/master/data/dealers");
     private ArrayList<Dealer> dealerList = dealerAPI.getDealers();
     private ArrayList<String> dealerNameList = new ArrayList<>();
 
-
-    public DealerScreen() throws HeadlessException {
+    public DealerLogin() throws HeadlessException {
 
         super();
-
-        GImage = new JPanel() {
-            protected void paintComponent (Graphics g) {
-                ImageIcon icon = new ImageIcon("/Users/kevinshi721/GitHub/NeuSep17-Project-Group2/src/com/neuSep17/ui/dealerScreen/background2.jpg");
-                Image img = icon.getImage();
-                g.drawImage(img, 0, 0, icon.getIconWidth(),
-                        icon.getIconHeight(), icon.getImageObserver());
-                jframe.setSize(icon.getIconWidth(), icon.getIconHeight());
-            }
-        };
-        jframe.add(GImage);
-        jframe.pack();
-        jframe.setVisible(true);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setTitle("DealerScreen");
-
-        setTitle("DealerScreen");
-
+        setTitle("DealerLogin");
 
         createComponents();
         addComponentsUsingGridBagLayout();
         addListener();
-        //makeVisible();
+        makeVisible();
     }
 
     private void createComponents() {
-        screenTitle = new JLabel("Welcome , Manager !");
+        screenTitle = new JLabel("Welcome !");
         screenTitle.setFont(new Font("Default", Font.BOLD, 60));
         screenTitle.setForeground(Color.BLACK);
 
-        selectDealerLabel = new JLabel("Selcet My Car Plans");
+        selectDealerLabel = new JLabel("Selcet Dealer");
         selectDealerLabel.setFont(new Font("Default", Font.ITALIC, 40));
         selectDealerLabel.setForeground(Color.BLACK);
 
-        for (Dealer d: dealerList){
+        for (Dealer d : dealerList) {
             dealerNameList.add(d.getId());
         }
 
@@ -70,49 +51,31 @@ public class DealerScreen extends JFrame {
         dealerComboBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 
-        mngInvButton = new JButton("Manage Inventory");
-        mngInvButton.setFont(new Font("Default", Font.PLAIN, 40));
-        mngInvButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        mngIncButton = new JButton("Manage Incentive");
-        mngIncButton.setFont(new Font("Default", Font.PLAIN, 40));
-        mngIncButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        empty = new JButton[2];
-        for(int i = 0; i < 2; i ++) {
-            empty[i] = new JButton("");
-            empty[i].setContentAreaFilled(false);
-            empty[i].setBorderPainted(false);
-        }
+        loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Default",Font.PLAIN,40));
+        loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        exitButton = new JButton("Exit");
+        exitButton.setFont(new Font("Default", Font.PLAIN, 40));
+        exitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     private void addComponentsUsingGridBagLayout() {
         Container con = getContentPane();
 
-        GridLayout layout = new GridLayout(9, 1);
-        JPanel pan = new JPanel();
-        pan.setLayout(new GridLayout(1,10));
-        pan.setOpaque(false);
-        pan.add(selectDealerLabel);
-        pan.add(dealerComboBox);
-
-        GImage.setLayout(layout);
-        GImage.add(screenTitle);
-        GImage.add(empty[0]);
-        GImage.add(pan);
-        GImage.add(empty[1]);
-        GImage.add(mngInvButton);
-        GImage.add(mngIncButton);
-
-        GridBagConstraints s = new GridBagConstraints();
-        s.fill = GridBagConstraints.BOTH;
-
+        GridLayout layout = new GridLayout(5, 2,1,1);
+        con.setLayout(layout);
+        con.add(screenTitle);
+        con.add(selectDealerLabel);
+        con.add(dealerComboBox);
+        con.add(loginButton);
+        con.add(exitButton);
     }
 
     private void addListener() {
-        ManageInventory mngInv = new ManageInventory();
-        ManageIncentive mngInc = new ManageIncentive();
-        mngInvButton.addActionListener(mngInv);
-        mngIncButton.addActionListener(mngInc);
+        DealerLogin.ManageInventory mngInv = new DealerLogin.ManageInventory();
+        DealerLogin.ManageIncentive mngInc = new DealerLogin.ManageIncentive();
+        loginButton.addActionListener(mngInv);
+        exitButton.addActionListener(mngInc);
 
     }
 
@@ -150,8 +113,10 @@ public class DealerScreen extends JFrame {
     }
 
     private void makeVisible() {
-        setSize(1024, 768);
+        setSize(1920, 1200);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
+
+

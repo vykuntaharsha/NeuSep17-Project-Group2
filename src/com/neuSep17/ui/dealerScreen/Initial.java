@@ -118,13 +118,13 @@ public class Initial extends JFrame{
 
     private void makeVisible() {
 
-        setSize(1024,768);
+        setSize(1920,1200);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 
     public static void main(String[] args) throws IOException {
-        Initial in = new Initial();
+        new Initial();
     }
 }
