@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DealerLogin extends JFrame {
@@ -17,11 +18,12 @@ public class DealerLogin extends JFrame {
 
     private JLabel screenTitle, selectDealerLabel, passwordLabel;
     private JComboBox dealerComboBox;
+    private JTextField passwordTextField;
     private JButton loginButton, exitButton;
     private DealerAPI dealerAPI = new DealerAPI("https://raw.githubusercontent.com/vykuntaharsha/NeuSep17-Project-Group2/master/data/dealers");
     private ArrayList<Dealer> dealerList = dealerAPI.getDealers();
     private ArrayList<String> dealerNameList = new ArrayList<>();
-
+    
     public DealerLogin() throws HeadlessException {
 
         super();
@@ -34,12 +36,12 @@ public class DealerLogin extends JFrame {
     }
 
     private void createComponents() {
-        screenTitle = new JLabel("Welcome !");
+        screenTitle = new JLabel("Welcome to Dealer Login!");
         screenTitle.setFont(new Font("Default", Font.BOLD, 60));
         screenTitle.setForeground(Color.BLACK);
 
         selectDealerLabel = new JLabel("Selcet Dealer");
-        selectDealerLabel.setFont(new Font("Default", Font.ITALIC, 40));
+        selectDealerLabel.setFont(new Font("Default", Font.PLAIN, 40));
         selectDealerLabel.setForeground(Color.BLACK);
 
         for (Dealer d : dealerList) {
@@ -48,34 +50,40 @@ public class DealerLogin extends JFrame {
 
         dealerComboBox = new JComboBox(dealerNameList.toArray());
         dealerComboBox.setSelectedItem(null);
-        dealerComboBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        passwordLabel = new JLabel("Password");
+        passwordLabel.setFont(new Font("Default", Font.PLAIN, 40));
+
+        passwordTextField = new JPasswordField();
+        passwordTextField.setEditable(true);
 
 
         loginButton = new JButton("Login");
         loginButton.setFont(new Font("Default",Font.PLAIN,40));
-        loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
         exitButton = new JButton("Exit");
         exitButton.setFont(new Font("Default", Font.PLAIN, 40));
-        exitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     private void addComponentsUsingGridBagLayout() {
         Container con = getContentPane();
 
-        GridLayout layout = new GridLayout(5, 2,1,1);
+        GridLayout layout = new GridLayout(8, 1,1,1);
         con.setLayout(layout);
         con.add(screenTitle);
         con.add(selectDealerLabel);
         con.add(dealerComboBox);
+        con.add(passwordLabel);
+        con.add(passwordTextField);
         con.add(loginButton);
         con.add(exitButton);
     }
 
     private void addListener() {
-        DealerLogin.ManageInventory mngInv = new DealerLogin.ManageInventory();
-        DealerLogin.ManageIncentive mngInc = new DealerLogin.ManageIncentive();
-        loginButton.addActionListener(mngInv);
-        exitButton.addActionListener(mngInc);
+        DealerLogin.LoginAL loginAL = new DealerLogin.LoginAL();
+        DealerLogin.ExitAL exitAL = new DealerLogin.ExitAL();
+        loginButton.addActionListener(loginAL);
+        exitButton.addActionListener(exitAL);
 
     }
 
@@ -84,30 +92,36 @@ public class DealerLogin extends JFrame {
         return dealerAPI.getDealer(dealerID);
     }
 
-    class ManageInventory implements ActionListener {
+    class LoginAL implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
+
             if (dealerComboBox.getSelectedItem() != null) {
-                //new ManageInventoryScreen();
-                System.out.println("You have choosed " + dealerComboBox.getSelectedItem() + ", Close Dealer Screen -> Open Dealer Inventory Screen");
-                dispose();
+                if (passwordTextField.getText() == getSelectedDealer().getPassword()) {
+                    JOptionPane.showMessageDialog(null, "Login Successfully", "Login", JOptionPane.INFORMATION_MESSAGE);
+                    //new ManageInventoryScreen();
+                    System.out.println("You have choosed " + dealerComboBox.getSelectedItem() + ", Close Dealer Screen -> Open Dealer Inventory Screen");
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please Check Your Password", "Invalid Password", JOptionPane.ERROR_MESSAGE);
+
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Please Select a Dealer", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
-    class ManageIncentive implements ActionListener {
+    class ExitAL implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (dealerComboBox.getSelectedItem() != null) {
-//                new IncentiveAPP();
-                System.out.println("You have choosed " + dealerComboBox.getSelectedItem() + ", Close Dealer Screen -> Open Dealer Incentive Screen");
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "Please Select a Dealer", "Error", JOptionPane.ERROR_MESSAGE);
+            try {
+                new Initial();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
         }
     }

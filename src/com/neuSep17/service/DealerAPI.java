@@ -42,7 +42,7 @@ public class DealerAPI {
 		
 		while((line = input.readLine())!=null) {
 			String[] dealerArray = line.split("\t");
-			Dealer dealer = new Dealer(dealerArray[0],dealerArray[1], dealerArray[2]);
+			Dealer dealer = new Dealer(dealerArray[0],dealerArray[1], dealerArray[2],dealerArray[3]);
 			dealerObjMap.put(dealer.getId(), dealer);
 		}
 //		reader.close();
@@ -52,6 +52,10 @@ public class DealerAPI {
 	public Dealer getDealer(String id) {
 		return DealerMap.get(id);
 		
+	}
+
+	public Dealer getPassword(String password){
+		return DealerMap.get(password);
 	}
 
 	public LinkedHashMap<String, Dealer> getDealerMap() {

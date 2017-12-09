@@ -4,12 +4,21 @@ public class Dealer {
     private String id;
     private String name;
     private String url;
-    
+    private String password;
+
     public Dealer(String id, String name, String url){
     		this.id= id;
     		this.name=name;
     		this.url=url;
     }
+
+    public Dealer(String id, String name, String url, String password){
+        this.id= id;
+        this.name=name;
+        this.url=url;
+        this.password=password;
+    }
+
     public String getId() {
         return id;
     }
@@ -27,5 +36,13 @@ public class Dealer {
     }
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
