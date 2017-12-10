@@ -93,7 +93,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private void createComponents()
     {
         // search panel
-        searchPanel = new SearchPanel(this);
+        searchPanel = new SearchPanel(this, invsAPI.getVehicles());
         // filter panel
         filterPanel = new FilterPanel(this);
         // list panel
@@ -106,6 +106,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         con.setLayout(new BorderLayout(1, 1));
 
         // search panel
+        searchPanel.setPreferredSize(new Dimension(1200, 200));
         con.add(searchPanel, BorderLayout.NORTH);
 
         // filter panel
