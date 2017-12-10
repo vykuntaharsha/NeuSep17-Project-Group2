@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -22,7 +23,8 @@ public class ListPanel extends JPanel{
         parent.setPage(0);        
         
         this.setSize(new Dimension(this.getWidth() - 300, this.getHeight() - 200)); // TODO
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BorderLayout(0, 0));
         createComponents();
         addComponents();
     }
@@ -38,8 +40,9 @@ public class ListPanel extends JPanel{
         carList.setBorder(BorderFactory.createLineBorder(Color.black));
         carList.setLayout(new BoxLayout(carList, BoxLayout.Y_AXIS));        
         listScrollPane.setViewportView(carList);        
-        this.add(listScrollPane);
-        this.add(new PagePane(parent, parent.getMaxPage()));
+        this.add(listScrollPane,BorderLayout.CENTER);
+        this.add(new PagePane(parent, parent.getMaxPage()), BorderLayout.SOUTH);
+        
         displaytoList(parent.getVehiclestoDisplay());        
     }
 
@@ -62,7 +65,7 @@ public class ListPanel extends JPanel{
 
         this.remove(1);
         this.revalidate();
-        this.add(new PagePane(parent, toDisplay.size() / perpage));
+        this.add(new PagePane(parent, toDisplay.size() / perpage), BorderLayout.SOUTH);
         
     }
     

@@ -38,7 +38,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     // list
     private HashMap<Vehicle, ImageIcon> cache;
-    private ListPanel listpanel;
+    ListPanel listpanel;
     private int perpage, page;
     private ImageIcon loadingIMG;
     // list end
