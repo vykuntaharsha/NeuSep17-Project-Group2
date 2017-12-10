@@ -8,44 +8,43 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-// use the URL instead of local absolute path
+// use the relative path instead of url
 
 public class DealerAPI {
 	
 	private LinkedHashMap<String, Dealer> DealerMap;
-	private String fileUrl;
+	private String filePath;
 
 	public ArrayList<Dealer> getDealers() {
 		return new ArrayList<Dealer>(DealerMap.values());
 	}
 	
-	public DealerAPI(String fileUrl) {
-		this.fileUrl = fileUrl;
+	public DealerAPI(String filePath) {
+		this.filePath = filePath;
 		try {
-			DealerMap = getDealersMap(fileUrl);
+			DealerMap = getDealersMap(filePath);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	protected LinkedHashMap<String, Dealer> getDealersMap(String fileUrl) throws IOException {
-//		File inventoryFile = new File(file);
+		File inventoryFile = new File(filePath);
 
-		URL url = new URL(fileUrl);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		DataInputStream input = new DataInputStream(conn.getInputStream());
+//		URL url = new URL(fileUrl);
+//		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//		DataInputStream input = new DataInputStream(conn.getInputStream());
 
-
-//		BufferedReader reader = new BufferedReader(new FileReader(inventoryFile));
+		BufferedReader reader = new BufferedReader(new FileReader(inventoryFile));
 		LinkedHashMap<String, Dealer> dealerObjMap = new LinkedHashMap<String, Dealer>();		
 		String line = null;
 		
-		while((line = input.readLine())!=null) {
+		while((line = reader.readLine())!=null) {
 			String[] dealerArray = line.split("\t");
 			Dealer dealer = new Dealer(dealerArray[0],dealerArray[1], dealerArray[2], dealerArray[3]);
 			dealerObjMap.put(dealer.getId(), dealer);
 		}
-//		reader.close();
+		reader.close();
 		return dealerObjMap;
 	}
 	

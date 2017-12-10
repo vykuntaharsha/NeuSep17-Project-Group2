@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 public class DealerScreen extends JFrame {
 
@@ -13,7 +14,7 @@ public class DealerScreen extends JFrame {
     private JButton mngInvButton, mngIncButton;
 
 
-    public DealerScreen(String selectedDearlerID) throws HeadlessException {
+    public DealerScreen(String selectedDearlerID) throws HeadlessException, FileNotFoundException, UnsupportedEncodingException {
 
         super();
         this.selectedDearlerID = selectedDearlerID;
@@ -39,9 +40,9 @@ public class DealerScreen extends JFrame {
         mngIncButton.setForeground(Color.DARK_GRAY);
     }
 
-    private void addComponentsUsingGridBagLayout() {
+    private void addComponentsUsingGridBagLayout() throws FileNotFoundException, UnsupportedEncodingException {
 
-        ImageIcon backgroundImage = new ImageIcon("/Users/kevinshi721/GitHub/NeuSep17-Project-Group2/src/com/neuSep17/ui/dealerScreen/DealerLoginBackground.jpg");
+        ImageIcon backgroundImage = new ImageIcon("src/com/neuSep17/ui/dealerScreen/DealerLoginBackground.jpg");
 
         JLabel backgroundLabel = new JLabel(backgroundImage);
         this.add(backgroundLabel);

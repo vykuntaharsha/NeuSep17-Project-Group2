@@ -7,7 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class DealerLogin extends JFrame {
@@ -16,7 +18,7 @@ public class DealerLogin extends JFrame {
     private JComboBox dealerComboBox;
     private JTextField passwordTextField;
     private JButton loginButton, exitButton;
-    private DealerAPI dealerAPI = new DealerAPI("https://raw.githubusercontent.com/vykuntaharsha/NeuSep17-Project-Group2/master/data/dealers");
+    private DealerAPI dealerAPI = new DealerAPI("data/dealers");
     private ArrayList<Dealer> dealerList = dealerAPI.getDealers();
     private ArrayList<String> dealerNameList = new ArrayList<>();
     
@@ -67,7 +69,7 @@ public class DealerLogin extends JFrame {
 
     private void addComponentsUsingGridBagLayout() {
 
-        ImageIcon backgroundImage = new ImageIcon("/Users/kevinshi721/GitHub/NeuSep17-Project-Group2/src/com/neuSep17/ui/dealerScreen/DealerLoginBackground.jpg");
+        ImageIcon backgroundImage = new ImageIcon("src/com/neuSep17/ui/dealerScreen/DealerLoginBackground.jpg");
 
         JLabel backgroundLabel = new JLabel(backgroundImage);
         this.add(backgroundLabel);
@@ -158,7 +160,13 @@ public class DealerLogin extends JFrame {
            if (dealerComboBox.getSelectedItem() != null) {
                 if (passwordTextField.getText().equals(getSelectedDealer().getPassword())) {
                     JOptionPane.showMessageDialog(null, "Login Successfully", "Login Validation", JOptionPane.INFORMATION_MESSAGE);
-                    new DealerScreen(dealerComboBox.getSelectedItem().toString());
+                    try {
+                        new DealerScreen(dealerComboBox.getSelectedItem().toString());
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Please Re-Check Your Password", "Login Validation", JOptionPane.ERROR_MESSAGE);
