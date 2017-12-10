@@ -32,7 +32,6 @@ public class DealerLogin extends JFrame {
         addComponentsUsingGridBagLayout();
         addListener();
         makeVisible();
-
     }
 
     private void createComponents() {
@@ -42,7 +41,7 @@ public class DealerLogin extends JFrame {
         screenTitle.setForeground(Color.DARK_GRAY);
 
         selectDealerLabel = new JLabel("Dealer Name", JLabel.RIGHT);
-        selectDealerLabel.setFont(new Font("Default", Font.BOLD, 20));
+        selectDealerLabel.setFont(new Font("Default", Font.PLAIN, 20));
         selectDealerLabel.setForeground(Color.DARK_GRAY);
 
         for (Dealer d : dealerList) {
@@ -54,7 +53,7 @@ public class DealerLogin extends JFrame {
         dealerComboBox.setForeground(Color.DARK_GRAY);
 
         passwordLabel = new JLabel("Password", JLabel.RIGHT);
-        passwordLabel.setFont(new Font("Default", Font.BOLD, 20));
+        passwordLabel.setFont(new Font("Default", Font.PLAIN, 20));
         passwordLabel.setForeground(Color.DARK_GRAY);
 
         passwordTextField = new JPasswordField();
@@ -68,7 +67,6 @@ public class DealerLogin extends JFrame {
         exitButton = new JButton("Exit");
         exitButton.setFont(new Font("Default", Font.PLAIN, 20));
         exitButton.setForeground(Color.DARK_GRAY);
-
     }
 
     private void addComponentsUsingGridBagLayout() {
@@ -126,6 +124,7 @@ public class DealerLogin extends JFrame {
 
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
+        gbc.ipady = 3;
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.LINE_END;
@@ -139,7 +138,6 @@ public class DealerLogin extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(200, 0, 50, 200);
         backgroundLabel.add(exitButton, gbc);
-
     }
 
     private void addListener() {
@@ -148,14 +146,12 @@ public class DealerLogin extends JFrame {
         DealerLogin.ExitAL exitAL = new DealerLogin.ExitAL();
         loginButton.addActionListener(loginAL);
         exitButton.addActionListener(exitAL);
-
     }
 
     public Dealer getSelectedDealer(){
 
         String dealerID = dealerComboBox.getSelectedItem().toString();
         return dealerAPI.getDealer(dealerID);
-
     }
 
     class LoginAL implements ActionListener {
@@ -176,7 +172,6 @@ public class DealerLogin extends JFrame {
                 JOptionPane.showMessageDialog(null, "Please Select a Dealer", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-
     }
 
     class ExitAL implements ActionListener {
@@ -190,7 +185,6 @@ public class DealerLogin extends JFrame {
                 e1.printStackTrace();
             }
         }
-
     }
 
     private void makeVisible() {
@@ -198,9 +192,7 @@ public class DealerLogin extends JFrame {
         setSize(1920, 1200);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
-
 }
 
 
