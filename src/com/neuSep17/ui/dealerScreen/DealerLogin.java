@@ -12,10 +12,6 @@ import java.util.ArrayList;
 
 public class DealerLogin extends JFrame {
 
-    public static void main(String[] args) {
-        new DealerLogin();
-    }
-
     private JLabel screenTitle, selectDealerLabel, passwordLabel;
     private JComboBox dealerComboBox;
     private JTextField passwordTextField;

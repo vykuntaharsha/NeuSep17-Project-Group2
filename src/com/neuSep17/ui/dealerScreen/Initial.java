@@ -55,7 +55,7 @@ public class Initial extends JFrame{
 
         // This is the title label
         screenTitle = new JLabel("Welcome to Car Website");
-        screenTitle.setForeground(Color.WHITE);
+        screenTitle.setForeground(Color.LIGHT_GRAY);
 
         screenTitleFont = new Font("Default", Font.BOLD, 40);
         screenTitle.setFont(screenTitleFont);
@@ -66,6 +66,7 @@ public class Initial extends JFrame{
 
         // Consumer button
         consumer = new JButton("I am a Consumer");
+        consumer.setForeground(Color.DARK_GRAY);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
@@ -76,6 +77,7 @@ public class Initial extends JFrame{
 
         // Dealer
         dealer = new JButton(" I am a Dealer");
+        dealer.setForeground(Color.DARK_GRAY);
         gbc.gridx = 2;
         gbc.gridy = 1;
         backgroundLabel.add(dealer, gbc);

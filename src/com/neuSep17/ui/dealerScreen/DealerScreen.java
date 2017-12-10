@@ -64,7 +64,7 @@ public class DealerScreen extends JFrame {
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.ipadx = 40;
-        gbc.ipady = 40;
+        gbc.ipady = 15;
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.insets = new Insets(2, 250, 0, 250);
