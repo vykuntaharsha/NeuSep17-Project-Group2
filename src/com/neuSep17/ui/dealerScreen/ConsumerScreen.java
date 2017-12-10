@@ -18,7 +18,7 @@ public class ConsumerScreen  extends JFrame{
     private JLabel first, second, third;
     private JButton browser, empty[], browserAll;
     private JComboBox combobox;
-    private DealerAPI dealerAPI = new DealerAPI("https://raw.githubusercontent.com/vykuntaharsha/NeuSep17-Project-Group2/master/data/dealers");
+    private DealerAPI dealerAPI = new DealerAPI("data/dealers");
     private ArrayList<Dealer> dealerList = dealerAPI.getDealers();
     private ArrayList<String> dealerNameList = new ArrayList<>();
 
@@ -27,7 +27,7 @@ public class ConsumerScreen  extends JFrame{
 
         GImage = new JPanel() {
             protected void paintComponent (Graphics g) {
-                ImageIcon icon = new ImageIcon("C:\\Users\\lbjfo\\Documents\\GitHub\\NeuSep17-Project-Group2\\src\\com\\neuSep17\\ui\\dealerScreen\\background1.jpg");
+                ImageIcon icon = new ImageIcon("data/images/background1.jpg");
                 Image img = icon.getImage();
                 g.drawImage(img, 0, 0, icon.getIconWidth(),
                         icon.getIconHeight(), icon.getImageObserver());

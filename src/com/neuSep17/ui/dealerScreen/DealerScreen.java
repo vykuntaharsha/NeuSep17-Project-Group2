@@ -42,7 +42,7 @@ public class DealerScreen extends JFrame {
 
     private void addComponentsUsingGridBagLayout() throws FileNotFoundException, UnsupportedEncodingException {
 
-        ImageIcon backgroundImage = new ImageIcon("src/com/neuSep17/ui/dealerScreen/DealerLoginBackground.jpg");
+        ImageIcon backgroundImage = new ImageIcon("data/images/DealerBackground.jpg");
 
         JLabel backgroundLabel = new JLabel(backgroundImage);
         this.add(backgroundLabel);

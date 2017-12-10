@@ -69,7 +69,7 @@ public class DealerLogin extends JFrame {
 
     private void addComponentsUsingGridBagLayout() {
 
-        ImageIcon backgroundImage = new ImageIcon("src/com/neuSep17/ui/dealerScreen/DealerLoginBackground.jpg");
+        ImageIcon backgroundImage = new ImageIcon("data/images/DealerBackground.jpg");
 
         JLabel backgroundLabel = new JLabel(backgroundImage);
         this.add(backgroundLabel);
