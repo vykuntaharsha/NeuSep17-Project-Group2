@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -36,9 +37,10 @@ import com.neuSep17.ui.dealerScreen.ConsumerScreen.BrowserAll;
 public class ConsumerScreen  extends JFrame{
     //JFrame jframe = new JFrame();
     private JLabel first, second, third;
-    private JButton browser, empty[], browserAll;
+    private JButton browser, empty[], browserAll, exitButton;
     private JComboBox combobox;
-    private DealerAPI dealerAPI = new DealerAPI("https://raw.githubusercontent.com/vykuntaharsha/NeuSep17-Project-Group2/master/data/dealers");
+    //private DealerAPI dealerAPI = new DealerAPI("https://raw.githubusercontent.com/vykuntaharsha/NeuSep17-Project-Group2/master/data/dealers");
+    private DealerAPI dealerAPI = new DealerAPI("data/dealers");
     private ArrayList<Dealer> dealerList = dealerAPI.getDealers();
     private ArrayList<String> dealerNameList = new ArrayList<>();
     
@@ -69,17 +71,21 @@ public class ConsumerScreen  extends JFrame{
       browserAll.setForeground(Color.DARK_GRAY);
       browserAll.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-      first = new JLabel ("Please select your dealer ");
-      first.setFont(new Font("Default",Font.BOLD, 20));
+      first = new JLabel ("Please select your dealer ", JLabel.CENTER);
+      first.setFont(new Font("Default",Font.BOLD, 55));
       first.setForeground(Color.DARK_GRAY);
-
-      second = new JLabel("Select My Dealer");
+      
+      second = new JLabel("Select My Dealer", JLabel.RIGHT);
       second.setFont(new Font("Default",Font.BOLD, 20));
       second.setForeground(Color.DARK_GRAY);
 
-      third = new JLabel("If you have no idea ");
+      third = new JLabel("If you have no idea ", JLabel.CENTER);
       third.setFont(new Font("Default",Font.BOLD, 20));
       third.setForeground(Color.DARK_GRAY);
+      
+      exitButton = new JButton("Exit");
+      exitButton.setFont(new Font("Default", Font.PLAIN, 20));
+      exitButton.setForeground(Color.DARK_GRAY);
 
       for (Dealer d: dealerList){
           dealerNameList.add(d.getId());
@@ -101,68 +107,127 @@ public class ConsumerScreen  extends JFrame{
 
   public void addComponentsUsingGridBagLayout(){
 	  
-	  ImageIcon backgroundImage = new ImageIcon("/Users/luoyiwei/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/dealerScreen/DealerLoginBackGround.jpg");
+	  ImageIcon backgroundImage = new ImageIcon("data/images/DealerBackGround.jpg");
 	  JLabel backgroundLabel = new JLabel(backgroundImage);
 	  this.add(backgroundLabel);
 	  
 	  backgroundLabel.setSize(backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
-	  backgroundLabel.setLocation(0, 0);
-	  backgroundLabel.setLayout(null);
-	  
-	  // the postion of these components remain changed.
-	 /* 
-	  GridBagConstraints constraints = new GridBagConstraints();
-	  constraints.gridwidth = 1;
-	  constraints.gridheight = 1;
-	  constraints.gridx = 1;
-	  constraints.gridy = 0;
-	  constraints.fill = GridBagConstraints.HORIZONTAL;
-	  constraints.anchor = GridBagConstraints.CENTER;
-	  constraints.insets = new Insets(0,0,200,0);
-	  backgroundLabel.add(screenTitle, constraints);
-	  
-	  constraints.gridwidth = 1;
-      constraints.gridheight = 1;
-      constraints.ipadx = 40;
-      constraints.ipady = 15;
-      constraints.gridx = 1;
-      constraints.gridy = 1;
-      constraints.insets = new Insets(2, 250, 0, 250);
-      backgroundLabel.add(first, constraints);
+      backgroundLabel.setLocation(0, 0);
+      backgroundLabel.setLayout(new GridBagLayout());
       
-      constraints.gridwidth = 1;
-      constraints.gridheight = 1;
-      constraints.gridx = 3;
-      constraints.gridy = 3;
-      constraints.insets = new Insets(2, 300, 0, 300);
-      backgroundLabel.add(browser, constraints);
+      GridBagConstraints gbc = new GridBagConstraints();
       
+      /*Degign 1
+      gbc.gridwidth = 3;
+      gbc.gridheight = 1;
+      gbc.gridx = 0;
+      gbc.gridy = 0;
+      gbc.fill = GridBagConstraints.HORIZONTAL;
+      gbc.insets = new Insets(50, 0, 150, 0);
+      backgroundLabel.add(first, gbc);
 
-      constraints.gridwidth =1;
-      constraints.gridheight = 1;
-      constraints.gridx = 1;
-      constraints.gridy = 2;
-      backgroundLabel.add(second, constraints);
+      gbc.gridwidth = 1;
+      gbc.gridheight = 1;
+      gbc.gridx = 1;
+      gbc.gridy = 1;
+      gbc.anchor = GridBagConstraints.LINE_END;
+      gbc.insets = new Insets(0, 300, 25, 0);
+      backgroundLabel.add(second, gbc);
+
+      gbc.gridwidth = 1;
+      gbc.gridheight = 1;
+      gbc.gridx = 2;
+      gbc.gridy = 1;
+      gbc.anchor = GridBagConstraints.LINE_START;
+      gbc.insets = new Insets(0, 0, 25, 300);
+      backgroundLabel.add(combobox, gbc);
       
-     
+      gbc.gridwidth = 3;
+      gbc.gridheight = 1;
+      gbc.gridx = 0;
+      gbc.gridy = 2;
+      gbc.insets = new Insets(0, 0, 100, 0);
+      backgroundLabel.add(browser, gbc);
       
-      constraints.gridheight = 1;
-      constraints.gridx = 4;
-      constraints.gridy = 4;
-      backgroundLabel.add(third, constraints);
+      gbc.gridwidth = 3;
+      gbc.gridheight = 1;
+      gbc.gridx = 0;
+      gbc.gridy = 3;
+      gbc.insets = new Insets(0, 0, 25, 0);
+      backgroundLabel.add(third, gbc);
       
-      constraints.gridheight = 1;
-      constraints.gridx = 5;
-      constraints.gridy = 5;
-      backgroundLabel.add(browserAll, constraints);
+      gbc.gridwidth = 3;
+      gbc.gridheight = 1;
+      gbc.gridx = 0;
+      gbc.gridy = 4;
+      gbc.insets = new Insets(0, 0, 100, 0);
+      backgroundLabel.add(browserAll, gbc);
       
-      constraints.gridheight = 1;
-      constraints.gridx = 6;
-      constraints.gridy = 6;
-      backgroundLabel.add(combobox, constraints);
+      gbc.gridwidth = 3;
+      gbc.gridheight = 1;
+      gbc.gridx = 0;
+      gbc.gridy = 5;
+      gbc.anchor = GridBagConstraints.LINE_START;
+      gbc.insets = new Insets(0, 0, 50, 0);
+      backgroundLabel.add(exitButton, gbc);
+      */
+      
+      //Degign 2
+      gbc.gridwidth = 3;
+      gbc.gridheight = 1;
+      gbc.gridx = 0;
+      gbc.gridy = 0;
+      gbc.fill = GridBagConstraints.HORIZONTAL;
+      gbc.insets = new Insets(50, 0, 200, 0);
+      backgroundLabel.add(first, gbc);
+
+      gbc.gridwidth = 1;
+      gbc.gridheight = 1;
+      gbc.gridx = 0;
+      gbc.gridy = 1;
+      gbc.anchor = GridBagConstraints.LINE_END;
+      gbc.insets = new Insets(0, 0, 100, 0);
+      backgroundLabel.add(second, gbc);
+
+      gbc.gridwidth = 1;
+      gbc.gridheight = 1;
+      gbc.gridx = 1;
+      gbc.gridy = 1;
+      gbc.anchor = GridBagConstraints.LINE_START;
+      gbc.insets = new Insets(0, 0, 100, 0);
+      backgroundLabel.add(combobox, gbc);
+      
+      gbc.gridwidth = 1;
+      gbc.gridheight = 1;
+      gbc.gridx = 2;
+      gbc.gridy = 1;
+      gbc.insets = new Insets(0, 0, 100, 0);
+      backgroundLabel.add(browser, gbc);
+      
+      gbc.gridwidth = 1;
+      gbc.gridheight = 1;
+      gbc.gridx = 0;
+      gbc.gridy = 2;
+      gbc.insets = new Insets(0, 0, 100, 0);
+      backgroundLabel.add(third, gbc);
+      
+      gbc.gridwidth = 2;
+      gbc.gridheight = 1;
+      gbc.gridx = 1;
+      gbc.gridy = 2;
+      gbc.insets = new Insets(0, 0, 100, 0);
+      backgroundLabel.add(browserAll, gbc);
+      
+      gbc.gridwidth = 3;
+      gbc.gridheight = 1;
+      gbc.gridx = 0;
+      gbc.gridy = 3;
+      gbc.anchor = GridBagConstraints.LINE_START;
+      gbc.insets = new Insets(0, 0, 50, 0);
+      backgroundLabel.add(exitButton, gbc);
       
       
-   */   
+        
       // these are the past code for layout by Ziye
 //      Container con = getContentPane();
 //      GridBagLayout gridbag = new GridBagLayout();
@@ -197,6 +262,8 @@ public class ConsumerScreen  extends JFrame{
       browser.addActionListener(browserCar);
       BrowserAll browser = new BrowserAll();
       browserAll.addActionListener(browser);
+      ExitAL exitAL = new ExitAL();
+      exitButton.addActionListener(exitAL);
   }
 
   public Dealer getSelectedDealer(){
@@ -231,6 +298,19 @@ public class ConsumerScreen  extends JFrame{
 
               dispose();
 
+      }
+  }
+  
+  class ExitAL implements ActionListener {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+
+          try {
+              new Initial();
+          } catch (IOException e1) {
+              e1.printStackTrace();
+          }
       }
   }
 
