@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 public class DealerScreen extends JFrame {
 
     private String selectedDearlerID;
+    private String screenTitleText;
     private JLabel screenTitle;
     private JButton mngInvButton, mngIncButton;
 
@@ -21,12 +22,11 @@ public class DealerScreen extends JFrame {
         addComponentsUsingGridBagLayout();
         addListener();
         makeVisible();
-
     }
 
     private void createComponents() {
-
-        screenTitle = new JLabel("Welcome, " + selectedDearlerID + " !");
+        screenTitleText = "Welcome, " + selectedDearlerID + " !";
+        screenTitle = new JLabel(screenTitleText, JLabel.CENTER);
         screenTitle.setFont(new Font("Default", Font.BOLD, 55));
         screenTitle.setForeground(Color.DARK_GRAY);
 
@@ -37,7 +37,6 @@ public class DealerScreen extends JFrame {
         mngIncButton = new JButton("Manage Incentive");
         mngIncButton.setFont(new Font("Default", Font.PLAIN, 20));
         mngIncButton.setForeground(Color.DARK_GRAY);
-
     }
 
     private void addComponentsUsingGridBagLayout() {
@@ -53,31 +52,29 @@ public class DealerScreen extends JFrame {
 
         GridBagConstraints gbc = new GridBagConstraints();
 
-        gbc.gridwidth = 4;
+        gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(50, 0, 150, 0);
+        gbc.insets = new Insets(0, 0, 200, 0);
         backgroundLabel.add(screenTitle, gbc);
 
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
+        gbc.ipadx = 40;
+        gbc.ipady = 40;
         gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.LINE_END;
-        gbc.insets = new Insets(50, 150, 0, 0);
+        gbc.insets = new Insets(2, 250, 0, 250);
         backgroundLabel.add(mngInvButton, gbc);
 
         gbc.gridwidth =1;
         gbc.gridheight = 1;
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(50, 0, 0, 0);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
         backgroundLabel.add(mngIncButton, gbc);
-
     }
 
     private void addListener() {
@@ -86,7 +83,6 @@ public class DealerScreen extends JFrame {
         ManageIncentive mngInc = new ManageIncentive();
         mngInvButton.addActionListener(mngInv);
         mngIncButton.addActionListener(mngInc);
-
     }
 
     class ManageInventory implements ActionListener {
@@ -108,7 +104,6 @@ public class DealerScreen extends JFrame {
             System.out.println("You have choosed " + selectedDearlerID + ", Close Dealer Screen -> Open Dealer Incentive Screen");
             dispose();
         }
-
     }
 
     private void makeVisible() {
@@ -116,7 +111,5 @@ public class DealerScreen extends JFrame {
         setSize(1920, 1200);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
-
 }
