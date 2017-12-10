@@ -16,36 +16,72 @@ public class DealerScreen extends JFrame {
 
         super();
         this.selectedDearlerID = selectedDearlerID;
-        setTitle("DealerScreen");
-
+        setTitle("Dealer Screen");
         createComponents();
         addComponentsUsingGridBagLayout();
         addListener();
         makeVisible();
+
     }
 
     private void createComponents() {
+
         screenTitle = new JLabel("Welcome, " + selectedDearlerID + " !");
-        screenTitle.setFont(new Font("Default", Font.BOLD, 60));
-        screenTitle.setForeground(Color.BLACK);
+        screenTitle.setFont(new Font("Default", Font.BOLD, 55));
+        screenTitle.setForeground(Color.DARK_GRAY);
 
         mngInvButton = new JButton("Manage Inventory");
-        mngInvButton.setFont(new Font("Default", Font.PLAIN, 40));
+        mngInvButton.setFont(new Font("Default", Font.PLAIN, 20));
+        mngInvButton.setForeground(Color.DARK_GRAY);
+
         mngIncButton = new JButton("Manage Incentive");
-        mngIncButton.setFont(new Font("Default", Font.PLAIN, 40));
+        mngIncButton.setFont(new Font("Default", Font.PLAIN, 20));
+        mngIncButton.setForeground(Color.DARK_GRAY);
+
     }
 
     private void addComponentsUsingGridBagLayout() {
-        Container con = getContentPane();
 
-        GridLayout layout = new GridLayout(4, 1,1,1);
-        con.setLayout(layout);
-        con.add(screenTitle);
-        con.add(mngInvButton);
-        con.add(mngIncButton);
+        ImageIcon backgroundImage = new ImageIcon("/Users/kevinshi721/GitHub/NeuSep17-Project-Group2/src/com/neuSep17/ui/dealerScreen/DealerLoginBackground.jpg");
+
+        JLabel backgroundLabel = new JLabel(backgroundImage);
+        this.add(backgroundLabel);
+
+        backgroundLabel.setSize(backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
+        backgroundLabel.setLocation(0, 0);
+        backgroundLabel.setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridwidth = 4;
+        gbc.gridheight = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(50, 0, 150, 0);
+        backgroundLabel.add(screenTitle, gbc);
+
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.insets = new Insets(50, 150, 0, 0);
+        backgroundLabel.add(mngInvButton, gbc);
+
+        gbc.gridwidth =1;
+        gbc.gridheight = 1;
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(50, 0, 0, 0);
+        backgroundLabel.add(mngIncButton, gbc);
+
     }
 
     private void addListener() {
+
         ManageInventory mngInv = new ManageInventory();
         ManageIncentive mngInc = new ManageIncentive();
         mngInvButton.addActionListener(mngInv);
@@ -61,6 +97,7 @@ public class DealerScreen extends JFrame {
             System.out.println("You have choosed " + selectedDearlerID + ", Close Dealer Screen -> Open Dealer Inventory Screen");
             dispose();
         }
+
     }
 
     class ManageIncentive implements ActionListener {
@@ -71,11 +108,15 @@ public class DealerScreen extends JFrame {
             System.out.println("You have choosed " + selectedDearlerID + ", Close Dealer Screen -> Open Dealer Incentive Screen");
             dispose();
         }
+
     }
 
     private void makeVisible() {
+
         setSize(1920, 1200);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
+
 }
