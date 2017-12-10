@@ -245,7 +245,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     private void makeThisVisible()
     {
-        this.setSize(1200, 700);
+        this.setSize(1200, 800);
         this.setMinimumSize(new Dimension(900, 600));
         this.setVisible(true);
     }
