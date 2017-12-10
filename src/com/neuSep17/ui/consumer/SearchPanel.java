@@ -16,7 +16,7 @@ public class SearchPanel extends JPanel
     private BrowseInventoryFrame parent;
     private JPanel searchPanel;
     private JLabel sortBy;
-    //private JButton search;
+    private JButton search;
     private JLabel searchLabel;
     private JComboBox searchTextComboBox;
     private Vector dictionaryVector;
@@ -62,7 +62,8 @@ public class SearchPanel extends JPanel
         searchPanel.setOpaque(true);
         // search
         //search = new JButton("Search");
-        //search.setMaximumSize(new Dimension(100, 40));
+        ImageIcon icon = new ImageIcon("data/images/searchIcon.png");
+        search = new JButton(icon);
 
         searchTextComboBox = new JComboBox();
         for (Component component : searchTextComboBox.getComponents()) {
@@ -90,6 +91,7 @@ public class SearchPanel extends JPanel
         //searchText.setFont(font);
         searchTextComboBox.setFont(font);
         //sortBy.setFont(font);
+        //search.setFont(new Font("", 0, 16));
 
         //location
         setItemsLocation();
@@ -103,8 +105,10 @@ public class SearchPanel extends JPanel
         int weightOfSortItem = 170;
         int yOfSort = 150;
         int xOfSearch = 60;
+        int sizeOfSearchButton = 30;
         searchLabel.setBounds(xOfSearch, 30, weightOfSearchLabel, heightOfItemsOnPanel);
         searchTextComboBox.setBounds(xOfSearch,80, weightOfSearchComo, heightOfSearchCombo);
+        search.setBounds(xOfSearch + weightOfSearchComo - 5, 90, sizeOfSearchButton, sizeOfSearchButton);
         sortBy.setBounds(940, yOfSort, weightOfSortBy, heightOfItemsOnPanel);
         sortItem.setBounds(1010, yOfSort, weightOfSortItem, heightOfItemsOnPanel);
     }
@@ -156,6 +160,7 @@ public class SearchPanel extends JPanel
 
         searchPanel.add(searchLabel);
         searchPanel.add(searchTextComboBox);
+        searchPanel.add(search);
         searchPanel.add(sortBy);
         searchPanel.add(sortItem);
         this.add(searchPanel);
@@ -169,10 +174,9 @@ public class SearchPanel extends JPanel
 
     private void addSearchPanelListeners()
     {
-        //System.out.println("enter addSearchPanlListeners");
         // search button listener
-        //SearchListener searchlistener = new SearchListener();
-//        search.addActionListener(searchlistener);
+        SearchListener searchlistener = new SearchListener();
+        search.addActionListener(searchlistener);
 
         // press enter listener
         SearchKeyListener searchKeyListener = new SearchKeyListener();
@@ -190,7 +194,7 @@ public class SearchPanel extends JPanel
         JTextField searchText = (JTextField)searchTextComboBox.getEditor().getEditorComponent();
         String searchInfo = searchText.getText();
 
-        //System.out.println(searchInfo);
+//        System.out.println(searchInfo);
         parent.doSearch(searchInfo);
     }
 
@@ -200,6 +204,13 @@ public class SearchPanel extends JPanel
          (String) sortItem.getSelectedItem();
         // System.out.println(sortMethod);
          parent.doSort(sortMethod);
+    }
+    class SearchListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            updateSearch();
+        }
     }
 
     class SearchKeyListener implements KeyListener
@@ -215,7 +226,6 @@ public class SearchPanel extends JPanel
         {
             if (e.getKeyCode() == e.VK_ENTER)
             {
-                System.out.println("enter");
                 updateSearch();
             }
         }

@@ -23,33 +23,29 @@ public class SearchTextComboBoxListener extends KeyAdapter {
         this.searchPanel = searchPanel;
         this.typedWordBfSpace = "";
     }
-    public void keyPressed(KeyEvent e)
-    {
-        if (e.getKeyCode() == e.VK_ENTER)
+
+    public void keyReleased(KeyEvent key){
+        if (key.getKeyCode() == key.VK_DOWN || key.getKeyCode() == key.VK_UP) {
+            return;
+        }
+        //show search result when press enter
+        if (key.getKeyCode() == key.VK_ENTER)
         {
-            //System.out.println("enter");
             searchPanel.updateSearch();
             searchTextComboBox.hidePopup();
-        }
-    }
-    public void keyReleased(KeyEvent key){
-        if (key.getKeyCode() == key.VK_DOWN || key.getKeyCode() == key.VK_UP || key.getKeyCode() == key.VK_ENTER) {
             return;
         }
         String text = ((JTextField)key.getSource()).getText();
-        //System.out.println("text1: " + text);
         String typedWorld = getCurrentTypedWord(text);
-        //System.out.println("typedWord: " + typedWorld);
+        //no word typed, hide popup window
         if (typedWorld.equals("")) {
             searchTextComboBox.hidePopup();
             return;
         }
-
-
+        //get popup window list
         filteredVector = getFilteredList(typedWorld);
 
         searchTextComboBox.setModel(new DefaultComboBoxModel(filteredVector));
-        //System.out.println(filteredVector);
         searchTextComboBox.setSelectedIndex(-1);
 
         typedWordBfSpace = getTypedWordBfSpace(text);
@@ -137,5 +133,4 @@ class SearchComboBoxActionListener implements ActionListener{
 
         searchTextListener.updateAutoCompleteLabel(e);
     }
-
 }
