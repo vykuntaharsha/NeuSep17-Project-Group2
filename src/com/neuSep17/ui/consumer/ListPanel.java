@@ -51,6 +51,7 @@ public class ListPanel extends JPanel{
     void displaytoList(ArrayList<Vehicle> toDisplay) {
         carList.removeAll();
         carList.revalidate();
+        carList.repaint();
         listScrollPane.getVerticalScrollBar().setValue(0);
         Vehicle v;
         int n,perpage=parent.getPerPage();
