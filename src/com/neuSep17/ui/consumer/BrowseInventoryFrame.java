@@ -330,8 +330,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         @Override
         public void windowClosing(WindowEvent e)
         {
-            System.out.println("BrowseInventory closing, back to consumer window.");
-            // TODO get to the dealer selection window
+            System.out.println("BrowseInventory closing, exit application.");
+            System.exit(0);
         }
 
         @Override
