@@ -177,10 +177,6 @@ public class SearchPanel extends JPanel
         // search button listener
         SearchListener searchlistener = new SearchListener();
         search.addActionListener(searchlistener);
-
-        // press enter listener
-        SearchKeyListener searchKeyListener = new SearchKeyListener();
-        searchTextComboBox.addKeyListener(searchKeyListener);
     }
 
     private void addSortPanelListeners()
@@ -210,30 +206,6 @@ public class SearchPanel extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             updateSearch();
-        }
-    }
-
-    class SearchKeyListener implements KeyListener
-    {
-        @Override
-        public void keyTyped(KeyEvent e)
-        {
-            System.out.println("Key typed");
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e)
-        {
-            if (e.getKeyCode() == e.VK_ENTER)
-            {
-                updateSearch();
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e)
-        {
-            System.out.println("Key typed");
         }
     }
 

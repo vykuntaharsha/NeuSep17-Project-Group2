@@ -28,6 +28,7 @@ public class SearchTextComboBoxListener extends KeyAdapter {
         if (key.getKeyCode() == key.VK_DOWN || key.getKeyCode() == key.VK_UP) {
             return;
         }
+
         //show search result when press enter
         if (key.getKeyCode() == key.VK_ENTER)
         {
@@ -71,8 +72,10 @@ public class SearchTextComboBoxListener extends KeyAdapter {
     public void updateAutoCompleteLabel(ActionEvent e) {
         if (e.getActionCommand().equals("comboBoxEdited")) return;
         String text = (String)searchTextComboBox.getSelectedItem();
-
-        if (!typedWordBfSpace.equals("")) {
+        if (searchTextComboBox.getSelectedIndex() == -1) {
+            return;
+        }
+        if (!typedWordBfSpace.equals("") && text != null) {
             searchTextComboBox.setSelectedItem(typedWordBfSpace + " " + text);
         }
     }
