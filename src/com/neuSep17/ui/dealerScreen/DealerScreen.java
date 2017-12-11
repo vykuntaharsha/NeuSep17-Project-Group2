@@ -1,5 +1,8 @@
 package com.neuSep17.ui.dealerScreen;
 
+import com.neuSep17.dto.Incentive;
+import com.neuSep17.ui.manageIncentives.IncentiveMainFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -90,7 +93,7 @@ public class DealerScreen extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-//            new ManageInventoryScreen();
+//            new ManagementListApplication();
             System.out.println("You have choosed " + selectedDearlerID + ", Close Dealer Screen -> Open Dealer Inventory Screen");
             dispose();
         }
@@ -101,7 +104,11 @@ public class DealerScreen extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-//            new IncentiveAPP();
+            try {
+                new IncentiveMainFrame();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             System.out.println("You have choosed " + selectedDearlerID + ", Close Dealer Screen -> Open Dealer Incentive Screen");
             dispose();
         }
