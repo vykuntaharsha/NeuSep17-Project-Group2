@@ -19,6 +19,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
@@ -41,6 +42,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     ListPanel listpanel;
     private int perpage, page;
     private ImageIcon loadingIMG;
+    private static JProgressBar cacheProgress;
     // list end
 
     // filter start
@@ -62,14 +64,24 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         setPage(0);
         perpage = 15;
 
-        getLoadingIMG();
-
+        getLoadingIMG();        
+        
+        addProgressBar();   // add before update, because during update, progress bar is also updated
         updateVehicle();
 
         createComponents();
         addComponents();
         doSearch(null);
         addListeners();
+    }
+
+    private void addProgressBar() {
+        cacheProgress = new JProgressBar(  );
+        cacheProgress.setMaximum(0);
+        cacheProgress.setMaximum( invsAPI.getTotalVehicleAmount() );
+        cacheProgress.setStringPainted(true);
+        cacheProgress.setToolTipText("image caching process");
+        
     }
 
     private void getLoadingIMG()
@@ -97,7 +109,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // filter panel
         filterPanel = new FilterPanel(this);
         // list panel
-        listpanel = new ListPanel(this);
+        listpanel = new ListPanel(this);        
+        
     }
 
     private void addComponents()
@@ -114,6 +127,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // list panel
 
         con.add(listpanel, BorderLayout.CENTER);
+        con.add(cacheProgress,BorderLayout.SOUTH);
     }
 
     private void addListeners()
@@ -219,8 +233,9 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         return;
     }
 
-    class updateThread extends SwingWorker<Void, Void>
-    {
+    class updateThread extends SwingWorker<Void, Integer>
+    {        
+        
         @Override
         protected Void doInBackground() throws Exception
         {
@@ -231,10 +246,15 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
                     int i = (int) Math.round(2 * Math.random());
                     Image temp = InventoryServiceAPI_Test.getVehicleImage(v.getBodyType()).get(i);
                     temp = temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT);
-                    cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
+                    cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));                    
                 }
+                publish(cache.size());
             }
             return null;
+        }
+        
+        protected void process( List<Integer> finished ) {            
+            cacheProgress.setValue(finished.get(finished.size()-1));
         }
 
         protected void done()
