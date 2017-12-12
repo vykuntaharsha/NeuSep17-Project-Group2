@@ -169,6 +169,14 @@ public class ConsumerScreen  extends JFrame{
         return dealerAPI.getDealer(dealerID);
   }
 
+  public void showBrowseInventory()
+  {
+      BrowseInventoryFrame bif = new BrowseInventoryFrame(this, new InventoryServiceAPI_Test("data/" + combobox.getSelectedItem()));
+      Thread BrowseInventoryThread = new Thread(() -> bif.run());
+      SwingUtilities.invokeLater(BrowseInventoryThread);
+      this.setVisible(false);
+  }
+  
   class Browser implements ActionListener {
 
       @Override
@@ -176,15 +184,7 @@ public class ConsumerScreen  extends JFrame{
           if(combobox.getSelectedItem() != null){
               //new DealerInventoryScreen();
               System.out.println("You have choosed " + combobox.getSelectedItem() + ", Close Dealer Screen -> Open Dealer Inventory Screen");
-              BrowseInventoryFrame bif = new BrowseInventoryFrame(new InventoryServiceAPI_Test("data/" + combobox.getSelectedItem()));
-              Thread BrowseInventoryThread = new Thread(() -> bif.run());
-              SwingUtilities.invokeLater(BrowseInventoryThread);
-
-//              Option 1:
-//              new ConsumerScreen().setVisible(false);
-
-//              Option 2:
-              dispose();
+              showBrowseInventory();
 
           } else {
               JOptionPane.showMessageDialog(null, "Please Select a Dealer", "Error", JOptionPane.ERROR_MESSAGE);

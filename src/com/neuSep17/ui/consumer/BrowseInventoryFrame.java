@@ -34,8 +34,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     // Consumer Screen end
 
     // service API start
-    private InventoryServiceAPI_Test invsAPI;
-    private IncentiveServiceAPI_Test incsAPI;
+    InventoryServiceAPI_Test invsAPI;
+    IncentiveServiceAPI_Test incsAPI;
     // service API end
 
     private ArrayList<Vehicle> toDisplay;
@@ -46,7 +46,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     ListPanel listpanel;
     private int perpage, page;
     private ImageIcon loadingIMG;
-    private static JProgressBar cacheProgress;
+    private JProgressBar cacheProgress;
+    private updateThread imageLoading;
     // list end
 
     // filter start
@@ -234,8 +235,9 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
             cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
             toDisplay.add(v);
         }
-        updateThread t = new updateThread();
-        t.execute();
+
+        imageLoading = new updateThread();
+        imageLoading.execute();
         searchedVehicles = toDisplay;
         return;
     }
@@ -359,6 +361,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         public void windowClosing(WindowEvent e)
         {
             System.out.println("BrowseInventory closing -> consumer screen.");
+            imageLoading.cancel(true);
             consumerScreen.setVisible(true);
             dispose();
         }
