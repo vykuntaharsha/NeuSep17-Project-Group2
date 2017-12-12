@@ -21,7 +21,7 @@ public class DealerLogin extends JFrame {
     private DealerAPI dealerAPI = new DealerAPI("data/dealers");
     private ArrayList<Dealer> dealerList = dealerAPI.getDealers();
     private ArrayList<String> dealerNameList = new ArrayList<>();
-    
+
     public DealerLogin() throws HeadlessException {
 
         super();
