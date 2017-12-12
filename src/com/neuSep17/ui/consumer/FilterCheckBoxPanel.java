@@ -20,6 +20,9 @@ import javax.swing.JPanel;
 public class FilterCheckBoxPanel extends JPanel
 {
     private final int DEFAULT_CHECKBOXES_NUMBER = 4;
+    private final int HIDDEN_CHECKBOXES_HEIGHT = 40;
+    private final int CHECKBOX_HEIGHT = 25;
+    private final int MORE_BUTTON_HEIGHT = 30;
     private List<JCheckBox> checkBoxes;
     private String title;
     private JButton buttonHide;
@@ -78,19 +81,19 @@ public class FilterCheckBoxPanel extends JPanel
     {
         if (!isButtonHide)
         {
-            return 40;
+            return HIDDEN_CHECKBOXES_HEIGHT;
         }
 
         if (!isButtonMore)
         {
-            return 40 + 30 + checkBoxes.size() * 25;
+            return HIDDEN_CHECKBOXES_HEIGHT + MORE_BUTTON_HEIGHT + checkBoxes.size() * CHECKBOX_HEIGHT;
         }
 
         if (checkBoxes.size() > 4)
         {
-            return 40 + 30 + 4 * 25;
+            return HIDDEN_CHECKBOXES_HEIGHT + MORE_BUTTON_HEIGHT + 4 * CHECKBOX_HEIGHT;
         }
-        return 40 + checkBoxes.size() * 25;
+        return HIDDEN_CHECKBOXES_HEIGHT + checkBoxes.size() * CHECKBOX_HEIGHT;
     }
 
     public void populateCheckBoxes(Map<String, Integer> itemsMap)
