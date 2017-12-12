@@ -93,11 +93,10 @@ public class DealerScreen extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 //          waiting Team6's final version
-            new DealerMainWindow();
+//            new DealerMainWindow();
             System.out.println("You have choosed " + selectedDearlerID + ", Close Dealer Screen -> Open Dealer Inventory Screen");
             dispose();
         }
-
     }
 
     class ManageIncentive implements ActionListener {
