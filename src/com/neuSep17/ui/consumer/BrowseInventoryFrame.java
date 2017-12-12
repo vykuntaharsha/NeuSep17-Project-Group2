@@ -34,8 +34,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     // Consumer Screen end
 
     // service API start
-    InventoryServiceAPI_Test invsAPI;
-    IncentiveServiceAPI_Test incsAPI;
+    private InventoryServiceAPI_Test invsAPI;
+    private IncentiveServiceAPI_Test incsAPI;
     // service API end
 
     private ArrayList<Vehicle> toDisplay;
@@ -63,6 +63,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
         this.consumerScreen = consumerScreen;
         this.invsAPI = invsAPI;
+
         incsAPI = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
         this.cache = new HashMap<Vehicle, ImageIcon>();
         this.toDisplay = new ArrayList<Vehicle>();
@@ -70,7 +71,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         perpage = 15;
 
         getLoadingIMG();
-
         addProgressBar(); // add before update, because during update, progress
                           // bar is also updated
         updateVehicle();
@@ -358,7 +358,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         @Override
         public void windowClosing(WindowEvent e)
         {
-            System.out.println("BrowseInventory closing, exit application.");
+            System.out.println("BrowseInventory closing -> consumer screen.");
             consumerScreen.setVisible(true);
             dispose();
         }
