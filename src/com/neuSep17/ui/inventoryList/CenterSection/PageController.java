@@ -1,20 +1,19 @@
-
-
-import com.neuSep17.dto.Vehicle;
+package CenterSection;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PageController {
-    private List<Vehicle> bigList=new ArrayList<Vehicle>(); //大集合，从外界获取
-    private List<Vehicle> smallList=new ArrayList<Vehicle>(); //小集合，返回给调用它的类
-    private static int curentPageIndex=1;        //当前页码
-    private int countPerpage=10;        //每页显示条数
+public class PageController<T> {
+    private List<T> bigList=new ArrayList<>(); //大集合，从外界获取
+    private List<T> smallList=new ArrayList<>(); //小集合，返回给调用它的类
+    private int curentPageIndex=1;        //当前页码
+    private int countPerpage;        //每页显示条数
     private int pageCount;           //总页数
     private int recordCount;           //总记录条数
 
-    public  PageController(List<Vehicle> list) {
+    public  PageController(List<T> list, int countPerpage) {
         this.bigList = list;
+        this.countPerpage = countPerpage;
         //计算总页数
         if (bigList.size()%countPerpage==0) {
             this.pageCount=bigList.size()/countPerpage;
@@ -22,29 +21,29 @@ public class PageController {
             this.pageCount=(bigList.size()/countPerpage)+1;
         }
         recordCount=bigList.size();
+        select();
     }
 
-    public List<Vehicle> getSmallList() {
+    public List<T> getBigList() {
+        return bigList;
+    }
+
+    public List<T> getSmallList() {
         return smallList;
     }
 
-    //    //传入指定页码的构造函数，参看第几页。
-//    public PageController(int curentPageIndex){
-//        this.curentPageIndex=curentPageIndex;
-//    }
-
     //确切的获取当前页的记录，返回一个list列表
-    public List<Vehicle> setFirstPage() {
+    public List<T> setFirstPage() {
         curentPageIndex = 1;
         return select();
     }
 
-    public List<Vehicle> setLastPage() {
+    public List<T> setLastPage() {
         curentPageIndex = pageCount;
         return select();
     }
 
-    public List<Vehicle> shiftRightPage() {
+    public List<T> shiftRightPage() {
 
         if (curentPageIndex < pageCount-9 ) {
             curentPageIndex += 10;
@@ -53,22 +52,27 @@ public class PageController {
         return select();
     }
     //下一页
-    public List<Vehicle> nextPage() {
+    public List<T> nextPage() {
 
         if (curentPageIndex < pageCount ) {
             curentPageIndex++;
         }
+        else{
+            curentPageIndex = pageCount;
+        }
         return select();
     }
     //上一页
-    public List<Vehicle> previousPage() {
+    public List<T> previousPage() {
         if (curentPageIndex > 1) {
             curentPageIndex--;
         }
-
+        else{
+            curentPageIndex = 1;
+        }
         return select();
     }
-    public List<Vehicle> shiftLeftPage() {
+    public List<T> shiftLeftPage() {
         if (curentPageIndex > 10) {
             curentPageIndex-=10;
         }
@@ -78,7 +82,7 @@ public class PageController {
         return select();
     }
     //此方法供以上方法调用，根据当前页，筛选记录
-    public List<Vehicle> select(){
+    public List<T> select(){
         smallList.clear();
         for(int i=(curentPageIndex-1)*countPerpage; i<curentPageIndex*countPerpage&&i<recordCount; i++){
             smallList.add(bigList.get(i));
@@ -87,7 +91,7 @@ public class PageController {
         return smallList;
     }
 
-    public List<Vehicle> jumpPage(int targetPageIndex) {
+    public List<T> jumpPage(int targetPageIndex) {
         if (targetPageIndex<=pageCount&&targetPageIndex>=1) {
             curentPageIndex = targetPageIndex;
         }
@@ -100,6 +104,10 @@ public class PageController {
 
     public int getCurentPageIndex() {
         return curentPageIndex;
+    }
+
+    public int getCountPerpage() {
+        return countPerpage;
     }
 }
 
