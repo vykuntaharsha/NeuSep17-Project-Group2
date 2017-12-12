@@ -39,7 +39,7 @@ public class IncentiveAddEditDialog extends JDialog {
     private JScrollPane scrollPane;
     //comboBoxes for criterion
     private JComboBox[] criterions;
-    private Map<String, List<String>> criterionMap;
+    private Map<String, Map<String, Integer>> criterionMap;
     private String[] criterionKey = {"range", "category", "year", "make", "price"};
     private JButton buttonSave;
     private JButton buttonCancel;
@@ -129,7 +129,7 @@ public class IncentiveAddEditDialog extends JDialog {
             criterions[i].setPreferredSize(new Dimension(200, 30));
             criterions[i].setName(criterionKey[i]);
             if (i > 1) {
-                for (String item : criterionMap.get(criterionKey[i])) {
+                for (String item : criterionMap.get(criterionKey[i]).keySet()) {
                     if (criterionKey[i].equals("price")) {
                         item = item.substring(item.indexOf("~") + 1);
                     }
