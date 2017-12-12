@@ -20,15 +20,19 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import com.neuSep17.dto.Vehicle;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 import com.neuSep17.service.InventoryServiceAPI_Test;
+import com.neuSep17.ui.dealerScreen.ConsumerScreen;
 
 public class BrowseInventoryFrame extends JFrame implements Runnable
 {
+    // Consumer Screen start
+    private ConsumerScreen consumerScreen;
+    // Consumer Screen end
+
     // service API start
     InventoryServiceAPI_Test invsAPI;
     IncentiveServiceAPI_Test incsAPI;
@@ -53,10 +57,11 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     private SearchPanel searchPanel;
     // **search end***
 
-    public BrowseInventoryFrame(InventoryServiceAPI_Test invsAPI)
+    public BrowseInventoryFrame(ConsumerScreen consumerScreen, InventoryServiceAPI_Test invsAPI)
     {
         setTitle("Browse Inventory of " + invsAPI.getFileName().split("/")[1] + " dealer");
 
+        this.consumerScreen = consumerScreen;
         this.invsAPI = invsAPI;
         incsAPI = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
         this.cache = new HashMap<Vehicle, ImageIcon>();
@@ -64,9 +69,10 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         setPage(0);
         perpage = 15;
 
-        getLoadingIMG();        
-        
-        addProgressBar();   // add before update, because during update, progress bar is also updated
+        getLoadingIMG();
+
+        addProgressBar(); // add before update, because during update, progress
+                          // bar is also updated
         updateVehicle();
 
         createComponents();
@@ -75,13 +81,14 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         addListeners();
     }
 
-    private void addProgressBar() {
-        cacheProgress = new JProgressBar(  );
+    private void addProgressBar()
+    {
+        cacheProgress = new JProgressBar();
         cacheProgress.setMaximum(0);
-        cacheProgress.setMaximum( invsAPI.getTotalVehicleAmount() );
+        cacheProgress.setMaximum(invsAPI.getTotalVehicleAmount());
         cacheProgress.setStringPainted(true);
         cacheProgress.setToolTipText("image caching process");
-        
+
     }
 
     private void getLoadingIMG()
@@ -109,8 +116,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // filter panel
         filterPanel = new FilterPanel(this);
         // list panel
-        listpanel = new ListPanel(this);        
-        
+        listpanel = new ListPanel(this);
+
     }
 
     private void addComponents()
@@ -127,7 +134,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         // list panel
 
         con.add(listpanel, BorderLayout.CENTER);
-        con.add(cacheProgress,BorderLayout.SOUTH);
+        con.add(cacheProgress, BorderLayout.SOUTH);
     }
 
     private void addListeners()
@@ -234,8 +241,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
     }
 
     class updateThread extends SwingWorker<Void, Integer>
-    {        
-        
+    {
+
         @Override
         protected Void doInBackground() throws Exception
         {
@@ -246,15 +253,16 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
                     int i = (int) Math.round(2 * Math.random());
                     Image temp = InventoryServiceAPI_Test.getVehicleImage(v.getBodyType()).get(i);
                     temp = temp.getScaledInstance(181, 181, Image.SCALE_DEFAULT);
-                    cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));                    
+                    cache.put(v, new ImageIcon(temp, "icon for vehicle " + v.getId()));
                 }
                 publish(cache.size());
             }
             return null;
         }
-        
-        protected void process( List<Integer> finished ) {            
-            cacheProgress.setValue(finished.get(finished.size()-1));
+
+        protected void process(List<Integer> finished)
+        {
+            cacheProgress.setValue(finished.get(finished.size() - 1));
         }
 
         protected void done()
@@ -351,7 +359,8 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         public void windowClosing(WindowEvent e)
         {
             System.out.println("BrowseInventory closing, exit application.");
-            System.exit(0);
+            consumerScreen.setVisible(true);
+            dispose();
         }
 
         @Override
@@ -375,13 +384,6 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         public void windowOpened(WindowEvent e)
         {
         }
-    }
-
-    public static void main(String[] args)
-    {
-        BrowseInventoryFrame bif = new BrowseInventoryFrame(new InventoryServiceAPI_Test("data/gmps-bresee"));
-        Thread BrowseInventoryThread = new Thread(() -> bif.run());
-        SwingUtilities.invokeLater(BrowseInventoryThread);
     }
 
     @Override
