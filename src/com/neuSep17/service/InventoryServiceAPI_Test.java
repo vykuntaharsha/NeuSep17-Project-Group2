@@ -66,7 +66,7 @@ public class InventoryServiceAPI_Test {
 		File[] files = dir.listFiles();
 		
 		for(File file : files) {
-			if(file!= null && file.isFile() && file.getName().endsWith(".txt")) {
+			if(file!= null && file.isFile() && file.getName().endsWith(".txt") && file.getName().startsWith("gmps")) {
 				BufferedReader reader = new BufferedReader(new FileReader(file));
 				String line = null;
 				int count = 0;
