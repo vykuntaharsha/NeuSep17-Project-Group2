@@ -1,32 +1,17 @@
 package com.neuSep17.ui.dealerScreen;
 
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.HeadlessException;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.function.Consumer;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.text.html.Option;
-
 import com.neuSep17.dto.Dealer;
 import com.neuSep17.service.DealerAPI;
 import com.neuSep17.service.InventoryServiceAPI_Test;
 import com.neuSep17.ui.consumer.BrowseInventoryFrame;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class ConsumerScreen  extends JFrame{
 
@@ -176,7 +161,15 @@ public class ConsumerScreen  extends JFrame{
       SwingUtilities.invokeLater(BrowseInventoryThread);
       this.setVisible(false);
   }
-  
+
+    public void showAllBrowseInventory()
+    {
+        BrowseInventoryFrame bif = new BrowseInventoryFrame(this, new InventoryServiceAPI_Test());
+        Thread BrowseInventoryThread = new Thread(() -> bif.run());
+        SwingUtilities.invokeLater(BrowseInventoryThread);
+        this.setVisible(false);
+    }
+
   class Browser implements ActionListener {
 
       @Override
@@ -199,7 +192,9 @@ public class ConsumerScreen  extends JFrame{
               //new DealerInventoryScreen();
               System.out.println("You have clicked the second button!");
 
-              dispose();
+              showAllBrowseInventory();
+
+              //dispose();
 
       }
   }
@@ -224,9 +219,4 @@ public class ConsumerScreen  extends JFrame{
       this.setVisible(true);
       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
-
-  public static void main(String[] args){
-      new ConsumerScreen();
-  }
-    
 }

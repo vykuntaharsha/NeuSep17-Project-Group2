@@ -1,17 +1,10 @@
-package com.neuSep17.ui;
+package com.neuSep17.ui.dealerScreen;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.net.URL;
-
-import javax.swing.ImageIcon;
 
 /**
  * An <CODE>Icon</CODE> that scales its image to fill the component area, excluding any border or insets, optionally maintaining the image's

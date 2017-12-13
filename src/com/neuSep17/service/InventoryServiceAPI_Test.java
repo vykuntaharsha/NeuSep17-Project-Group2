@@ -42,6 +42,12 @@ public class InventoryServiceAPI_Test {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			vehicleImagesMap = getVehicleImagesMap();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public InventoryServiceAPI_Test(String file) {
@@ -66,7 +72,8 @@ public class InventoryServiceAPI_Test {
 		File[] files = dir.listFiles();
 		
 		for(File file : files) {
-			if(file!= null && file.isFile() && file.getName().endsWith(".txt") && file.getName().startsWith("gmps")) {
+			//if(file!= null && file.isFile() && file.getName().endsWith(".txt") && file.getName().startsWith("gmps")) {
+			if(file!= null && file.isFile() && file.getName().startsWith("gmps")) {	
 				BufferedReader reader = new BufferedReader(new FileReader(file));
 				String line = null;
 				int count = 0;
