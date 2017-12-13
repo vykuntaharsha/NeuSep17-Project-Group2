@@ -60,7 +60,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
 
     public BrowseInventoryFrame(ConsumerScreen consumerScreen, InventoryServiceAPI_Test invsAPI)
     {
-        setTitle("Browse Inventory of " + invsAPI.getFileName().split("/")[1] + " dealer");
+        setTitle("Browse Inventory of dealer: " + invsAPI.getFileName().split("/")[1] );
 
         this.consumerScreen = consumerScreen;
         this.invsAPI = invsAPI;

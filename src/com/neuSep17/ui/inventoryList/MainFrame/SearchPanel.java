@@ -89,10 +89,10 @@ public class SearchPanel extends JPanel {
 		int yOfSort = 150;
 		int xOfSearch = 120;
 		int sizeOfSearchButton = 30;
-		searchLabel.setBounds(940, xOfSearch, weightOfSortBy, heightOfItemsOnPanel);
-		searchTextComboBox.setBounds(1010, 135, 180, 30);
-		sortBy.setBounds(940, yOfSort, weightOfSortBy, heightOfItemsOnPanel);
-		sortItem.setBounds(1010, yOfSort, weightOfSortItem, heightOfItemsOnPanel);
+		searchLabel.setBounds(parent.getSize().width - 250, xOfSearch, weightOfSortBy, heightOfItemsOnPanel);
+		searchTextComboBox.setBounds(parent.getSize().width - 180, 135, 180, 30);
+		sortBy.setBounds(parent.getSize().width - 250, yOfSort, weightOfSortBy, heightOfItemsOnPanel);
+		sortItem.setBounds(parent.getSize().width - 180, yOfSort, weightOfSortItem, heightOfItemsOnPanel);
 	}
 
 	private void setSearchTextComboBox() {

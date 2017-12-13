@@ -74,7 +74,9 @@ public class VehicleCell extends JPanel {
         
         String price= "price: " + v.getPrice().toString();
         if (discount > 0 ) {
-            price="<html><STRIKE>"+price+"</STRIKE><br /> <font color='red' size='+2'> On Sale: "+(v.getPrice()-discount)+"!</font><html>";
+            float pricenow=v.getPrice()-discount;
+            if (pricenow<0) price="<html><STRIKE>"+price+"</STRIKE><br /> <font color='red' size='+1'> On Sale:<br> Contact to get quote!</font><html>";
+            else price="<html><STRIKE>"+price+"</STRIKE><br /> <font color='red' size='+1'> On Sale:<br> "+(v.getPrice()-discount)+"!</font><html>";
         }
         JLabel priceLabel = new JLabel(price);
         GridBagConstraints gbc_priceLabel = new GridBagConstraints();
