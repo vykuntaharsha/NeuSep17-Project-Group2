@@ -21,7 +21,6 @@ import java.util.List;
 public class InventoryTableView extends JPanel{
 
     private ivTableModel ivTableModel;
-   //private List<Vehicle> vehicles;
     public InventoryServiceAPI_Test inventoryServiceAPI_test;
     private IncentiveServiceAPI_Test incentiveServiceAPI_test;
     private PageController<Vehicle> pageController;
@@ -38,7 +37,6 @@ public class InventoryTableView extends JPanel{
         this.setSize(1100,1000);
         this.inventoryServiceAPI_test = inventoryServiceAPI_test;
         this.incentiveServiceAPI_test = incentiveServiceAPI_test;
-    //    this.vehicles = inventoryServiceAPI_test.getVehicles();
         this.pageController = new PageController(inventoryServiceAPI_test.getVehicles(),15);
         this.inventoryControlPanel = new InventoryControlPanel(pageController,this);
 
@@ -120,7 +118,7 @@ public class InventoryTableView extends JPanel{
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == editButton){
-                EditFramecontrol editFrame = new EditFramecontrol();
+                EditFramecontrol editFrame = new EditFramecontrol(inventoryServiceAPI_test.getVehicleDetails((String)ivTableModel.getValueAt(jTable.getSelectedRow(), 1)));
                 realTimeUpdateForEdit rte = new realTimeUpdateForEdit(editFrame);
                 rte.start();
             }
@@ -176,7 +174,9 @@ public class InventoryTableView extends JPanel{
         public void validate() throws MalformedURLException {
             int temp = jTable.getSelectedRow();
             replaceVehicle(editFrame.tempVehicle,temp);
-            inventoryServiceAPI_test.deleteVehicle(ivTableModel.getValueAt(temp, 1).toString());
+            int curpage = pageController.getCurentPageIndex();
+            pageController = new PageController<>(inventoryServiceAPI_test.getVehicles(),15);
+            pageController.setCurentPageIndex(curpage);
             update(inventoryServiceAPI_test.getVehicles());
             editFrame.editFlag = false;
         }
@@ -247,7 +247,4 @@ public class InventoryTableView extends JPanel{
 
     }
 
-    public void setPageController(PageController<Vehicle> pageController) {
-        this.pageController = pageController;
-    }
 }

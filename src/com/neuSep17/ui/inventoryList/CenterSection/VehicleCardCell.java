@@ -13,23 +13,24 @@ import com.neuSep17.service.InventoryServiceAPI_Test;
 import java.io.IOException;
 
 public class VehicleCardCell extends JPanel {
-    JPanel cardPanel;
-    VehicleDetail vehicleDetail;
-    VehicleImageCell vehicleImageCell;
+    private JPanel cardPanel;
+    private VehicleDetail vehicleDetail;
+    private VehicleImageCell vehicleImageCell;
+    private ImageView parent;
 
-    public VehicleCardCell(Vehicle v, ImageIcon icon, float discount, InventoryServiceAPI_Test invsAPI, IncentiveServiceAPI_Test
-                           incsAPI)  {
-        super();
+    public VehicleCardCell(Vehicle v, ImageIcon icon, InventoryServiceAPI_Test invsAPI, IncentiveServiceAPI_Test
+                           incsAPI, ImageView parent)  {
+        this.parent = parent;
         setSize(800,600);
         cardPanel = new JPanel();
         CardLayout cardLayout = new CardLayout();
         cardPanel.setLayout(cardLayout);
         try {
-            vehicleImageCell = new VehicleImageCell(v,icon,discount,cardLayout,cardPanel);
+            vehicleImageCell = new VehicleImageCell(v,icon,incsAPI.getAllDiscount(v),cardLayout,cardPanel);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        vehicleDetail = new VehicleDetail(v,invsAPI,incsAPI,cardLayout,cardPanel);
+        vehicleDetail = new VehicleDetail(v,invsAPI,incsAPI,cardLayout,cardPanel,parent);
         cardPanel.add("vehicleImageCell",vehicleImageCell);
         cardPanel.add("vehicleDetail",vehicleDetail);
         this.setLayout(new GridLayout());

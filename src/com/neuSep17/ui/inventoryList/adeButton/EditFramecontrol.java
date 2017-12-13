@@ -1,6 +1,8 @@
 package com.neuSep17.ui.inventoryList.adeButton;
 
 
+import com.neuSep17.dto.Vehicle;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -23,6 +25,7 @@ public class EditFramecontrol extends JFrame {
 	private JTextField yearField, makeField, modelField, trimField, priceField, photoUrlField;
 	private JComboBox<String> bodyTypeField;
 	private JComboBox<String> categoryField;
+	private Vehicle vehicle;
 
 	private JPanel contentPane;
 
@@ -30,7 +33,8 @@ public class EditFramecontrol extends JFrame {
 	private final String[] BODY_TYPE = new String[] { "", "Coupe", "Sedan", "SUV", "Van", "Truck", "Sport",
 			"Convertible", "Crossover", "Wagon", "Hybrid", "Luxury", "Diesel Engine" };
 
-	public EditFramecontrol() {
+	public EditFramecontrol(Vehicle vehicle) {
+		this.vehicle = vehicle;
 		create();
 		addComponents();
 		makeListeners();
@@ -63,12 +67,22 @@ public class EditFramecontrol extends JFrame {
 		bodyType = new JLabel("BodyType");
 		price = new JLabel("Price");
 		photoUrl = new JLabel("PhotoUrl");
-		yearField = new JTextField();
-		makeField = new JTextField();
-		modelField = new JTextField();
-		trimField = new JTextField();
-		priceField = new JTextField();
-		photoUrlField = new JTextField("http://");
+		yearField = new JTextField(vehicle.getYear());
+		makeField = new JTextField(vehicle.getMake());
+		modelField = new JTextField(vehicle.getModel());
+		trimField = new JTextField(vehicle.getTrim());
+		priceField = new JTextField(vehicle.getPrice().toString());
+		photoUrlField = new JTextField(vehicle.getPhotoUrl().toString());
+
+		bodyTypeField = new JComboBox<>();
+		for (String s : this.BODY_TYPE) {
+			bodyTypeField.addItem(s.toLowerCase());
+		}
+
+		categoryField = new JComboBox<>();
+		for (String s : this.CATEGORIES) {
+			categoryField.addItem(s.toLowerCase());
+		}
 	}
 
 	public void addComponents() {
@@ -161,17 +175,9 @@ public class EditFramecontrol extends JFrame {
 		yearField.setBounds(149, 76, 229, 26);
 		panel.add(yearField);
 
-		categoryField = new JComboBox<>();
-		for (String s : this.CATEGORIES) {
-			categoryField.addItem(s.toLowerCase());
-		}
 		categoryField.setBounds(149, 277, 229, 27);
 		panel.add(categoryField);
 
-		bodyTypeField = new JComboBox<>();
-		for (String s : this.BODY_TYPE) {
-			bodyTypeField.addItem(s.toLowerCase());
-		}
 		bodyTypeField.setBounds(149, 327, 229, 27);
 		panel.add(bodyTypeField);
 	}
