@@ -110,7 +110,7 @@ public class DealerScreen extends JFrame {
                 e1.printStackTrace();
             }
             System.out.println("You have choosed " + selectedDearlerID + ", Close Dealer Screen -> Open Dealer Incentive Screen");
-            dispose();
+//            dispose();
         }
     }
 

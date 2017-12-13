@@ -59,7 +59,7 @@ public class IncentiveMainFrame extends JFrame {
 
     private void setFrame() {
         setSize(1200, 800);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 }

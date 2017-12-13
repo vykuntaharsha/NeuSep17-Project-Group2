@@ -112,7 +112,7 @@ public class Initial extends JFrame{
         @Override
         public void actionPerformed (ActionEvent e){
             if(e.getSource() == consumer) {
-//                new ConsumerScreen();
+                new ConsumerScreen();
                 dispose();
             }
         }
