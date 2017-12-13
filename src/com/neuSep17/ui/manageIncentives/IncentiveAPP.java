@@ -8,7 +8,7 @@ public class IncentiveAPP {
     public IncentiveAPP(){
         SwingUtilities.invokeLater(() -> {
             try {
-                new IncentiveMainFrame();
+                new IncentiveMainFrame("gmps-camino");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -20,7 +20,7 @@ public class IncentiveAPP {
 
         SwingUtilities.invokeLater(() -> {
             try {
-                new IncentiveMainFrame();
+                new IncentiveMainFrame("gmps-camino");
             } catch (IOException e) {
                 e.printStackTrace();
             }

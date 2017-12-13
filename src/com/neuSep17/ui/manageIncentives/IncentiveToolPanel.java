@@ -12,13 +12,15 @@ import java.awt.event.MouseEvent;
 public class IncentiveToolPanel extends JPanel {
 
     private JButton addButton, deleteButton, editButton;
+    private String dealerID;
     private String[] incentive_temp;
     private Incentive incentive_test;
     private Color bgColor = new Color(226, 247, 252);
     private Color fgColor = new Color(156, 199, 231);
 
-    public IncentiveToolPanel(JTable incentive_list) {
+    public IncentiveToolPanel(JTable incentive_list,String dealerID) {
 
+        this.dealerID = dealerID;
         setToolPanel();
         addToolButton();
         addButtonListener(incentive_list);
@@ -30,7 +32,7 @@ public class IncentiveToolPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //first parameter should be replaced by current dealerId
-                new IncentiveAddEditDialog("gmps-camino", incentive_list);
+                new IncentiveAddEditDialog(dealerID, incentive_list);
             }
         });
 
@@ -40,7 +42,7 @@ public class IncentiveToolPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 //temp
                 incentive_test = new Incentive(incentive_temp);
-                IncentiveDeleteDialog deleteDialog = new IncentiveDeleteDialog(incentive_test, incentive_list);
+                IncentiveDeleteDialog deleteDialog = new IncentiveDeleteDialog(incentive_test, incentive_list,dealerID);
 
 
             }
@@ -72,7 +74,7 @@ public class IncentiveToolPanel extends JPanel {
                 } else {
                     incentive_test = new Incentive(incentive_temp);
                     //first parameter should be replaced by current dealerId
-                    new IncentiveAddEditDialog("gmps-camino", incentive_test, incentive_list);
+                    new IncentiveAddEditDialog(dealerID, incentive_test, incentive_list);
                 }
             }
         });

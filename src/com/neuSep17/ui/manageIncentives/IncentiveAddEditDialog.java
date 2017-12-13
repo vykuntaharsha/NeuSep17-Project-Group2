@@ -45,25 +45,27 @@ public class IncentiveAddEditDialog extends JDialog {
     private JButton buttonCancel;
     private JOptionPane alert;
     //incentive file, should be replaced by dealer_Incentive.txt
-    String file = "data/IncentiveSample.txt";
+    String path = "data/" + dealerId + "Incentive.txt";
+    String file = path;
 
     public IncentiveAddEditDialog(String dealerId, JTable incentive_list) {
+        this.dealerId = dealerId;
         this.incentive_list = incentive_list;
         setTitle("add incentive");
-        init(dealerId);
+        init();
     }
 
     //edit constructor
     public IncentiveAddEditDialog(String dealerId, Incentive incentive, JTable incentive_list) {
+        this.dealerId = dealerId;
         this.incentive = incentive;
         this.incentive_list = incentive_list;
-        init(dealerId);
+        init();
         setTitle("edit incentive");
     }
 
-    private void init(String dealerId) {
-        this.dealerId = dealerId;
-        incentiveAPI = new IncentiveServiceAPI_Test(file);
+    private void init() {
+        incentiveAPI = new IncentiveServiceAPI_Test("data/" + dealerId+"Incentive.txt");
         inventoryAPI = new InventoryServiceAPI_Test("data/" + dealerId);
         initComponents();
         addComponents();
@@ -401,7 +403,7 @@ public class IncentiveAddEditDialog extends JDialog {
     }
 
     private void refresh() {
-        incentive_list.setModel(new IncentiveTableModel(new IncentiveServiceAPI_Test("data/IncentiveSample.txt")));
+        incentive_list.setModel(new IncentiveTableModel(new IncentiveServiceAPI_Test("data/" + dealerId + "Incentive.txt")));
         incentive_list.updateUI();
     }
 }

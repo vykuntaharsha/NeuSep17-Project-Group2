@@ -13,14 +13,18 @@ public class IncentiveDeleteDialog extends JDialog {
     private JLabel explaination;
     private JButton yes, no;
     private JTable incentive_list;
-    String file = "data/IncentiveSample.txt";
+    private String dealerId;
+    String path = "data/" + dealerId + "Incentive.txt";
+    String file = path;
     private IncentiveServiceAPI_Test incentiveAPI;
     private Incentive incentive;
 
-    public IncentiveDeleteDialog(Incentive incentive, JTable incentive_list){
+    public IncentiveDeleteDialog(Incentive incentive, JTable incentive_list, String dealerID){
+
+        this.dealerId = dealerID;
         this.incentive = incentive;
         this.incentive_list = incentive_list;
-        incentiveAPI = new IncentiveServiceAPI_Test(file);
+        incentiveAPI = new IncentiveServiceAPI_Test("data/" + dealerId + "Incentive.txt");
         setDeletePanel();
         create();
         makeListeners();
@@ -83,7 +87,7 @@ public class IncentiveDeleteDialog extends JDialog {
         }
 
         private void refresh(){
-            incentive_list.setModel(new IncentiveTableModel(new IncentiveServiceAPI_Test("data/IncentiveSample.txt")));
+            incentive_list.setModel(new IncentiveTableModel(new IncentiveServiceAPI_Test("data/" + dealerId + "Incentive.txt")));
             incentive_list.updateUI();
         }
     }

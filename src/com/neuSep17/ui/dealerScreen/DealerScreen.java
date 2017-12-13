@@ -125,7 +125,7 @@ public class DealerScreen extends JFrame {
         public void actionPerformed(ActionEvent e) {
 //          waiting Team2's final version
             try {
-                new IncentiveMainFrame();
+                new IncentiveMainFrame(selectedDearlerID);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
