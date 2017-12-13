@@ -1,6 +1,6 @@
-package CenterSection;
+package com.neuSep17.ui.inventoryList.CenterSection;
 
-import CenterSection.VehicleImageCell;
+import com.neuSep17.ui.inventoryList.CenterSection.VehicleImageCell;
 import com.neuSep17.dto.Vehicle;
 
 import java.awt.*;

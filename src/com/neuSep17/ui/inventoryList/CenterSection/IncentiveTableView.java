@@ -1,6 +1,6 @@
-package CenterSection;
+package com.neuSep17.ui.inventoryList.CenterSection;
 
-import CenterSection.IncentiveControlPanel;
+import com.neuSep17.ui.inventoryList.CenterSection.IncentiveControlPanel;
 import com.neuSep17.dto.Incentive;
 import com.neuSep17.dto.IncentiveTableModel;
 import com.neuSep17.service.IncentiveServiceAPI_Test;

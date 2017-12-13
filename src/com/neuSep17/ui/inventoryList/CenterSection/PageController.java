@@ -1,4 +1,4 @@
-package CenterSection;
+package com.neuSep17.ui.inventoryList.CenterSection;
 
 import java.util.ArrayList;
 import java.util.List;

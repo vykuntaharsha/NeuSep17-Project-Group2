@@ -1,6 +1,6 @@
-package CenterSection;
+package com.neuSep17.ui.inventoryList.CenterSection;
 
-import CenterSection.ImageControlPanel;
+import com.neuSep17.ui.inventoryList.CenterSection.ImageControlPanel;
 import com.neuSep17.dto.Vehicle;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 import com.neuSep17.service.InventoryServiceAPI_Test;
@@ -57,8 +57,7 @@ public class ImageView extends JPanel{
     }
 
     private void lazycell(List<Vehicle> currentVehicle) throws IOException {
-        Image notfound = ImageIO.read(new File("/Users/tingyuanzhang/" +
-                "Downloads/NeuSep17-Project-Group2-master 3/src/com/neuSep17/ui/inventoryList/material/imagenotfound.jpg"));
+        Image notfound = ImageIO.read(new File("data/images/imagenotfound.jpg"));
             for (Vehicle v : currentVehicle) {
                 if (!vehicleCardCellsList.containsKey(v)) {
                     int i = (int) Math.round(2 * Math.random());

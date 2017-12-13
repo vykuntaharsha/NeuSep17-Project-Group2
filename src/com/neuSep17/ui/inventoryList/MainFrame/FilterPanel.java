@@ -1,6 +1,6 @@
-package MainFrame;//package com.neuSep17.ui.consumer;
+package com.neuSep17.ui.inventoryList.MainFrame;//Credit to com.neuSep17.ui.consumer team;
 
-import CenterSection.DealerMainWindow;
+import com.neuSep17.ui.inventoryList.CenterSection.DealerMainWindow;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

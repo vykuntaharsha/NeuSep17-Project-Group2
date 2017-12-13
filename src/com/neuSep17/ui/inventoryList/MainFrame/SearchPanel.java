@@ -1,8 +1,8 @@
-package MainFrame;
+package com.neuSep17.ui.inventoryList.MainFrame;//Credit to com.neuSep17.ui.consumer team;
 
 import com.neuSep17.dto.Vehicle;
 
-import CenterSection.DealerMainWindow;
+import com.neuSep17.ui.inventoryList.CenterSection.DealerMainWindow;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,7 +18,6 @@ public class SearchPanel extends JPanel {
 	private DealerMainWindow parent;
 	private JPanel searchPanel;
 	private JLabel sortBy;
-//	private JButton search;
 	private JLabel searchLabel;
 	private JComboBox searchTextComboBox;
 	private Vector dictionaryVector;
@@ -56,13 +55,6 @@ public class SearchPanel extends JPanel {
 			}
 		};
 		searchPanel.setOpaque(true);
-		// search
-//		search = new JButton();
-//		ImageIcon icon = new ImageIcon("data/images/searchIcon2.png");
-//		search = new JButton(icon);
-//		search.setOpaque(false);
-//		search.setContentAreaFilled(false);
-//		search.setBorderPainted(false);
 
 		searchTextComboBox = new JComboBox();
 		for (Component component : searchTextComboBox.getComponents()) {
@@ -73,7 +65,6 @@ public class SearchPanel extends JPanel {
 		setDictionaryVector();
 		setSearchTextComboBox();
 		 searchLabel = new JLabel("Search : ");
-//		 searchLabel.setFont(new Font("Black", 1, 24));
 		 searchLabel.setForeground(Color.WHITE);
 
 		// sort
@@ -85,16 +76,6 @@ public class SearchPanel extends JPanel {
 			sortItem.addItem(sortKeys[i]);
 		}
 		
-		
-
-		// font
-		Font font = new Font("", 0, 20);
-		// searchText.setFont(font);
-//		searchTextComboBox.setFont(font);
-		// sortBy.setFont(font);
-		// search.setFont(new Font("", 0, 16));
-
-		// location
 		setItemsLocation();
 	}
 
@@ -110,7 +91,6 @@ public class SearchPanel extends JPanel {
 		int sizeOfSearchButton = 30;
 		searchLabel.setBounds(940, xOfSearch, weightOfSortBy, heightOfItemsOnPanel);
 		searchTextComboBox.setBounds(1010, 135, 180, 30);
-//		search.setBounds(1010 + 160, 140, 20, 20);
 		sortBy.setBounds(940, yOfSort, weightOfSortBy, heightOfItemsOnPanel);
 		sortItem.setBounds(1010, yOfSort, weightOfSortItem, heightOfItemsOnPanel);
 	}
@@ -164,7 +144,6 @@ public class SearchPanel extends JPanel {
 
 		searchPanel.add(searchLabel);
 		searchPanel.add(searchTextComboBox);
-//		searchPanel.add(search);
 		searchPanel.add(sortBy);
 		searchPanel.add(sortItem);
 		this.add(searchPanel);

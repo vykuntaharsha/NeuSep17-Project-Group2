@@ -1,4 +1,4 @@
-package CenterSection;
+package com.neuSep17.ui.inventoryList.CenterSection;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

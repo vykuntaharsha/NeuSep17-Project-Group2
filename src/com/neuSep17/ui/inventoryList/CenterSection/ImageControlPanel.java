@@ -1,4 +1,4 @@
-package CenterSection;
+package com.neuSep17.ui.inventoryList.CenterSection;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
