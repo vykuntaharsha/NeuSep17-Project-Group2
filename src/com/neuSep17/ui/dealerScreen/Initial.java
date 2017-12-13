@@ -1,6 +1,6 @@
 package com.neuSep17.ui.dealerScreen;
 
-import com.neuSep17.ui.StretchIcon;
+import com.neuSep17.ui.dealerScreen.StretchIcon;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
