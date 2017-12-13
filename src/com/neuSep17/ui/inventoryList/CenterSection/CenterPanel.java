@@ -25,7 +25,8 @@ public class CenterPanel extends JPanel {
         JTabbedPane centerTabbedPane = new JTabbedPane();
         JTabbedPane tableTabbedPane = new JTabbedPane();
         imageView = new ImageView(currentVehicleList,invsAPI,incsApi);
-        inventoryTableView = new InventoryTableView(currentVehicleList,incsApi);
+        //inventoryTableView = new InventoryTableView(currentVehicleList,incsApi);
+        inventoryTableView = new InventoryTableView(incsApi,invsAPI);
         incentiveTableView = new IncentiveTableView(incsApi);
 
         this.setLayout(new BorderLayout());
@@ -36,12 +37,9 @@ public class CenterPanel extends JPanel {
         add(centerTabbedPane,"Center");
     }
 
-    public void update(List<Vehicle> currentVehicleList) {
-     //   System.out.println("~~~~~~~~~~~"+pageController.getBigList().size()+"~~~~~~~~~~~~~");
+    public void update(List<Vehicle> currentVehicleList){
         this.currentVehicleList = currentVehicleList;
-        imageView.setPageController(new PageController(currentVehicleList,12));
-        imageView.update();
-        inventoryTableView.setPageController(new PageController<>(currentVehicleList,15));
-        inventoryTableView.update();
+        imageView.update(currentVehicleList);
+        inventoryTableView.update(currentVehicleList);
     }
 }

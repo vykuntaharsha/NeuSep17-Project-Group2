@@ -12,19 +12,29 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-
 import javax.imageio.ImageIO;
-
 import com.neuSep17.dto.Category;
 import com.neuSep17.dto.Vehicle;
 
 public class InventoryDAO {
 	
-	
-	
 	private LinkedHashMap<String, Vehicle> vehiclesMap;
 	private LinkedHashMap<String, ArrayList<Image>> vehicleImagesMap;
 	private String fileName;
+	
+	public InventoryDAO() {
+		try {
+			this.vehiclesMap = getAllVehiclesMap();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			vehicleImagesMap = getVehicleImagesMap();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public InventoryDAO(String file) {
 		this.fileName = file;
@@ -38,9 +48,9 @@ public class InventoryDAO {
 			vehicleImagesMap = getVehicleImagesMap();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
+		}	
 	}
+	
 	
 	
 	public LinkedHashMap<String, Vehicle> getVehiclesMap() {
@@ -91,7 +101,6 @@ public class InventoryDAO {
 	}
 
 	
-	
 	public int getTotalVehicleAmount() {
 		return vehiclesMap.size();
 	}
@@ -128,6 +137,7 @@ public class InventoryDAO {
 		vehiclesMap.remove(vin);	
 		
 	}
+	
 	
 	public static ArrayList<Image> getVehicleImage(String bodyType) throws IOException{
 		LinkedHashMap<String, ArrayList<Image>> vehicleImagesMap = getVehicleImagesMap();
@@ -174,6 +184,36 @@ public class InventoryDAO {
 		
 		return vehicleImagesMap;
 		
+	}
+	
+	
+	public static LinkedHashMap<String, Vehicle> getAllVehiclesMap() throws IOException {
+		LinkedHashMap<String, Vehicle> allVehiclesMap = new LinkedHashMap<String, Vehicle>();
+		File dir = new File("data/");
+		File[] files = dir.listFiles();
+		
+		for(File file : files) {
+			if(file!= null && file.isFile() && file.getName().startsWith("gmps")) {
+	
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String line = null;
+				int count = 0;
+				while((line=reader.readLine())!=null) {
+					count++;
+					if(count==1) {continue;}
+					String[] vehicleDataArray = line.split("~");
+					Vehicle vehicle =new Vehicle(vehicleDataArray);
+					allVehiclesMap.put(vehicle.getId(), vehicle);
+				}
+				
+				reader.close();
+				
+			}
+			else {
+				continue;
+			}
+		}
+		return allVehiclesMap;
 		
 	}
 	

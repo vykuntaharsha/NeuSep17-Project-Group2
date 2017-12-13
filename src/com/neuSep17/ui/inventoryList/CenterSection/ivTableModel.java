@@ -96,7 +96,7 @@ public class ivTableModel implements TableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        System.out.println("!!!!!!!!!!!!"+rowIndex+"--"+columnIndex);
+        //System.out.println("!!!!!!!!!!!!"+rowIndex+"--"+columnIndex);
         if(columnIndex==0){
             selects[rowIndex] = (Boolean)aValue;
             return;

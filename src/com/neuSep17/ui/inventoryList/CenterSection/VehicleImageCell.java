@@ -9,31 +9,54 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 
 public class VehicleImageCell extends JPanel {
-    public VehicleImageCell(Vehicle v, ImageIcon icon, float discount,CardLayout cardLayout, JPanel cardPanel) throws IOException{
-        super();
-        setSize(800,600);
-        setLayout(null);
-        JLabel image = new JLabel(icon);
-        image.setVerticalAlignment(SwingConstants.TOP);
-        image.setHorizontalAlignment(SwingConstants.LEFT);
-        image.setBounds(0,0,600,600);
-        ImageIcon imageIcon = new ImageIcon("/Users/boqunzhang/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/newInventoryList/material/background.png");
-        JLabel background = new JLabel(imageIcon);
-        background.setVerticalAlignment(SwingConstants.TOP);
-        background.setHorizontalAlignment(SwingConstants.LEFT);
-        background.setBounds(0,0,300,80);
+    private JLabel next,background,carImage, nameLabel;
+    private ImageIcon preImageEnter,preImageExit,backgroundIcon,carIcon;
+    private CardLayout cardLayout;
+    private JPanel cardPanel;
+    private Vehicle vehicle;
 
-        StringBuilder title= new StringBuilder("<html>"+"<body style=\"padding:10px;\" >"+"<font color='white'>"+(v.getCategory().toString()+
-                " "+v.getYear() + " " + v.getMake())+"<br></font>");
-        if (discount > 0 ) title.append("<font color='white'> On Sale: "+Math.max(v.getPrice()-discount,0)+"!</font>");
+
+    public VehicleImageCell(Vehicle v, ImageIcon icon, float discount, CardLayout cardLayout, JPanel cardPanel) throws IOException{
+        super();
+        this.cardLayout = cardLayout;
+        this.cardPanel = cardPanel;
+        this.carIcon = icon;
+        this.vehicle = v;
+
+
+        creatComponent(icon,discount);
+        addListener();
+        addComponent();
+    }
+    private void creatComponent(ImageIcon icon, float discount){
+
+        carImage = new JLabel(carIcon);
+        carImage.setBounds(0,0,300,300);
+
+        backgroundIcon = new ImageIcon("/Users/boqunzhang/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/newInventoryList/material/background.png");
+        background = new JLabel(backgroundIcon);
+        background.setBounds(0,0,300,80);
+        StringBuilder title= new StringBuilder("<html>"+"<body style=\"padding:10px;\" >"+"<font color='white'>"+(vehicle.getCategory().toString()+
+                " "+vehicle.getYear() + " " + vehicle.getMake())+"<br></font>");
+        if (discount > 0 ) title.append("<font color='white'> On Sale: "+Math.max(vehicle.getPrice()-discount,0)+"!</font>");
         title.append("</body><html>");
-        JLabel nameLabel = new JLabel(title.toString()+v.getId());
+
+        nameLabel = new JLabel(title.toString()+vehicle.getId());
         nameLabel.setFont(new Font(nameLabel.getFont().getFontName(), Font.BOLD, 24));
         nameLabel.setVerticalAlignment(SwingConstants.TOP);
-        nameLabel.setBounds(0,0,600,200);
-        ImageIcon preImageEnter = new ImageIcon("/Users/boqunzhang/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/newInventoryList/material/right80%.png");
-        ImageIcon preImageExit = new ImageIcon("/Users/boqunzhang/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/newInventoryList/material/right50%.png");
-        JLabel next = new JLabel(preImageExit);
+        nameLabel.setBounds(0,0,300,200);
+
+        preImageEnter = new ImageIcon("/Users/boqunzhang/IdeaProjects/groupB/NeuSep17-Project-Group2/src/com/neuSep17/ui/inventoryList/material/right80%.png");
+        preImageExit = new ImageIcon("/Users/boqunzhang/IdeaProjects/groupB/NeuSep17-Project-Group2/src/com/neuSep17/ui/inventoryList/material/right50%.png");
+
+        next = new JLabel(preImageExit);
+        next.setBounds(250,0,50,300);
+
+
+    }
+
+    private void addListener(){
+
         next.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -60,10 +83,24 @@ public class VehicleImageCell extends JPanel {
                 next.setIcon(preImageExit);
             }
         });
-        next.setBounds(250,0,50,300);
+
+    }
+
+    private void addComponent(){
+        setSize(300,300);
+        setBackground(Color.RED);
+        setLayout(null);
         add(nameLabel);
         add(background);
         add(next);
-        add(image);
+
+        add(carImage);
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 }
+
+
+

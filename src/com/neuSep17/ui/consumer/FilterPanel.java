@@ -24,7 +24,7 @@ public class FilterPanel extends JPanel
     private String[] filterKeys = { "category", "year", "make", "price", "type" };
     private JPanel filterPanel;
     private JButton resetFilter;
-    private int northPanelHeight = 280;
+    private int northPanelHeight = 285;
 
     public FilterPanel(BrowseInventoryFrame bif)
     {

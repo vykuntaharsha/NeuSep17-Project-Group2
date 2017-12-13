@@ -130,7 +130,10 @@ public class FilterCheckBoxPanel extends JPanel
             else
             {
                 checkBox.setText(checkBox.getName() + " (0)");
-                checkBox.setEnabled(false);
+                if (!checkBox.isSelected())
+                {
+                    checkBox.setEnabled(false);
+                }
             }
         }
     }
