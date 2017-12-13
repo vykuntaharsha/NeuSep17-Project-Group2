@@ -120,7 +120,7 @@ public class DealerMainWindow extends JFrame implements Runnable {
 	}
 
 //	public static void main(String[] arg) throws IOException {
-//		DealerMainWindow dealerMainWindow = new DealerMainWindow();
+//		DealerMainWindow dealerMainWindow = new DealerMainWindow("gmps-priority");
 //		Thread BrowseInventoryThread = new Thread(() -> dealerMainWindow.run());
 //		SwingUtilities.invokeLater(BrowseInventoryThread);
 //	}
