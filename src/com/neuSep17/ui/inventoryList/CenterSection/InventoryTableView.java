@@ -39,7 +39,7 @@ public class InventoryTableView extends JPanel{
         this.inventoryServiceAPI_test = inventoryServiceAPI_test;
         this.incentiveServiceAPI_test = incentiveServiceAPI_test;
     //    this.vehicles = inventoryServiceAPI_test.getVehicles();
-    //    this.pageController = new PageController(vehicles,15);
+        this.pageController = new PageController(inventoryServiceAPI_test.getVehicles(),15);
         this.inventoryControlPanel = new InventoryControlPanel(pageController,this);
 
         sp = new JScrollPane(new JTable());
