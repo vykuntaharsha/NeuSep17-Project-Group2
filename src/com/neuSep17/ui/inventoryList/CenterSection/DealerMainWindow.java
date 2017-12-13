@@ -22,8 +22,8 @@ public class DealerMainWindow extends JFrame implements Runnable {
 	private SearchPanel searchPanel;
 	private CenterPanel centerPanel;
 
-	public DealerMainWindow() throws IOException {
-		invsAPI = new InventoryServiceAPI_Test("data/gmps-blue-ribbon");
+	public DealerMainWindow(String selectedDealerID) throws IOException {
+		invsAPI = new InventoryServiceAPI_Test("data/" + selectedDealerID);
 		incsApi = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
 		totalVehicleList = invsAPI.getVehicles();
 		currentVehicleList = totalVehicleList;
@@ -37,9 +37,9 @@ public class DealerMainWindow extends JFrame implements Runnable {
 
 	public void createMainFrame() {
 		setTitle("Inventory Management");
-		setSize(1200, 800);
+		setSize(1920, 1200);
 		setVisible(true);
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
 	private void createComponents() throws IOException {
@@ -119,10 +119,10 @@ public class DealerMainWindow extends JFrame implements Runnable {
 		this.setVisible(true);
 	}
 
-	public static void main(String[] arg) throws IOException {
-		DealerMainWindow dealerMainWindow = new DealerMainWindow();
-		Thread BrowseInventoryThread = new Thread(() -> dealerMainWindow.run());
-		SwingUtilities.invokeLater(BrowseInventoryThread);
-	}
+//	public static void main(String[] arg) throws IOException {
+//		DealerMainWindow dealerMainWindow = new DealerMainWindow();
+//		Thread BrowseInventoryThread = new Thread(() -> dealerMainWindow.run());
+//		SwingUtilities.invokeLater(BrowseInventoryThread);
+//	}
 
 }
