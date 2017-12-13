@@ -42,6 +42,12 @@ public class InventoryServiceAPI_Test {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			vehicleImagesMap = getVehicleImagesMap();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public InventoryServiceAPI_Test(String file) {
