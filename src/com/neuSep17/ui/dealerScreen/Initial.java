@@ -20,7 +20,7 @@ public class Initial extends JFrame{
 
     public Initial() throws HeadlessException , IOException {
         super();
-        this.backgroundImage = ImageIO.read(new File("data/images/car3.jpg"));
+        this.backgroundImage = ImageIO.read(new File("data/images/InitialBackground.jpg"));
 
         setTitle("Initial Screen");//this is set title for Initial frame
         createComponents();// function to c

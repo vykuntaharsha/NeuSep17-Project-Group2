@@ -219,9 +219,4 @@ public class ConsumerScreen  extends JFrame{
       this.setVisible(true);
       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
-
-  public static void main(String[] args){
-      new ConsumerScreen();
-  }
-    
 }
