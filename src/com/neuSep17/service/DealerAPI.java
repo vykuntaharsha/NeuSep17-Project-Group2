@@ -13,7 +13,6 @@ public class DealerAPI {
 		
 	}
 	
-
 	
 	public ArrayList<Dealer> getDealers() {
 		return dealerDAO.getDealers();
