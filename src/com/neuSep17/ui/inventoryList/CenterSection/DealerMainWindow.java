@@ -119,10 +119,10 @@ public class DealerMainWindow extends JFrame implements Runnable {
 		this.setVisible(true);
 	}
 
-	public static void main(String[] arg) throws IOException {
-		DealerMainWindow dealerMainWindow = new DealerMainWindow();
-		Thread BrowseInventoryThread = new Thread(() -> dealerMainWindow.run());
-		SwingUtilities.invokeLater(BrowseInventoryThread);
-	}
+//	public static void main(String[] arg) throws IOException {
+//		DealerMainWindow dealerMainWindow = new DealerMainWindow();
+//		Thread BrowseInventoryThread = new Thread(() -> dealerMainWindow.run());
+//		SwingUtilities.invokeLater(BrowseInventoryThread);
+//	}
 
 }
