@@ -36,6 +36,14 @@ public class InventoryServiceAPI_Test {
 	private LinkedHashMap<String, ArrayList<Image>> vehicleImagesMap;
 	private String fileName;
 	
+	public InventoryServiceAPI_Test() {
+		try {
+			this.vehiclesMap = getAllVehiclesMap();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public InventoryServiceAPI_Test(String file) {
 		this.fileName = file;
 		try {
@@ -51,6 +59,36 @@ public class InventoryServiceAPI_Test {
 		}
 		
 	}
+	
+	public static LinkedHashMap<String, Vehicle> getAllVehiclesMap() throws IOException {
+		LinkedHashMap<String, Vehicle> allVehiclesMap = new LinkedHashMap<String, Vehicle>();
+		File dir = new File("data/");
+		File[] files = dir.listFiles();
+		
+		for(File file : files) {
+			if(file!= null && file.isFile() && file.getName().endsWith(".txt")) {
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String line = null;
+				int count = 0;
+				while((line=reader.readLine())!=null) {
+					count++;
+					if(count==1) {continue;}
+					String[] vehicleDataArray = line.split("~");
+					Vehicle vehicle =new Vehicle(vehicleDataArray);
+					allVehiclesMap.put(vehicle.getId(), vehicle);
+				}
+				
+				reader.close();
+				
+			}
+			else {
+				continue;
+			}
+		}
+		return allVehiclesMap;
+		
+	}
+	
 	
 
 	public ArrayList<Vehicle> getVehicles() {
