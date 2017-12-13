@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ImageView extends JPanel{
     //private List<Vehicle> currentVehicle;
-    private static HashMap<Vehicle, VehicleCardCell> vehicleCardCellsList = new HashMap<>();
+    private HashMap<Vehicle, VehicleCardCell> vehicleCardCellsList = new HashMap<>();
     private PageController<Vehicle> pageController;
     private ImageControlPanel imageControlPanel;
     InventoryServiceAPI_Test invsAPI;
@@ -29,10 +29,7 @@ public class ImageView extends JPanel{
         this.incsApi = incsApi;
         pageController = new PageController<Vehicle>(currentVehicle, 12);
         imageControlPanel = new ImageControlPanel(pageController,this);
-        lazycell(pageController.getSmallList());
-
-        updateThread td = new updateThread();
-        td.execute();
+        lazycell();
 
         this.setLayout(new BorderLayout());
         jScrollPaneDisplay();
@@ -47,36 +44,60 @@ public class ImageView extends JPanel{
             JPanel paneltt = new JPanel();
             for (int j = 0; j < 3 && i + j < pageController.getSmallList().size(); j++) {
                 JPanel tmp = vehicleCardCellsList.get(pageController.getSmallList().get(i + j));
-                tmp.setPreferredSize(new Dimension(320, 330));
+                tmp.setPreferredSize(new Dimension(300, 300));
                 paneltt.add(tmp);
+                if(j>=0 && j<2){
+                    JPanel n = new JPanel();
+                    n.setPreferredSize(new Dimension(17, 300));
+                    paneltt.add(n);
+                }
             }
             panel.add(paneltt);
+            if(i>=0&&i<9){
+                JPanel n = new JPanel();
+                n.setPreferredSize(new Dimension(300,25));
+                panel.add(n);
+            }
         }
         jScrollPane.add(panel);
         jScrollPane.setViewportView(panel);
+        jScrollPane.getVerticalScrollBar().setUnitIncrement(20);
     }
 
-    private void lazycell(List<Vehicle> currentVehicle) throws IOException {
-        Image notfound = ImageIO.read(new File("data/images/imagenotfound.jpg"));
-            for (Vehicle v : currentVehicle) {
-                if (!vehicleCardCellsList.containsKey(v)) {
-                    int i = (int) Math.round(2 * Math.random());
-                    Image temp;
-                    try {
-                        temp = InventoryServiceAPI_Test.getVehicleImage(v.getBodyType()).get(i);
-                    } catch (IOException e1) {
-                        temp = notfound;
-                        e1.printStackTrace();
-                    }
-                    ImageIcon imageIcon = new ImageIcon(temp, "icon for vehicle " + v.getId());
-                    vehicleCardCellsList.put(v, new VehicleCardCell(v, imageIcon, 1200, invsAPI, incsApi));
-                }
+    //每次加载清空map，生成当前list中的对应效果
+    private void lazycell(){
+        vehicleCardCellsList.clear();
+        for (Vehicle v : pageController.getSmallList()) {
+            int i = (int) Math.round(2 * Math.random());
+            Image temp = null;
+            try {
+                temp = InventoryServiceAPI_Test.getVehicleImage(v.getBodyType()).get(i);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            ;
+            ImageIcon imageIcon = new ImageIcon(temp, "icon for vehicle " + v.getId());
+            vehicleCardCellsList.put(v, new VehicleCardCell(v, imageIcon, 1200, invsAPI, incsApi));
+        }
     }
 
 
-    public void update(){
+    public void update(List<Vehicle> currentVehicleList) {
+        pageController = new PageController(currentVehicleList,12);
+        lazycell();
         jScrollPaneDisplay();
+        jScrollPane.getVerticalScrollBar().setValue(0);
+        this.remove(imageControlPanel);
+        this.revalidate();
+        imageControlPanel = new ImageControlPanel(pageController,this);
+        this.add(imageControlPanel,"North");
+        this.updateUI();
+    }
+
+    public void update() {
+        lazycell();
+        jScrollPaneDisplay();
+        jScrollPane.getVerticalScrollBar().setValue(0);
         this.remove(imageControlPanel);
         this.revalidate();
         imageControlPanel = new ImageControlPanel(pageController,this);
@@ -87,16 +108,28 @@ public class ImageView extends JPanel{
     public void setPageController(PageController<Vehicle> pageController) {
         this.pageController = pageController;
     }
-
-    class updateThread extends SwingWorker<Void, Void> {
-        @Override
-        protected Void doInBackground() throws Exception {
-            lazycell(pageController.getBigList());
-            return null;
-        }
-
-        protected void done() {
-            System.out.println("update finished");
-        }
-    }
+//
+//    class updateThread extends SwingWorker<Void, Void> {
+//        @Override
+//        protected Void doInBackground(){
+//            vehicleCardCellsList.clear();
+//            for (Vehicle v : pageController.getSmallList()) {
+//                int i = (int) Math.round(2 * Math.random());
+//                Image temp = null;
+//                try {
+//                    temp = InventoryServiceAPI_Test.getVehicleImage(v.getBodyType()).get(i);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                ;
+//                ImageIcon imageIcon = new ImageIcon(temp, "icon for vehicle " + v.getId());
+//                vehicleCardCellsList.put(v, new VehicleCardCell(v, imageIcon, 1200, invsAPI, incsApi));
+//            }
+//            return null;
+//        }
+//
+//        protected void done() {
+//            System.out.println("update finished");
+//        }
+//    }
 }

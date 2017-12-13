@@ -18,14 +18,18 @@ public class VehicleCardCell extends JPanel {
     VehicleImageCell vehicleImageCell;
 
     public VehicleCardCell(Vehicle v, ImageIcon icon, float discount, InventoryServiceAPI_Test invsAPI, IncentiveServiceAPI_Test
-                           incsAPI) throws IOException {
+                           incsAPI)  {
         super();
         setSize(800,600);
         cardPanel = new JPanel();
         CardLayout cardLayout = new CardLayout();
         cardPanel.setLayout(cardLayout);
-        vehicleImageCell = new VehicleImageCell(v,icon,discount,cardLayout,cardPanel);
-        vehicleDetail = new VehicleDetail(v, incsAPI,cardLayout,cardPanel);
+        try {
+            vehicleImageCell = new VehicleImageCell(v,icon,discount,cardLayout,cardPanel);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        vehicleDetail = new VehicleDetail(v,invsAPI,incsAPI,cardLayout,cardPanel);
         cardPanel.add("vehicleImageCell",vehicleImageCell);
         cardPanel.add("vehicleDetail",vehicleDetail);
         this.setLayout(new GridLayout());

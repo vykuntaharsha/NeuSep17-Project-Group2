@@ -79,6 +79,10 @@ public class DealerMainWindow extends JFrame implements Runnable {
 		/// new PagePanel(0);
 		filterPanel.setEnableCheckBoxMap(InventoryServiceAPI_Test.getComboBoxItemsMap(currentVehicleList),
 				currentChecked);
+//		for(int i=0;i<currentVehicleList.size();i++){
+//			if(!currentVehicleList.get(i).getId().equals(searchedVehicles.get(i).getId())) System.out.println("found differences");
+//		}
+
 		centerPanel.update(currentVehicleList);
 	}
 

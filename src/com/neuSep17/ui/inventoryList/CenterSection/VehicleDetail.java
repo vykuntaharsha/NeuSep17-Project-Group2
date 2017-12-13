@@ -12,46 +12,62 @@ import javax.swing.table.DefaultTableCellRenderer;
 import com.neuSep17.dto.Incentive;
 import com.neuSep17.dto.Vehicle;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
+import com.neuSep17.service.InventoryServiceAPI_Test;
 
 public class VehicleDetail extends JPanel
 {
-	// JLabel MSRP;
+	private JLabel edit, delete, add, pre;
+	private JTable curTable, specTable;
+	private ImageIcon addIconEnter, addIconExit, editIconEnter, editIconExit, deleteIconEnter, deleteIconExit,
+			preImageEnter, preImageExit;
+	private String[] detailType = { "  ID", "  WEBID", "  CATEGORY", "  YEAR", "  MAKE", "  MODEL", "  TRIM", "  TYPE", "  PRICE" };
+	private String[] discountContent = { "  SALE PRICE", "  START DATE", "  END DATE", "  TOTAL SAVINGS" };
+	private CardLayout cardLayout;
+	private JPanel cardPanel;
+	private Vehicle vehicle;
+	private InventoryServiceAPI_Test inventoryServiceAPI_test;
 
-	JLabel currentOffers;
-	JLabel specifications;
-	JTable curTable;
-	JTable specTable;
-	String[] detailType = { "  ID", "  WEBID", "  CATEGORY", "  YEAR", "  MAKE", "  MODEL", "  TRIM", "  TYPE", "  PRICE" };
-	String[] discountContent = { "  SALE PRICE", "  START DATE", "  END DATE", "  TOTAL SAVINGS" };
-	JLabel pre, background;
-	CardLayout cardLayout;
-	JPanel cardPanel;
-
-	public VehicleDetail(Vehicle vehicle, IncentiveServiceAPI_Test incentiveServiceAPI_Test, CardLayout cardLayout, JPanel cardPanel)
+	public VehicleDetail(Vehicle vehicle,InventoryServiceAPI_Test inventoryServiceAPI_test, IncentiveServiceAPI_Test incentiveServiceAPI_Test, CardLayout cardLayout, JPanel cardPanel)
 	{
+		this.vehicle = vehicle;
 		this.cardPanel = cardPanel;
 		this.cardLayout = cardLayout;
-		setSize(800,600);
+		this.inventoryServiceAPI_test = inventoryServiceAPI_test;
+		setSize(300,300);
 		createComponents(vehicle, incentiveServiceAPI_Test);
 		addComponents(vehicle, incentiveServiceAPI_Test);
-		setVisible(true);
+		makeListener();
+
+	}
+
+	private void makeListener(){
+		IconActionListener ial = new IconActionListener();
+		pre.addMouseListener(ial);
+		edit.addMouseListener(ial);
+		add.addMouseListener(ial);
+		delete.addMouseListener(ial);
+
 	}
 
 	private void createComponents(Vehicle vehicle, IncentiveServiceAPI_Test incentiveServiceAPI_Test)
 	{
 
-		currentOffers = new JLabel("Current Offers");
-		specifications = new JLabel("Specifications");
+//		currentOffers = new JLabel("Current Offers");
+//		specifications = new JLabel("Specifications");
 		curTable = new JTable(discountContent.length, 2);
 		specTable = new JTable(detailType.length, 2);
-		ImageIcon preImageEnter = new ImageIcon("/Users/boqunzhang/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/newInventoryList/material/left80%.png");
-		ImageIcon preImageExit = new ImageIcon("/Users/boqunzhang/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/newInventoryList/material/left50%.png");
+		preImageEnter = new ImageIcon("/Users/boqunzhang/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/newInventoryList/material/left80%.png");
+		preImageExit = new ImageIcon("/Users/boqunzhang/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/newInventoryList/material/left50%.png");
+		editIconEnter = new ImageIcon("/Users/boqunzhang/IdeaProjects/groupB/NeuSep17-Project-Group2/src/com/neuSep17/ui/inventoryList/material/edit80%.png");
+		editIconExit = new ImageIcon("/Users/boqunzhang/IdeaProjects/groupB/NeuSep17-Project-Group2/src/com/neuSep17/ui/inventoryList/material/edit50%.png");
+		addIconEnter = new ImageIcon("/Users/boqunzhang/IdeaProjects/groupB/NeuSep17-Project-Group2/src/com/neuSep17/ui/inventoryList/material/add80%.png");
+		addIconExit = new ImageIcon("/Users/boqunzhang/IdeaProjects/groupB/NeuSep17-Project-Group2/src/com/neuSep17/ui/inventoryList/material/add50%.png");
+		deleteIconEnter = new ImageIcon("/Users/boqunzhang/IdeaProjects/groupB/NeuSep17-Project-Group2/src/com/neuSep17/ui/inventoryList/material/delete80%.png");
+		deleteIconExit = new ImageIcon("/Users/boqunzhang/IdeaProjects/groupB/NeuSep17-Project-Group2/src/com/neuSep17/ui/inventoryList/material/delete50%.png");
+		add = new JLabel(addIconExit);
+		edit = new JLabel(editIconExit);
+		delete = new JLabel(deleteIconExit);
 		pre = new JLabel(preImageExit);
-
-		ImageIcon imageIcon = new ImageIcon("/Users/boqunzhang/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/newInventoryList/material/background.png");
-		background = new JLabel(imageIcon);
-		background.setVerticalAlignment(SwingConstants.TOP);
-		background.setHorizontalAlignment(SwingConstants.LEFT);
 
 
 		float salePrice = Math.max(vehicle.getPrice() - incentiveServiceAPI_Test.getAllDiscount(vehicle), 0);
@@ -86,59 +102,34 @@ public class VehicleDetail extends JPanel
 		curTable.setDefaultEditor(Object.class, null);
 		curTable.setFocusable(false);
 		curTable.setShowGrid(false);
-		curTable.setSelectionBackground(Color.DARK_GRAY);
+		curTable.setBackground(Color.LIGHT_GRAY);
 		specTable.setRowHeight(18);
 		specTable.setDefaultEditor(Object.class, null);
 		specTable.setFocusable(false);
 		specTable.setShowGrid(false);
-		specTable.setSelectionBackground(Color.DARK_GRAY);
+		specTable.setBackground(Color.LIGHT_GRAY);
 		curTable.setFont(new Font("Menu.font", Font.PLAIN, 16));
 		specTable.setFont(new Font("Menu.font", Font.PLAIN, 16));
-
-
-		pre.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				cardLayout.next(cardPanel);
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				pre.setIcon(preImageEnter);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				pre.setIcon(preImageExit);
-			}
-		});
 	}
 
 	private void addComponents(Vehicle vehicle, IncentiveServiceAPI_Test incentiveServiceAPI_Test)
 	{
 		setLayout(null);
-
-		specTable.setBounds(0,15,300,180);
-		curTable.setBounds(0,210,300,85);
+		setBackground(Color.LIGHT_GRAY);
 		pre.setBounds(0,0,50,300);
-		background.setBounds(0,0,300,300);
-		// add(MSRP);
-		//add(specifications);
-		add(background);
+		add.setBounds(173,267,50,30); // 181
+		edit.setBounds(211,267,50,30); //219
+		delete.setBounds(249,267,50,30); //257
+		specTable.setBounds(0,15,300,170);
+		curTable.setBounds(0,195,300,80);
+
 		add(pre);
+		add(add);
+		add(edit);
+		add(delete);
 		add(specTable);
-		//add(currentOffers);
 		add(curTable);
+
 
 	}
 
@@ -156,5 +147,45 @@ public class VehicleDetail extends JPanel
 		table.getColumnModel().getColumn(0).setPreferredWidth(140);
 		table.getColumnModel().getColumn(1).setPreferredWidth(160);
 
+	}
+
+	class IconActionListener implements MouseListener{
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if(e.getSource() == pre) cardLayout.next(cardPanel);
+			else if(e.getSource() == add);
+			else if(e.getSource() == edit);
+			else if(e.getSource() == delete);
+			else return;
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			if(e.getSource() == pre) pre.setIcon(preImageEnter);
+			else if(e.getSource() == add) add.setIcon(addIconEnter);
+			else if(e.getSource() == edit) edit.setIcon(editIconEnter);
+			else if(e.getSource() == delete) delete.setIcon(deleteIconEnter);
+			else return;
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			if(e.getSource() == pre) pre.setIcon(preImageExit);
+			else if(e.getSource() == add) add.setIcon(addIconExit);
+			else if(e.getSource() == edit) edit.setIcon(editIconExit);
+			else if(e.getSource() == delete) delete.setIcon(deleteIconExit);
+			else return;
+		}
 	}
 }
