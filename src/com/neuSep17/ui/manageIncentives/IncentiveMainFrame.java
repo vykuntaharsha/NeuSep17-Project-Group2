@@ -45,7 +45,7 @@ public class IncentiveMainFrame extends JFrame {
         add(searchPanel, BorderLayout.NORTH);
         add(toolPanel, BorderLayout.SOUTH);
         add(filterPanel, BorderLayout.WEST);
-        add(listPanel, BorderLayout.EAST);
+        add(listPanel, BorderLayout.CENTER);
     }
 
     private void createPanel() {
