@@ -14,33 +14,34 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.SwingConstants;
 
-public class VehicleCell extends JPanel {
+public class VehicleCell extends JPanel
+{
 
-   
-    public VehicleCell(Vehicle v, ImageIcon icon, float discount) {
+    public VehicleCell(Vehicle v, ImageIcon icon, float discount)
+    {
         super();
         this.setBorder(new MatteBorder(2, 0, 2, 0, Color.BLACK));
         this.setBackground(Color.WHITE);
-        
+
         GridBagLayout gridBagLayout = new GridBagLayout();
-        gridBagLayout.columnWidths = new int[] {181, 150, 0};
-        gridBagLayout.rowHeights = new int[]{28, 0, 0};
-        gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-        gridBagLayout.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+        gridBagLayout.columnWidths = new int[] { 181, 150, 0 };
+        gridBagLayout.rowHeights = new int[] { 28, 0, 0 };
+        gridBagLayout.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+        gridBagLayout.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
         setLayout(gridBagLayout);
-        
+
         JLabel image = new JLabel(icon);
         GridBagConstraints gbc_image = new GridBagConstraints();
-        gbc_image.anchor = GridBagConstraints.SOUTH;
+        gbc_image.anchor = GridBagConstraints.CENTER;
         gbc_image.fill = GridBagConstraints.HORIZONTAL;
         gbc_image.gridheight = 2;
         gbc_image.insets = new Insets(0, 0, 0, 5);
         gbc_image.gridx = 0;
         gbc_image.gridy = 0;
         add(image, gbc_image);
-        
-        String title= v.getYear() + " " + v.getMake() + " " + v.getModel();       
-        LinkLabel nameLabel = new LinkLabel(title, v.getId());            
+
+        String title = v.getYear() + " " + v.getMake() + " " + v.getModel();
+        LinkLabel nameLabel = new LinkLabel(title, v.getId());
         nameLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         nameLabel.setFont(new Font(nameLabel.getFont().getFontName(), Font.BOLD, 24));
         GridBagConstraints gbc_nameLabel = new GridBagConstraints();
@@ -50,7 +51,7 @@ public class VehicleCell extends JPanel {
         gbc_nameLabel.gridx = 1;
         gbc_nameLabel.gridy = 0;
         nameLabel.setBorder(new MatteBorder(0, 0, 2, 0, Color.GRAY));
-        add(nameLabel, gbc_nameLabel);  
+        add(nameLabel, gbc_nameLabel);
 
         JPanel specPane = new JPanel();
         GridBagLayout gbl_specPane = new GridBagLayout();
@@ -71,12 +72,17 @@ public class VehicleCell extends JPanel {
         gbc_typeLabel.gridx = 0;
         gbc_typeLabel.gridy = 0;
         specPane.add(typeLabel, gbc_typeLabel);
-        
-        String price= "price: " + v.getPrice().toString();
-        if (discount > 0 ) {
-            float pricenow=v.getPrice()-discount;
-            if (pricenow<0) price="<html><STRIKE>"+price+"</STRIKE><br /> <font color='red' size='+1'> On Sale:<br> Contact to get quote!</font><html>";
-            else price="<html><STRIKE>"+price+"</STRIKE><br /> <font color='red' size='+1'> On Sale:<br> "+(v.getPrice()-discount)+"!</font><html>";
+
+        String price = "price: " + v.getPrice().toString();
+        if (discount > 0)
+        {
+            float pricenow = v.getPrice() - discount;
+            if (pricenow < 0)
+                price = "<html><STRIKE>" + price
+                        + "</STRIKE><br /> <font color='red' size='+1'> On Sale:<br> Contact to get quote!</font><html>";
+            else
+                price = "<html><STRIKE>" + price + "</STRIKE><br /> <font color='red' size='+1'> On Sale:<br> "
+                        + (v.getPrice() - discount) + "!</font><html>";
         }
         JLabel priceLabel = new JLabel(price);
         GridBagConstraints gbc_priceLabel = new GridBagConstraints();
@@ -102,7 +108,7 @@ public class VehicleCell extends JPanel {
         gbc_categoryLabel.gridx = 0;
         gbc_categoryLabel.gridy = 2;
         specPane.add(categoryLabel, gbc_categoryLabel);
-        
+
         specPane.setBackground(Color.WHITE);
 
     }
