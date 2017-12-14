@@ -51,7 +51,6 @@ public class FilterPanel extends JPanel {
 	public void setCheckBoxPanelsMap(Map<String, Map<String, Integer>> checkBoxPanelsMap) {
 		this.checkBoxPanelsMap = checkBoxPanelsMap;
 		filterScrollPane.getVerticalScrollBar().setValue(0);
-//		resetFilterCheckBox();
 		updateFilterCheckBoxPanels();
 	}
 
