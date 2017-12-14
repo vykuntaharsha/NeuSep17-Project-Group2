@@ -1,7 +1,5 @@
 package com.neuSep17.ui.inventoryList.CenterSection;
 
-import com.neuSep17.ui.inventoryList.MainFrame.FilterPanel;
-import com.neuSep17.ui.inventoryList.MainFrame.SearchPanel;
 import com.neuSep17.dto.Vehicle;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 import com.neuSep17.service.InventoryServiceAPI_Test;
