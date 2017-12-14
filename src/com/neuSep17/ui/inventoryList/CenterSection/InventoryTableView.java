@@ -106,56 +106,56 @@ public class InventoryTableView extends JPanel{
         jTable.getColumnModel().getColumn(7).setPreferredWidth(100);
         jTable.getColumnModel().getColumn(8).setPreferredWidth(100);
         jTable.setColumnSelectionAllowed(true);
-//        jTable.getTableHeader().addMouseListener(new MouseInputListener() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                Point p = e.getPoint();
-//                int c = jTable.columnAtPoint(p);
-//                if(c == 0){
-//                    boolean flag = true;
-//                    for(int i=0;i<pageController.getSmallList().size();i++){
-//                        if(!(boolean)jTable.getValueAt(i,0)) flag = false;
-//                        jTable.setValueAt(true,i,0);
-//                    }
-//                    if(flag){
-//                        for(int i=0;i<pageController.getSmallList().size();i++){
-//                            jTable.setValueAt(false,i,0);
-//                        }
-//                    }
-//                }
-//                jTable.updateUI();
-//            }
-//
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void mouseReleased(MouseEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void mouseEntered(MouseEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void mouseExited(MouseEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void mouseDragged(MouseEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void mouseMoved(MouseEvent e) {
-//                jTable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//            }
-//        });
+        jTable.getTableHeader().addMouseListener(new MouseInputListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Point p = e.getPoint();
+                int c = jTable.columnAtPoint(p);
+                if(c == 0){
+                    boolean flag = true;
+                    for(int i=0;i<ivTableModel.getRowCount();i++){
+                        if(!(boolean)ivTableModel.getValueAt(i,0)) flag = false;
+                         ivTableModel.setValueAt(true,i,0);
+                    }
+                    if(flag){
+                        for(int i=0;i<15;i++){
+                            ivTableModel.setValueAt(false,i,0);
+                        }
+                    }
+                }
+                jTable.updateUI();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                jTable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+        });
         JCheckBox jCheckBox = new JCheckBox();
         TableColumn tableColumn = jTable.getColumnModel().getColumn(0);
         tableColumn.setCellEditor(new DefaultCellEditor(jCheckBox));
