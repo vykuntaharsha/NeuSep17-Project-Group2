@@ -1,6 +1,9 @@
 package com.neuSep17.ui.inventoryList.CenterSection;
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 import com.neuSep17.dto.Vehicle;
 import com.neuSep17.service.IncentiveServiceAPI_Test;
 import com.neuSep17.service.InventoryServiceAPI_Test;

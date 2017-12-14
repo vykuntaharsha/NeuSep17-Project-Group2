@@ -17,16 +17,27 @@ import javax.swing.plaf.basic.BasicComboPopup;
 public class SearchPanel extends JPanel {
 	private DealerMainWindow mainWindow;
 	private List<Vehicle> vehicles = new ArrayList<>();
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	private JPanel searchPanel;
 	private JLabel sortLabel;
 	private JLabel searchLabel;
 	private JComboBox searchTextComboBox;
 	private JComboBox<String> sortComboBox;
+<<<<<<< HEAD
+	
+	private Vector dictionaryVector;
+	private HashSet<String> dictionary;
+	
+=======
 
 	private Vector dictionaryVector;
 	private HashSet<String> dictionary;
 
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	public String[] sortKeys = { "Select Sort By", "Price: High To Low", "Price: Low To High", "Year: High To Low",
 			"Year: Low To High", "Make: A - Z", "Make: Z - A" };
 
@@ -66,7 +77,11 @@ public class SearchPanel extends JPanel {
 		for (int i = 0; i < sortKeys.length; i++) {
 			sortComboBox.addItem(sortKeys[i]);
 		}
+<<<<<<< HEAD
+		
+=======
 
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 		setItemsLocation();
 	}
 
@@ -188,7 +203,11 @@ class SearchTextComboBoxListener extends KeyAdapter {
 	private String typedWordBfSpace;
 
 	public SearchTextComboBoxListener(JComboBox searchTextComboBox, HashSet<String> dictionary,
+<<<<<<< HEAD
+			SearchPanel searchPanel) {
+=======
 									  SearchPanel searchPanel) {
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 		this.searchTextComboBox = searchTextComboBox;
 		this.dictionary = dictionary;
 		this.searchPanel = searchPanel;
@@ -207,7 +226,11 @@ class SearchTextComboBoxListener extends KeyAdapter {
 		}
 		String text = ((JTextField) key.getSource()).getText();
 		String typedWorld = getCurrentTypedWord(text);
+<<<<<<< HEAD
+		
+=======
 
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 		if (typedWorld.equals("")) {
 			searchTextComboBox.hidePopup();
 			return;
@@ -226,7 +249,11 @@ class SearchTextComboBoxListener extends KeyAdapter {
 			BasicComboPopup popup = (BasicComboPopup) child;
 
 			searchTextComboBox.showPopup();
+<<<<<<< HEAD
+			
+=======
 
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 			popup.setLocation(searchTextComboBox.getLocationOnScreen().x + 3,
 					searchTextComboBox.getLocationOnScreen().y + 30);
 
@@ -310,4 +337,8 @@ class SearchComboBoxActionListener implements ActionListener {
 
 		searchTextListener.updateAutoCompleteLabel(e);
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
