@@ -32,12 +32,21 @@ public class FilterPanel extends JPanel {
 	private JPanel filterPanel;
 	private JButton resetFilter;
 	private int northPanelHeight = 280;
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	private JTextField priceFrom;
 	private JTextField priceTo;
 	private JTextField yearFrom;
 	private JTextField yearTo;
+<<<<<<< HEAD
 	private JButton confirm;
+=======
+	private JButton priceConfirm;
+	private JButton yearConfirm;
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 
 	public FilterPanel(DealerMainWindow parent) {
 		this.parent = parent;
@@ -71,11 +80,20 @@ public class FilterPanel extends JPanel {
 			checkBoxPanels[i] = new FilterCheckBoxPanel(filterKeys[i], this);
 		}
 		resetFilter = new JButton("Clear All");
+<<<<<<< HEAD
 		yearFrom = new JTextField();   
 		yearTo = new JTextField();
 		priceFrom = new JTextField();
 		priceTo = new JTextField();
 		confirm = new JButton("Ok");
+=======
+		yearFrom = new JTextField();
+		yearTo = new JTextField();
+		priceFrom = new JTextField();
+		priceTo = new JTextField();
+		yearConfirm = new JButton("Ok");
+		priceConfirm = new JButton("Ok");
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	}
 
 	private void addComponents() {
@@ -85,6 +103,7 @@ public class FilterPanel extends JPanel {
 		filterPanel.setBorder(new TitledBorder("Narrow Matches By: "));
 		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		linePanel.setOpaque(false);
+<<<<<<< HEAD
 		linePanel.add(confirm);
 
 		
@@ -103,27 +122,73 @@ public class FilterPanel extends JPanel {
 		priceFrom.setPreferredSize(new Dimension(5,15));  
 		priceTo.setPreferredSize(new Dimension(5,15));  
 
+=======
+		linePanel.add(yearConfirm);
+
+		JPanel linePanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		linePanel2.setOpaque(false);
+		linePanel2.add(priceConfirm);
+
+		JPanel yearPanel = new JPanel();
+		JPanel pricePanel = new JPanel();
+//		yearPanel.setPreferredSize(new Dimension(200, 40));
+		yearPanel.setLayout(new GridLayout(0, 4));
+		yearPanel.setBackground(Color.WHITE);
+
+		pricePanel.setLayout(new GridLayout(0, 4));
+		pricePanel.setBackground(Color.WHITE);
+
+//		yearPanel.setOpaque(false);
+//		yearPanel.setAutoscrolls(true);
+//
+		yearFrom.setPreferredSize(new Dimension(5,15));
+		yearTo.setPreferredSize(new Dimension(5,15));
+//
+		priceFrom.setPreferredSize(new Dimension(5,15));
+		priceTo.setPreferredSize(new Dimension(5,15));
+//
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 		yearPanel.add(new JLabel(" YEAR"));
 		yearPanel.add(yearFrom);
 		yearPanel.add(new JLabel("     to"));
 		yearPanel.add(yearTo);
+<<<<<<< HEAD
 		
 		
+=======
+
+
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 		yearPanel.add(new JLabel(" PRICE"));
 		yearPanel.add(priceFrom);
 		yearPanel.add(new JLabel("     to"));
 		yearPanel.add(priceTo);
+<<<<<<< HEAD
 		
 		
 		filterPanel.add(yearPanel);
 		filterPanel.add(linePanel);
 		filterPanel.add(pricePanel);
+=======
+
+
+		filterPanel.add(yearPanel);
+//		filterPanel.add(yearConfirm);
+		filterPanel.add(linePanel);
+		filterPanel.add(pricePanel);
+//		filterPanel.add(priceConfirm);
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 
 		filterPanel.add(checkBoxPanels[0]);
 		filterPanel.add(checkBoxPanels[1]);
 		filterPanel.add(checkBoxPanels[2]);
+<<<<<<< HEAD
 			
 		
+=======
+
+
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 		filterPanel.add(Box.createVerticalStrut(0));
 		filterScrollPane.setViewportView(filterPanel);
 		this.add(filterScrollPane);
@@ -193,6 +258,10 @@ class FilterCheckBoxPanel extends JPanel {
 	public FilterCheckBoxPanel(String title, FilterPanel parent) {
 		this.title = title;
 		this.parent = parent;
+<<<<<<< HEAD
+=======
+//		this.checkBoxes = new ArrayList<JCheckBox>();
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 		this.isButtonMore = true;
 		this.fcbl = new FilterCheckBoxListener();
 		this.setOpaque(false);
@@ -203,12 +272,20 @@ class FilterCheckBoxPanel extends JPanel {
 
 	private void createPanelComponents() {
 		checkBoxesPanel = new JPanel();
+<<<<<<< HEAD
+=======
+		createLessAndMoreComponents();
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	}
 
 	private void addPanelComponents() {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		addShowAndHideComponents();
 		this.add(checkBoxesPanel);
+<<<<<<< HEAD
+=======
+//		addLessAndMoreComponents();
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	}
 
 	private void addPanelListeners() {
@@ -244,6 +321,10 @@ class FilterCheckBoxPanel extends JPanel {
 		createCheckBoxesComponents(itemsMap);
 		addCheckBoxesComponents();
 		hideCheckBoxesFrom(200);
+<<<<<<< HEAD
+=======
+		resetButtons();
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 		addCheckBoxesListeners();
 	}
 
@@ -256,6 +337,10 @@ class FilterCheckBoxPanel extends JPanel {
 		for (JCheckBox checkBox : checkBoxes) {
 			if (enableItems.contains(checkBox.getName())) {
 				checkBox.setText(checkBox.getName());
+<<<<<<< HEAD
+=======
+//				System.out.println(checkBox.getName());
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 				checkBox.setEnabled(true);
 			} else {
 				checkBox.setText(checkBox.getName());
@@ -273,6 +358,20 @@ class FilterCheckBoxPanel extends JPanel {
 		return true;
 	}
 
+<<<<<<< HEAD
+=======
+	private void resetButtons() {
+		isButtonMore = true;
+		if (checkBoxes.size() >= 5) {
+			buttonMore.setVisible(true);
+			buttonLess.setVisible(false);
+		} else {
+			buttonMore.setVisible(false);
+			buttonLess.setVisible(false);
+		}
+	}
+
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	private void removeCheckBoxesListeners() {
 		for (JCheckBox checkBox : checkBoxes) {
 			checkBox.removeActionListener(fcbl);
@@ -288,6 +387,19 @@ class FilterCheckBoxPanel extends JPanel {
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	private void createLessAndMoreComponents() {
+		buttonMore = new JButton("More");
+		buttonMore.setOpaque(false);
+		buttonMore.setVisible(false);
+
+		buttonLess = new JButton("Less");
+		buttonLess.setOpaque(false);
+		buttonLess.setVisible(false);
+	}
+
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	private void addShowAndHideComponents() {
 		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		linePanel.setOpaque(false);
@@ -309,6 +421,17 @@ class FilterCheckBoxPanel extends JPanel {
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	private void addLessAndMoreComponents() {
+		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+		linePanel.setOpaque(false);
+		linePanel.add(buttonMore);
+		linePanel.add(buttonLess);
+		this.add(linePanel);
+	}
+
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	private void hideCheckBoxesFrom(int index) {
 		for (int i = 0; i < index && i < checkBoxes.size(); i++) {
 			checkBoxesPanel.getComponent(i).setVisible(true);
@@ -326,8 +449,14 @@ class FilterCheckBoxPanel extends JPanel {
 	}
 
 	private void addButtonsListeners() {
+<<<<<<< HEAD
 //		DisplayButtonsListener dbl = new DisplayButtonsListener();
 
+=======
+		DisplayButtonsListener dbl = new DisplayButtonsListener();
+		buttonMore.addActionListener(dbl);
+		buttonLess.addActionListener(dbl);
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	}
 
 	public String generateFilterCondition() {
@@ -349,10 +478,38 @@ class FilterCheckBoxPanel extends JPanel {
 		return filter == null ? null : filter.toString();
 	}
 
+<<<<<<< HEAD
+=======
+	class DisplayButtonsListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int index = 0;
+
+			if (e.getSource() == buttonMore) {
+				buttonMore.setVisible(false);
+				buttonLess.setVisible(true);
+				isButtonMore = false;
+				index = checkBoxes.size();
+			} else if (e.getSource() == buttonLess) {
+				buttonLess.setVisible(false);
+				buttonMore.setVisible(true);
+				isButtonMore = true;
+				index = 200;
+			}
+			hideCheckBoxesFrom(index);
+			parent.resizeFilterPanel();
+		}
+	}
+
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
 	class FilterCheckBoxListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			parent.updateFilterConditions(title);
 		}
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3cec37fade9b6ebfe815ec1a72a1935fae8c64e6
