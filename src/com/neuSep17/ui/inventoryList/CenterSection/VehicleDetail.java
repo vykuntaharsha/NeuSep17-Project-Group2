@@ -63,8 +63,8 @@ public class VehicleDetail extends JPanel
 //		specifications = new JLabel("Specifications");
 		curTable = new JTable(discountContent.length, 2);
 		specTable = new JTable(detailType.length, 2);
-		preImageEnter = new ImageIcon("src/com/neuSep17/ui/newInventoryList/material/left80%.png");
-		preImageExit = new ImageIcon("src/com/neuSep17/ui/newInventoryList/material/left50%.png");
+		preImageEnter = new ImageIcon("src/com/neuSep17/ui/inventoryList/material/left80%.png");
+		preImageExit = new ImageIcon("src/com/neuSep17/ui/inventoryList/material/left50%.png");
 		editIconEnter = new ImageIcon("src/com/neuSep17/ui/inventoryList/material/edit80%.png");
 		editIconExit = new ImageIcon("src/com/neuSep17/ui/inventoryList/material/edit50%.png");
 		addIconEnter = new ImageIcon("src/com/neuSep17/ui/inventoryList/material/add80%.png");

@@ -16,10 +16,10 @@ public class DataIO {
 		try {
 			PrintWriter writer = new PrintWriter(new FileWriter(file));
 			
-			if(map.values().getClass() == Vehicle.class) {
+			if(map.values() instanceof Vehicle) {
 				writer.println("id~webId~category~year~make~model~trim~type~price~photo");
 			}
-			else if(map.values().getClass() == Incentive.class) {
+			else if(map.values() instanceof Incentive) {
 				writer.println("incentiveId~webId~title~discount~startDate~endDate~id,category,year,make,model,trim,type,price~description");
 			}
 			else {
