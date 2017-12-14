@@ -51,8 +51,8 @@ public class DealerMainWindow extends JFrame implements Runnable {
 		BorderLayout bl = new BorderLayout();
 		con.setLayout(bl);
 		searchPanel.setPreferredSize(new Dimension(1200, 200));
-		con.add(searchPanel, "North");
-		con.add(filterPanel, "West");
+	//	con.add(searchPanel, "North");
+	//	con.add(filterPanel, "West");
 		con.add(centerPanel, "Center");
 	}
 
