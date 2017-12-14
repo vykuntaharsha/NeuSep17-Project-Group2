@@ -32,6 +32,7 @@ public class SearchTextComboBoxListener extends KeyAdapter {
 
 		// show search result when press enter
 		if (key.getKeyCode() == key.VK_ENTER) {
+			System.out.println("executec sort~");
 			searchPanel.updateSearch();
 			searchTextComboBox.hidePopup();
 			return;

@@ -179,6 +179,7 @@ public class SearchPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//if(e.getSource()==searchTextComboBox)
 			updateSearch();
 		}
 	}

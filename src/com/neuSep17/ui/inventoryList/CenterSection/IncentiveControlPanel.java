@@ -27,7 +27,7 @@ public class IncentiveControlPanel extends JPanel{
                 pageController.previousPage();
                 jumpPageFileld.setText(pageController.getCurentPageIndex()+"");
                 parent.update();
-            }//
+            }
         });
         nextButton = new JButton("Next");
         nextButton.addActionListener(new ActionListener() {

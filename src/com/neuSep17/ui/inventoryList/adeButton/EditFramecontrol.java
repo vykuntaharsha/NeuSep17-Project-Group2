@@ -1,6 +1,5 @@
 package com.neuSep17.ui.inventoryList.adeButton;
 
-
 import com.neuSep17.dto.Vehicle;
 
 import java.awt.Color;
@@ -30,7 +29,7 @@ public class EditFramecontrol extends JFrame {
 	private JPanel contentPane;
 
 	private final String[] CATEGORIES = new String[] { "", "USED", "NEW", "CERTIFIED" };
-	private final String[] BODY_TYPE = new String[] { "", "Coupe", "Sedan", "SUV", "Van", "Truck", "Sport",
+	private final String[] BODY_TYPE = new String[] { "", "CAR", "Sedan", "SUV", "Van", "Truck", "Sport",
 			"Convertible", "Crossover", "Wagon", "Hybrid", "Luxury", "Diesel Engine" };
 
 	public EditFramecontrol(Vehicle vehicle) {
@@ -67,21 +66,31 @@ public class EditFramecontrol extends JFrame {
 		bodyType = new JLabel("BodyType");
 		price = new JLabel("Price");
 		photoUrl = new JLabel("PhotoUrl");
-		yearField = new JTextField(vehicle.getYear());
+		yearField = new JTextField(vehicle.getYear().toString());
 		makeField = new JTextField(vehicle.getMake());
 		modelField = new JTextField(vehicle.getModel());
 		trimField = new JTextField(vehicle.getTrim());
 		priceField = new JTextField(vehicle.getPrice().toString());
 		photoUrlField = new JTextField(vehicle.getPhotoUrl().toString());
 
-		bodyTypeField = new JComboBox<>();
+		bodyTypeField = new JComboBox<String>();
 		for (String s : this.BODY_TYPE) {
+//			if(s.equals(vehicle.getBodyType()))
 			bodyTypeField.addItem(s.toLowerCase());
 		}
+		for(int i = 0 ;i<BODY_TYPE.length;i++){
+			if(vehicle.getBodyType().toString().toLowerCase().equals(BODY_TYPE[i].toLowerCase()))
+				bodyTypeField.setSelectedIndex(i);
+		}
+
 
 		categoryField = new JComboBox<>();
 		for (String s : this.CATEGORIES) {
 			categoryField.addItem(s.toLowerCase());
+		}
+		for(int i = 0 ;i<CATEGORIES.length;i++){
+			if(vehicle.getCategory().toString().toLowerCase().equals(CATEGORIES[i].toString().toLowerCase()))
+				categoryField.setSelectedIndex(i);
 		}
 	}
 

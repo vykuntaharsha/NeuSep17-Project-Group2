@@ -25,7 +25,6 @@ public class CenterPanel extends JPanel {
         JTabbedPane centerTabbedPane = new JTabbedPane();
         JTabbedPane tableTabbedPane = new JTabbedPane();
         imageView = new ImageView(currentVehicleList,invsAPI,incsApi);
-        //inventoryTableView = new InventoryTableView(currentVehicleList,incsApi);
         inventoryTableView = new InventoryTableView(incsApi,invsAPI);
         incentiveTableView = new IncentiveTableView(incsApi);
 

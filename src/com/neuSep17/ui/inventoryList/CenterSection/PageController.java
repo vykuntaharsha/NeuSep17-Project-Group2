@@ -99,6 +99,8 @@ public class PageController<T> {
         if (targetPageIndex<=pageCount&&targetPageIndex>=1) {
             curentPageIndex = targetPageIndex;
         }
+        else if(targetPageIndex>pageCount) curentPageIndex = pageCount;
+        else if(targetPageIndex<1) curentPageIndex = 1;
         return select();
     }
 

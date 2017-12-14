@@ -9,28 +9,26 @@ import java.awt.event.KeyEvent;
 public class ImageControlPanel extends JPanel {
     private JLabel currentPageLable, totalPageLable;
     private JTextField jumpPageFileld;
-    private JButton preButton, nextButton;
-    private PageController pageController;
+    private JButton preButton, nextButton, jumpButton;
     private ImageView parent;
 
-    public ImageControlPanel(PageController pageController, ImageView parent){
+    public ImageControlPanel(ImageView parent){
         super();
         this.parent = parent;
-        this.pageController = pageController;
+
         currentPageLable = new JLabel("Current Page: ");
-        totalPageLable = new JLabel("Total Page: "+pageController.getPageCount());
+        totalPageLable = new JLabel("Total Page: "+parent.getPageController().getPageCount());
         jumpPageFileld = new JFormattedTextField();
         jumpPageFileld.setColumns(5);
-        jumpPageFileld.setText(pageController.getCurentPageIndex()+"");
-        jumpPageFileld.addKeyListener(new KeyAdapter() {
+        jumpPageFileld.setText(parent.getPageController().getCurentPageIndex()+"");
+        jumpButton = new JButton("Jump");
+        jumpButton.addActionListener(new ActionListener() {
             @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_SPACE|| e.getKeyCode() == KeyEvent.VK_ENTER){
-                    int jumpPage = Integer.parseInt(jumpPageFileld.getText().trim());
-                    pageController.jumpPage(jumpPage);
-                    jumpPageFileld.setText(pageController.getCurentPageIndex()+"");
-                    parent.update();
-                }
+            public void actionPerformed(ActionEvent e) {
+                int jumpPage = Integer.parseInt(jumpPageFileld.getText().trim());
+                parent.getPageController().jumpPage(jumpPage);
+            //    jumpPageFileld.setText(parent.getPageController().getCurentPageIndex()+"");
+                parent.update();
             }
         });
 
@@ -38,8 +36,8 @@ public class ImageControlPanel extends JPanel {
         preButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pageController.previousPage();
-                jumpPageFileld.setText(pageController.getCurentPageIndex()+"");
+                parent.getPageController().previousPage();
+              //  jumpPageFileld.setText(parent.getPageController().getCurentPageIndex()+"");
                 parent.update();
             }
         });
@@ -47,14 +45,15 @@ public class ImageControlPanel extends JPanel {
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pageController.nextPage();
-                jumpPageFileld.setText(pageController.getCurentPageIndex()+"");
+                parent.getPageController().nextPage();
+                //jumpPageFileld.setText(parent.getPageController().getCurentPageIndex()+"");
                 parent.update();
             }//
         });
 
         this.add(currentPageLable);
         this.add(jumpPageFileld);
+        this.add(jumpButton);
         this.add(preButton);
         this.add(nextButton);
         this.add(totalPageLable);

@@ -19,8 +19,8 @@ public class ImageView extends JPanel {
     private HashMap<Vehicle, VehicleCardCell> vehicleCardCellsList = new HashMap<>();
     private PageController<Vehicle> pageController;
     private ImageControlPanel imageControlPanel;
-    InventoryServiceAPI_Test invsAPI;
-    IncentiveServiceAPI_Test incsApi;
+    private InventoryServiceAPI_Test invsAPI;
+    private IncentiveServiceAPI_Test incsApi;
     private JScrollPane jScrollPane = new JScrollPane();
 
     public ImageView(java.util.List<Vehicle> currentVehicle, InventoryServiceAPI_Test invsAPI, IncentiveServiceAPI_Test
@@ -28,13 +28,16 @@ public class ImageView extends JPanel {
         this.invsAPI = invsAPI;
         this.incsApi = incsApi;
         pageController = new PageController<Vehicle>(currentVehicle, 12);
-        imageControlPanel = new ImageControlPanel(pageController, this);
+        imageControlPanel = new ImageControlPanel(this);
         lazycell();
-
         this.setLayout(new BorderLayout());
         jScrollPaneDisplay();
         this.add(jScrollPane, "Center");
         this.add(imageControlPanel, "North");
+    }
+
+    public PageController<Vehicle> getPageController() {
+        return pageController;
     }
 
     private void jScrollPaneDisplay() {
@@ -89,7 +92,7 @@ public class ImageView extends JPanel {
         jScrollPane.getVerticalScrollBar().setValue(0);
         this.remove(imageControlPanel);
         this.revalidate();
-        imageControlPanel = new ImageControlPanel(pageController, this);
+        imageControlPanel = new ImageControlPanel(this);
         this.add(imageControlPanel, "North");
         this.updateUI();
     }
@@ -97,13 +100,14 @@ public class ImageView extends JPanel {
     public void update() {
         lazycell();
         jScrollPaneDisplay();
-        jScrollPane.getVerticalScrollBar().setValue(0);
+       // jScrollPane.getVerticalScrollBar().setValue(0);
         this.remove(imageControlPanel);
         this.revalidate();
-        imageControlPanel = new ImageControlPanel(pageController, this);
+        imageControlPanel = new ImageControlPanel(this);
         this.add(imageControlPanel, "North");
         this.updateUI();
     }
+
 
     // jumpType == true, last page(add model);  false, currentPage(edit model);
     public void VehicleDetailUpdate(List<Vehicle> currentVehicleList, boolean jumpType) {
@@ -113,10 +117,10 @@ public class ImageView extends JPanel {
         else pageController.setCurentPageIndex(curPage);
         lazycell();
         jScrollPaneDisplay();
-        jScrollPane.getVerticalScrollBar().setValue(0);
+      //  jScrollPane.getVerticalScrollBar().setValue(0);
         this.remove(imageControlPanel);
         this.revalidate();
-        imageControlPanel = new ImageControlPanel(pageController, this);
+        imageControlPanel = new ImageControlPanel(this);
         this.add(imageControlPanel, "North");
 
     }

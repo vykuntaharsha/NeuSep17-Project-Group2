@@ -23,6 +23,7 @@ public class DealerMainWindow extends JFrame implements Runnable {
 	private CenterPanel centerPanel;
 
 	public DealerMainWindow(String selectedDealerID) throws IOException {
+		System.out.println("DealerMainWindow??");
 		invsAPI = new InventoryServiceAPI_Test("data/" + selectedDealerID);
 		incsApi = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
 		totalVehicleList = invsAPI.getVehicles();
@@ -79,10 +80,6 @@ public class DealerMainWindow extends JFrame implements Runnable {
 		/// new PagePanel(0);
 		filterPanel.setEnableCheckBoxMap(InventoryServiceAPI_Test.getComboBoxItemsMap(currentVehicleList),
 				currentChecked);
-//		for(int i=0;i<currentVehicleList.size();i++){
-//			if(!currentVehicleList.get(i).getId().equals(searchedVehicles.get(i).getId())) System.out.println("found differences");
-//		}
-
 		centerPanel.update(currentVehicleList);
 	}
 

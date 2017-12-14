@@ -33,7 +33,7 @@ public class VehicleImageCell extends JPanel {
         carImage = new JLabel(carIcon);
         carImage.setBounds(0,0,300,300);
 
-        backgroundIcon = new ImageIcon("/Users/boqunzhang/Downloads/NeuSep17-Project-Group2-master/src/com/neuSep17/ui/newInventoryList/material/background.png");
+        backgroundIcon = new ImageIcon("src/com/neuSep17/ui/newInventoryList/material/background.png");
         background = new JLabel(backgroundIcon);
         background.setBounds(0,0,300,80);
         StringBuilder title= new StringBuilder("<html>"+"<body style=\"padding:10px;\" >"+"<font color='white'>"+(vehicle.getCategory().toString()+
@@ -46,8 +46,8 @@ public class VehicleImageCell extends JPanel {
         nameLabel.setVerticalAlignment(SwingConstants.TOP);
         nameLabel.setBounds(0,0,300,200);
 
-        preImageEnter = new ImageIcon("/Users/boqunzhang/IdeaProjects/groupB/NeuSep17-Project-Group2/src/com/neuSep17/ui/inventoryList/material/right80%.png");
-        preImageExit = new ImageIcon("/Users/boqunzhang/IdeaProjects/groupB/NeuSep17-Project-Group2/src/com/neuSep17/ui/inventoryList/material/right50%.png");
+        preImageEnter = new ImageIcon("src/com/neuSep17/ui/inventoryList/material/right80%.png");
+        preImageExit = new ImageIcon("src/com/neuSep17/ui/inventoryList/material/right50%.png");
 
         next = new JLabel(preImageExit);
         next.setBounds(250,0,50,300);
