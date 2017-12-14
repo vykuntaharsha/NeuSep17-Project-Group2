@@ -7,7 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class ImageControlPanel extends JPanel {
-    private JLabel currentPageLable, totalPageLable;
+    private JLabel currentPageLable, totalPageLable, totalItemLabel;
     private JTextField jumpPageFileld;
     private JButton preButton, nextButton, jumpButton;
     private ImageView parent;
@@ -17,7 +17,9 @@ public class ImageControlPanel extends JPanel {
         this.parent = parent;
 
         currentPageLable = new JLabel("Current Page: ");
-        totalPageLable = new JLabel("Total Page: "+parent.getPageController().getPageCount());
+        totalPageLable = new JLabel("Total Pages: "+parent.getPageController().getPageCount()+"  ");
+        totalItemLabel = new JLabel("Total Items: "+parent.getPageController().getBigList().size()+"  ");
+
         jumpPageFileld = new JFormattedTextField();
         jumpPageFileld.setColumns(5);
         jumpPageFileld.setText(parent.getPageController().getCurentPageIndex()+"");
@@ -51,12 +53,13 @@ public class ImageControlPanel extends JPanel {
             }//
         });
 
+        this.add(totalPageLable);
         this.add(currentPageLable);
         this.add(jumpPageFileld);
         this.add(jumpButton);
         this.add(preButton);
         this.add(nextButton);
-        this.add(totalPageLable);
+        this.add(totalItemLabel);
 
     }
 
