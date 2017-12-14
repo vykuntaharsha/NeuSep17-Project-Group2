@@ -193,7 +193,7 @@ public class InventoryDAO {
 		File[] files = dir.listFiles();
 		
 		for(File file : files) {
-			if(file!= null && file.isFile() && file.getName().startsWith("gmps")) {
+			if(file!= null && file.isFile() && file.getName().startsWith("gmps") && !file.getName().endsWith(".txt")) {
 	
 				BufferedReader reader = new BufferedReader(new FileReader(file));
 				String line = null;
