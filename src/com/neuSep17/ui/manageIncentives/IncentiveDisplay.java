@@ -13,9 +13,10 @@ import java.util.ArrayList;
  */
 public class IncentiveDisplay extends JPanel {
     IncentiveList incentive_list;
+    private String dealerID;
+    public IncentiveDisplay(String dealerID) {
 
-    public IncentiveDisplay() {
-
+        this.dealerID = dealerID;
         setDisplayPanel();
         creatList();
 
@@ -26,7 +27,7 @@ public class IncentiveDisplay extends JPanel {
     }
 
     private void creatList() {
-        incentive_list = new IncentiveList();
+        incentive_list = new IncentiveList(dealerID);
         add(incentive_list);
     }
 
@@ -42,8 +43,8 @@ class IncentiveList extends JPanel {
     private TableRowSorter<TableModel> sorter;
     private RowFilter searchRowFilter;
 
-    public IncentiveList() {
-        createIncentivelist();
+    public IncentiveList(String dealerID) {
+        createIncentivelist(dealerID);
         setIncentivelist();
         setHeader();
     }
@@ -89,8 +90,10 @@ class IncentiveList extends JPanel {
         add(scrollPane);
     }
 
-    private void createIncentivelist() {
-        service = new IncentiveServiceAPI_Test("data/IncentiveSample.txt");
+    private void createIncentivelist(String dealerID) {
+
+        String path = "data/" + dealerID + "Incentive.txt";
+        service = new IncentiveServiceAPI_Test(path);
         incentive_model = new IncentiveTableModel(service);
         incentive_list = new JTable(incentive_model);
     }

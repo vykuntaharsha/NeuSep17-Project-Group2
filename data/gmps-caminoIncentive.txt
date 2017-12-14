@@ -11,6 +11,5 @@ incentiveId~webId~title~discount~startDate~endDate~id,category,year,make,model,t
 000012~gmps-camino~Valentine Day~1600.0~2017-12-06~2017-12-17~all,no,no,no,no,no,no,no~Happy Valentine Day
 000013~gmps-camino~New Year~1500.0~2018-01-01~2018-01-10~all,no,no,no,no,no,no,no~Happy New Year!
 000014~gmps-camino~Independence Day~200.0~2017-12-06~2017-12-07~all,no,no,no,no,no,no,no~Independence Day Discount!
-000016~gmps-camino~Spring Vacation~1500.0~2017-12-06~2018-02-12~all,no,no,no,no,no,no,no~!!!Spring Vacation Discount!!!!
-000018~gmps-camino~Black Monday~700.0~2017-12-06~2018-12-06~no,NEW,2014,Chevrolet,no,no,no,20000~Black
+000016~gmps-camino~Spring Vacation~1500.0~2017-12-06~2018-02-12~all,no,no,no,no,no,no,no~Spring Vacation Discount!!!!
 000019~gmps-camino~Black~700.0~2017-12-06~2018-12-06~no,no,2013,Cadillac,no,no,no,no~LALALA！！！！

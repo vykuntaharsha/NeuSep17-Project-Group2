@@ -216,7 +216,7 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         Image notfound;
         try
         {
-            notfound = ImageIO.read(new File("src/com/neuSep17/ui/consumer/imagenotfound.jpg"));
+            notfound = ImageIO.read(new File("data/images/imagenotfound.jpg"));
         }
         catch (IOException e)
         {
