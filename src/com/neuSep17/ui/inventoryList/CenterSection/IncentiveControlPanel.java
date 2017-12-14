@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class IncentiveControlPanel extends JPanel{
-    private JLabel currentPageLable, totalPageLable;
+    private JLabel currentPageLable, totalPageLable, totalItemLabel;
     private JTextField jumpPageFileld;
     private JButton preButton, nextButton;
     private PageController pageController;
@@ -16,7 +16,8 @@ public class IncentiveControlPanel extends JPanel{
         this.pageController = pageController;
         this.parent = parent;
         currentPageLable = new JLabel("Current Page: ");
-        totalPageLable = new JLabel("Total Page: "+pageController.getPageCount());
+        totalPageLable = new JLabel("Total Pages: "+pageController.getPageCount()+"  ");
+        totalItemLabel = new JLabel("Total Items: "+pageController.getBigList().size()+"  ");
         jumpPageFileld = new JFormattedTextField();
         jumpPageFileld.setColumns(5);
         jumpPageFileld.setText(pageController.getCurentPageIndex()+"");
@@ -39,11 +40,12 @@ public class IncentiveControlPanel extends JPanel{
             }//
         });
 
+        this.add(totalPageLable);
         this.add(currentPageLable);
         this.add(jumpPageFileld);
         this.add(preButton);
         this.add(nextButton);
-        this.add(totalPageLable);
+        this.add(totalItemLabel);
 
     }
 
