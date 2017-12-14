@@ -272,11 +272,13 @@ public class BrowseInventoryFrame extends JFrame implements Runnable
         protected void process(List<Integer> finished)
         {
             cacheProgress.setValue(finished.get(finished.size() - 1));
+            
         }
 
         protected void done()
         {
             System.out.println("update finished");
+            cacheProgress.setString("All image cached!");
         }
     }
 
