@@ -130,7 +130,7 @@ public class FilterPanel extends JPanel {
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//resetFilter();
+				
 			}
 		});
 	}
