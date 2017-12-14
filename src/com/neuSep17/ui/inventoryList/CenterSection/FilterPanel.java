@@ -30,7 +30,6 @@ public class FilterPanel extends JPanel {
 	private FilterCheckBoxPanel[] checkBoxPanels;
 	private String[] filterKeys = { "category", "make", "type" };
 	private JPanel filterPanel;
-	private JButton resetFilter;
 	private int northPanelHeight = 280;
 
 	private JTextField priceFrom;
@@ -129,7 +128,7 @@ public class FilterPanel extends JPanel {
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				updateFilterConditions("");
 			}
 		});
 	}
@@ -151,7 +150,13 @@ public class FilterPanel extends JPanel {
 		if (categoriesFilter != null) {
 			categoriesFilter = categoriesFilter.trim().toLowerCase();
 		}
-		parent.doFilter(categoriesFilter, null, checkBoxPanels[1].generateFilterCondition(), null,
+
+		String fromYear = yearFrom.getText();
+		String toYear = yearTo.getText();
+		String fromPrice = priceFrom.getText();
+		String toPrice = priceTo.getText();
+
+		parent.doFilter(categoriesFilter, fromYear, checkBoxPanels[1].generateFilterCondition(), fromPrice,
 				checkBoxPanels[2].generateFilterCondition(), currentChecked);
 	}
 
@@ -168,11 +173,6 @@ public class FilterPanel extends JPanel {
 			filterPanel.remove(filterPanel.getComponentCount() - 1);
 			filterPanel.add(Box.createVerticalStrut(0));
 		}
-	}
-
-	private void resetFilter() {
-		resetFilterCheckBox();
-		updateFilterConditions("");
 	}
 }
 
@@ -370,6 +370,7 @@ class FilterCheckBoxPanel extends JPanel {
 			parent.resizeFilterPanel();
 		}
 	}
+
 
 	class FilterCheckBoxListener implements ActionListener {
 		@Override
