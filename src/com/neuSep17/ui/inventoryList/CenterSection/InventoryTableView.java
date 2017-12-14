@@ -200,11 +200,14 @@ public class InventoryTableView extends JPanel{
             this.deleteFrame = deleteFrame;
         }
         public void validate(){
-           // int temp = jTable.getSelectedRow();
-            //inventoryServiceAPI_test.deleteVehicle(ivTableModel.getValueAt(temp, 1).toString());
+//            int temp = jTable.getSelectedRow();
+//            inventoryServiceAPI_test.deleteVehicle(ivTableModel.getValueAt(temp, 1).toString());
             for(int i = 0;i<pageController.getSmallList().size();i++){
-                inventoryServiceAPI_test.deleteVehicle(ivTableModel.getValueAt(i, 1).toString());
+                if((boolean)ivTableModel.getValueAt(i,0)) inventoryServiceAPI_test.deleteVehicle(ivTableModel.getValueAt(i, 1).toString());
             }
+            int curpage = pageController.getCurentPageIndex();
+            pageController = new PageController<>(inventoryServiceAPI_test.getVehicles(),15);
+            pageController.setCurentPageIndex(curpage);
             update(inventoryServiceAPI_test.getVehicles());
 
             deleteFrame.IsYes = false;
